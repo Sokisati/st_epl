@@ -43,12 +43,14 @@ class Satellite:
         
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
+        self.filterCommandTransmissionAttempt = 5
 
         print("Satellite built succesfully");
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+
     
     def shellConnectionProcedure(self):
         responseShell = "null"
@@ -73,7 +75,9 @@ class Satellite:
         elif not self.tryConnectingAgain:
             try:
                 self.shellSocket.send(self.command.encode())
+                
                 responseShell = self.shellSocket.recv(1024).decode()
+                responseShell = json.loads(responseShell)
                 
             except Exception as e:
                 self.tryConnectingAgain = True
@@ -81,13 +85,16 @@ class Satellite:
         else:
             print("Out of limit")
             return NULL;
-            
+        
+        
         return responseShell;
     
     def groundStationConnectionProcedure(self, responseShell):
         try:
             self.gsSocket.send(self.command.encode())
             responseGs = self.gsSocket.recv(1024).decode()
+            responseGs = json.loads(responseGs);
+            
         except Exception as e:
             print(f"Error communicating with GS server: {e}")
             return
@@ -111,10 +118,12 @@ class Satellite:
             8, 
             8,  
             self.filterCommandList,  
-            responseGs, 
+            responseGs[1], 
             8,
             8
         )
+        if len(responseGs[1])==4:
+            self.sendFilterInfoToFilter(list(responseGs[1]));
         
         self.logDataPack(dataPack);
     
@@ -124,21 +133,24 @@ class Satellite:
             self.gsSocket.send(dataJson.encode())
         except Exception as e:
             print(f"Error sending data to GS server: {e}")
-
             
-    def sendFilterInfoToFilter(self,infoList,attemptLimit):
+    def sendFilterInfoToFilter(self,infoList):
+        jsonData = json.dumps(infoList)
+        
         try:
-            self.cameraFilterSocket.send(infoList.encode());
+            self.cameraFilterSocket.send(jsonData.encode());
         except Exception as e:
-            if attemptLimit>0:
+            print("Problem with sending filter code. Attempt remains: "+str(self.filterCommandTransmissionAttempt));
+            if self.filterCommandTransmissionAttempt>0:
+                self.filterCommandTransmissionAttempt-=1;
                 self.sendFilterInfoToFilter(infoList);
-                attemptLimit-=1;
+                
     
     def logDataPack(self,dataPack):
         with open(self.filePath,'a') as file:
             file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
             file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
-            file.write(f"HATA KODU:{dataPack.errorCode}\n");
+            file.write(f"HATA KODU:{dataPack.errorCodeList}\n");
             file.write(f"GONDERME SAATI:{dataPack.transmissionTime}\n");
             file.write(f"BASINC1:{dataPack.satellitePressure}\n");
             file.write(f"BASINC2:{dataPack.shellPressure}\n");

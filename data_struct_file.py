@@ -1,6 +1,6 @@
 class DataPack:
     def __init__(self, packetNumber, stStatus, errorCodeList, transmissionTime, satellitePressure, shellPressure,satelliteAltitude,shellAltitude,altitudeDifference,
-                 descendSpeed, temperature, batteryVoltage, gpsLat, gpsLong, gpsAlt, pitch, roll, yaw, filterCommandList, iotData, teamNumber):
+                 descentSpeed, temperature, batteryVoltage, gpsLat, gpsLong, gpsAlt, pitch, roll, yaw, filterCommandList, iotData, teamNumber):
         self.packetNumber = packetNumber
         self.stStatus = stStatus
         self.errorCodeList = errorCodeList
@@ -10,7 +10,7 @@ class DataPack:
         self.satelliteAltitude = satelliteAltitude
         self.shellAltitude = shellAltitude
         self.altitudeDifference = altitudeDifference
-        self.descendSpeed = descendSpeed
+        self.descentSpeed = descentSpeed
         self.temperature = temperature
         self.batteryVoltage = batteryVoltage
         self.gpsLat = gpsLat
