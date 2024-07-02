@@ -21,8 +21,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="alarm_file.py" />
     <Compile Include="data_struct_file.py" />
     <Compile Include="device_file.py" />
+    <Compile Include="led_file.py" />
+    <Compile Include="satellite_status_file.py" />
     <Compile Include="st_epl.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

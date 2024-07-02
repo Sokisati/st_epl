@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 import socket
 import time
 import json
@@ -41,6 +41,7 @@ class Satellite:
         self.tryConnectingAgain = False;
         self.dataPackNumber = 0
         
+
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandTransmissionAttempt = 5
@@ -51,7 +52,6 @@ class Satellite:
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
-    
     def shellConnectionProcedure(self):
         responseShell = "null"
         print(self.attemptLimit);
@@ -84,8 +84,6 @@ class Satellite:
                 print(f"Lost connection with shell: {e}")
         else:
             print("Out of limit")
-            return NULL;
-        
         
         return responseShell;
     
@@ -176,4 +174,6 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
+            
+
             time.sleep(1);
