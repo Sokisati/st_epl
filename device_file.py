@@ -33,7 +33,6 @@ class Satellite:
         self.gsSocket.settimeout(3);
         self.cameraFilterSocket.settimeout(2);
     
-        
         self.filePath = 'telemetry_data.txt'
 
         self.groundStation = groundStation;
@@ -47,7 +46,6 @@ class Satellite:
         self.tryConnectingAgain = False;
         self.dataPackNumber = 0
         
-
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandTransmissionAttempt = 5
@@ -56,7 +54,7 @@ class Satellite:
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
-        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self,parsed_data):
         try:
