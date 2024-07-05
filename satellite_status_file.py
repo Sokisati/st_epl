@@ -1,13 +1,22 @@
 
 class SatelliteStatusJudge:
-    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption):
+    
+    def getLDRData(self):
+        #TODO: implement ldr value function here
+        return 0;
+                   
+    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,minValueForDetachmentAssumption):
         self.status = 0;
         self.altitudeList = [];
         self.minAltitudeForStatusFlight = minAltitudeForFlightAssumption;
         self.consecutiveAscentNeeded=consecutiveAscentNeeded;
         self.minAltitudeForLandAssumption = minAltitudeForLandAssumption;
-    
-
+        self.minValueForDetachmentAssumption = minValueForDetachmentAssumption;
+        
+        #TODO: calculate real values
+        self.attachedAngle = 15
+        self.detachedAngle = 45;
+        
     def checkForAscent(self):
         if len(self.altitudeList)<=self.consecutiveAscentNeeded:
             return False;
@@ -17,14 +26,13 @@ class SatelliteStatusJudge:
             for i in range(len(lastElements) - 1):
                 if lastElements[i] >= lastElements[i + 1]:
                     return False
-        return True           
-
-
+        return True         
+    
     def updateAltitude(self,altitude):
         self.altitudeList.append(altitude);
 
-
     def updateStatus(self):
+        
         if self.status==0:
             if max(self.altitudeList)>=self.minAltitudeForFlightAssumption:
                 self.status = 1;
@@ -37,32 +45,25 @@ class SatelliteStatusJudge:
             if min(self.altitudeList)<400:
                 self.status = 3;
         
-        #skip details for now, finish it when LDR or some other method is decided
         elif self.status==3:
-            self.status = 4;
+            ldrValue = self.getLDRData();
+            if ldrValue<=self.minValueForDetachmentAssumption:
+                self.status = 4;
 
         elif self.status==4:
             if min(self.altitudeList)<self.minAltitudeForLandAssumption:
                 self.status = 5;
-"""
-    def statusAction(self):
-        if self.status==0:
-           
-        
-        elif self.status==1:
-            
-        
-        elif self.status==2:
-            
-        
-        #skip details for now, finish it when LDR or some other method is decided
-        elif self.status==3:
-            
 
-        elif self.status==4:
-            """
+    def detach(self,servo):
+        servo.angle(self.detachedAngle);
+
+
+    def statusAction(self,servo,buzzerPack):
+        if self.status == 3:
+            self.detach(servo);
             
-        
-        
+        elif self.status == 5:
+            buzzerPack.melody();
+            
             
        

@@ -1,11 +1,10 @@
 
-from doctest import debug
 import socket
 import time
 import json
-from urllib import response
 
 from data_struct_file import DataPack
+from alarm_file import *
 
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
@@ -29,11 +28,18 @@ class Satellite:
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        
+        self.alarmSystem = AlarmSystem(15,4,10,666);
+
+        #TODO: team number?
+        self.teamNumber = 8;
+        
         self.shellSocket.settimeout(3);
         self.gsSocket.settimeout(3);
         self.cameraFilterSocket.settimeout(2);
     
         self.filePath = 'telemetry_data.txt'
+        self.latestDataPack = DataPack(0,0,[0,0,0,0,0],'1/1/2038',0,0,0,0,0,0,0,0,0,0,0,0,0,0,['0'],0,0);
 
         self.groundStation = groundStation;
         self.shell = shell;
@@ -42,13 +48,13 @@ class Satellite:
         self.attemptLimit = 20;
         self.attemptLimitDistance = 5;
         self.counter = 0;
-        self.command = "SEND_DATA\n"
+        self.command = "SEND_DATA\n";
         self.tryConnectingAgain = False;
-        self.dataPackNumber = 0
+        self.dataPackNumber = 0;
         
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
-        self.filterCommandTransmissionAttempt = 5
+        self.filterCommandTransmissionAttempt = 5;
 
         print("Satellite built succesfully");
                 
@@ -109,7 +115,6 @@ class Satellite:
 
         return responseShell;
 
-
     def groundStationConnectionProcedure(self, responseShell):
         
         try:
@@ -127,10 +132,13 @@ class Satellite:
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
-    
+        
+        self.alarmSystem.statusJudge.updateAltitude(self.latestDataPack.satelliteAltitude);
+        self.alarmSystem.statusJudge.updateStatus(); 
+        
         dataPack = DataPack(
             self.dataPackNumber,
-            0,  
+            self.alarmSystem.statusJudge.status,  
             self.errorCodeList,
             "19/1/2038", 
             8,  
@@ -148,9 +156,12 @@ class Satellite:
             8,  
             self.filterCommandList,  
             responseGs[1], 
-            8,
-            8
+            responseGs[0],
+            self.teamNumber
         )
+        
+        self.latestDataPack = dataPack;
+        
         if len(responseGs[1])==4:
             self.sendFilterInfoToFilter(list(responseGs[1]));
         
@@ -174,7 +185,6 @@ class Satellite:
                 self.filterCommandTransmissionAttempt-=1;
                 self.sendFilterInfoToFilter(infoList);
                 
-    
     def logDataPack(self,dataPack):
         with open(self.filePath,'a') as file:
             file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
@@ -205,5 +215,8 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
-            
             time.sleep(1);
+
+        
+        
+
