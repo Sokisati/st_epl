@@ -1,7 +1,9 @@
 
+from doctest import debug
 import socket
 import time
 import json
+from urllib import response
 
 from data_struct_file import DataPack
 
@@ -27,6 +29,9 @@ class Satellite:
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.shellSocket.settimeout(3);
+        self.gsSocket.settimeout(3);
+    
         
         self.filePath = 'telemetry_data.txt'
 
@@ -37,7 +42,7 @@ class Satellite:
         self.attemptLimit = 20;
         self.attemptLimitDistance = 5;
         self.counter = 0;
-        self.command = 'SEND_DATA';
+        self.command = "SEND_DATA\n"
         self.tryConnectingAgain = False;
         self.dataPackNumber = 0
         
@@ -52,12 +57,29 @@ class Satellite:
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
-    def shellConnectionProcedure(self):
-        responseShell = "null"
-        print(self.attemptLimit);
+    def splitData(self,parsed_data):
+        try:
+            parsed_str = parsed_data.decode().strip() 
+            parts = parsed_str.split('0')
         
+            if len(parts) == 2:
+                altitude = int(parts[0])
+                pressure = int(parts[1])
+                return [altitude, pressure]
+            else:
+                print(f"Invalid data format: {parsed_str}")
+                return [0, 0]
+    
+        except Exception as e:
+            print(f"Error splitting data: {e}")
+            return [0, 0]
+                
+    def shellConnectionProcedure(self):
+
+        responseShell = [0,0]
+        rawData = 0;
+
         if self.attemptLimit > 0 and self.tryConnectingAgain:
-            
             self.counter += 1
             if self.counter % self.attemptLimitDistance == 0:
                 try:
@@ -74,20 +96,23 @@ class Satellite:
                     
         elif not self.tryConnectingAgain:
             try:
-                self.shellSocket.send(self.command.encode())
-                
-                responseShell = self.shellSocket.recv(1024).decode()
-                responseShell = json.loads(responseShell)
-                
+                self.shellSocket.send(self.command.encode());
+                rawData = self.shellSocket.recv(1024)
+                print(rawData);
+                responseShell = self.splitData(rawData);
+
             except Exception as e:
                 self.tryConnectingAgain = True
                 print(f"Lost connection with shell: {e}")
         else:
             print("Out of limit")
-        
+       
+
         return responseShell;
-    
+
+
     def groundStationConnectionProcedure(self, responseShell):
+        
         try:
             self.gsSocket.send(self.command.encode())
             responseGs = self.gsSocket.recv(1024).decode()
@@ -96,6 +121,13 @@ class Satellite:
         except Exception as e:
             print(f"Error communicating with GS server: {e}")
             return
+        
+        shellAltitude = 0;
+        shellPressure = 0;
+      
+        if len(responseShell)==2:
+            shellAltitude = responseShell[0];
+            shellPressure = responseShell[1]*100;
     
         dataPack = DataPack(
             self.dataPackNumber,
@@ -103,9 +135,9 @@ class Satellite:
             self.errorCodeList,
             "19/1/2038", 
             8,  
-            responseShell[0], 
+            shellPressure, 
             8, 
-            responseShell[1], 
+            shellAltitude, 
             8,  
             8, 
             8, 
@@ -175,5 +207,4 @@ class Satellite:
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
             
-
             time.sleep(1);
