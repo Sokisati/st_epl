@@ -103,7 +103,6 @@ class Satellite:
             try:
                 self.shellSocket.send(self.command.encode());
                 rawData = self.shellSocket.recv(1024)
-                print(rawData);
                 responseShell = self.splitData(rawData);
 
             except Exception as e:
@@ -114,6 +113,9 @@ class Satellite:
        
 
         return responseShell;
+
+    def artificalAltFunction(self):
+        return (175*self.dataPackNumber-(175/16)*self.dataPackNumber*self.dataPackNumber);
 
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -133,7 +135,8 @@ class Satellite:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
         
-        self.alarmSystem.statusJudge.updateAltitude(self.latestDataPack.satelliteAltitude);
+        print(self.latestDataPack.satelliteAltitude);
+        self.alarmSystem.statusJudge.updateAltitude(self.artificalAltFunction());
         self.alarmSystem.statusJudge.updateStatus(); 
         
         dataPack = DataPack(
