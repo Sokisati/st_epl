@@ -31,6 +31,7 @@ class Satellite:
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.shellSocket.settimeout(3);
         self.gsSocket.settimeout(3);
+        self.cameraFilterSocket.settimeout(2);
     
         
         self.filePath = 'telemetry_data.txt'
