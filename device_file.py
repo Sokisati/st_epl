@@ -139,7 +139,7 @@ class Satellite:
         stAltitude = self.artificalAltFunction();
         self.alarmSystem.statusJudge.updateAltitude(stAltitude)
         self.alarmSystem.statusJudge.updateAltDiffAvg(stAltitude,shellAltitude);
-        self.alarmSystem.statusJudge.updateStatus(); 
+        self.alarmSystem.statusJudge.updateStatus(stAltitude,shellAltitude); 
         
         if(self.alarmSystem.statusJudge.status==3):
             stAltitude = 66666;

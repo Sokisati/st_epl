@@ -58,7 +58,7 @@ class SatelliteStatusJudge:
     def updateAltitude(self, altitude):
         self.altitudeList.append(altitude)
 
-    def updateStatus(self):
+    def updateStatus(self,stAlt,shellAlt):
         
         if self.status == 0:
             if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption:
@@ -74,7 +74,7 @@ class SatelliteStatusJudge:
         
         elif self.status == 3:
             print("here");
-            detached = self.checkForDetachment()
+            detached = self.checkForDetachment(stAlt,shellAlt)
             if detached == True:
                 self.status = 4;            
 
