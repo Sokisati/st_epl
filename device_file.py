@@ -30,7 +30,7 @@ class Satellite:
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
         self.alarmSystem = AlarmSystem(15,2,15,1);
-        self.toDelete = 0;
+        self.toDelete = 1;
 
         #TODO: team number?
         self.teamNumber = 8;
