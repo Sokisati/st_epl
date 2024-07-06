@@ -171,7 +171,7 @@ class Satellite:
         
         self.latestDataPack = dataPack;
         
-        if len(responseGs[1])==4:
+        if responseGs[1]!='0':
             self.sendFilterInfoToFilter(list(responseGs[1]));
         
         self.logDataPack(dataPack);
