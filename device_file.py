@@ -117,7 +117,7 @@ class Satellite:
 
     def artificalAltFunction(self):
         x = self.dataPackNumber;
-        return self.toDelete + 140 * x - 7 * (x ** 2);
+        return self.toDelete * 140 * x - 7 * (x ** 2);
     
     def groundStationConnectionProcedure(self, responseShell):
         
