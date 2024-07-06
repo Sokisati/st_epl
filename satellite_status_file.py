@@ -1,9 +1,5 @@
 class SatelliteStatusJudge:
     
-    def getLDRData(self):
-        # TODO: implement LDR value function here
-        return 0
-                   
     def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption, minValueForDetachmentAssumption):
         self.status = 0
         self.altitudeList = [0, 0, 0]
@@ -55,9 +51,7 @@ class SatelliteStatusJudge:
                 self.status = 3
         
         elif self.status == 3:
-            ldrValue = self.getLDRData()
-            if ldrValue <= self.minValueForDetachmentAssumption:
-                self.status = 4
+            self.status = 4;
 
         elif self.status == 4:
             if self.altitudeList[-1] < self.minAltitudeForLandAssumption:

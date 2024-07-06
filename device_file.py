@@ -29,7 +29,7 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,4,10,666);
+        self.alarmSystem = AlarmSystem(15,2,10,666);
 
         #TODO: team number?
         self.teamNumber = 8;
@@ -65,7 +65,7 @@ class Satellite:
     def splitData(self,parsed_data):
         try:
             parsed_str = parsed_data.decode().strip() 
-            parts = parsed_str.split('0')
+            parts = parsed_str.split('01010')
         
             if len(parts) == 2:
                 altitude = int(parts[0])
@@ -119,7 +119,6 @@ class Satellite:
     
         return 140 * x - 7 * (x ** 2)
     
-   
     def groundStationConnectionProcedure(self, responseShell):
         
         try:
@@ -131,7 +130,7 @@ class Satellite:
             print(f"Error communicating with GS server: {e}")
             return
         
-        stAltitude = 0;
+        shellAltitude = 0;
         shellPressure = 0;
       
         if len(responseShell)==2:
