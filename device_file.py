@@ -141,7 +141,7 @@ class Satellite:
         self.alarmSystem.statusJudge.updateAltDiffAvg(stAltitude,shellAltitude);
         self.alarmSystem.statusJudge.updateStatus(); 
         
-        if(self.alarmSystem.statusJudge.updateStatus==3):
+        if(self.alarmSystem.statusJudge.status==3):
             stAltitude = 66666;
         
         dataPack = DataPack(
