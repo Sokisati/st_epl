@@ -30,7 +30,6 @@ class Satellite:
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
         self.alarmSystem = AlarmSystem(15,2,15,1);
-        self.toDelete = 1;
 
         #TODO: team number?
         self.teamNumber = 8;
@@ -117,7 +116,7 @@ class Satellite:
 
     def artificalAltFunction(self):
         x = self.dataPackNumber;
-        return self.toDelete * 140 * x - 7 * (x ** 2);
+        return 140 * x - 7 * (x ** 2);
     
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -143,7 +142,7 @@ class Satellite:
         self.alarmSystem.statusJudge.updateStatus(); 
         
         if(self.alarmSystem.statusJudge.updateStatus==3):
-            self.toDelete = 100;
+            stAltitude = 66666;
         
         dataPack = DataPack(
             self.dataPackNumber,
