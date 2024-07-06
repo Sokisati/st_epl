@@ -60,7 +60,7 @@ class SatelliteStatusJudge:
                 self.status = 4
 
         elif self.status == 4:
-            if min(self.altitudeList) < self.minAltitudeForLandAssumption:
+            if self.altitudeList[-1] < self.minAltitudeForLandAssumption:
                 self.status = 5
 
     def detach(self, servo):
