@@ -7,7 +7,7 @@ class SatelliteStatusJudge:
                    
     def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,minValueForDetachmentAssumption):
         self.status = 0;
-        self.altitudeList = [];
+        self.altitudeList = [0,0,0];
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption;
         self.consecutiveAscentNeeded=consecutiveAscentNeeded;
         self.minAltitudeForLandAssumption = minAltitudeForLandAssumption;
@@ -34,7 +34,7 @@ class SatelliteStatusJudge:
     def updateStatus(self):
         
         if self.status==0:
-            if max(self.altitudeList)>=self.minAltitudeForFlightAssumption:
+            if max(self.altitudeList) >= self.minAltitudeForFlightAssumption:
                 self.status = 1;
         
         elif self.status==1:
