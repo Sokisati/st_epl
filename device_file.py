@@ -116,10 +116,9 @@ class Satellite:
 
     def artificalAltFunction(self):
         x = self.dataPackNumber
-        if x <= 10:
-            return 140 * x - 7 * (x ** 2)
-        else:
-            return 105 * x - 3.5 * (x ** 2)
+    
+        return 140 * x - 7 * (x ** 2)
+    
    
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -132,15 +131,16 @@ class Satellite:
             print(f"Error communicating with GS server: {e}")
             return
         
-        shellAltitude = 0;
+        stAltitude = 0;
         shellPressure = 0;
+        shellAlt = self.artificalAltFunction();
       
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
         
-        print(self.latestDataPack.satelliteAltitude);
-        self.alarmSystem.statusJudge.updateAltitude(self.artificalAltFunction())
+        
+        self.alarmSystem.statusJudge.updateAltitude(stAltitude)
         self.alarmSystem.statusJudge.updateStatus(); 
         
         dataPack = DataPack(
@@ -150,7 +150,7 @@ class Satellite:
             "19/1/2038", 
             8,  
             shellPressure, 
-            8, 
+            stAltitude, 
             shellAltitude, 
             8,  
             8, 
