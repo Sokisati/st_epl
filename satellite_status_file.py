@@ -9,7 +9,6 @@ class SatelliteStatusJudge:
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
         self.consecutiveNeeded = consecutiveNeeded
         self.minAltitudeForLandAssumption = minAltitudeForLandAssumption
-        self.minValueForDetachmentAssumption = minValueForDetachmentAssumption
         self.detachmentCoefficent = detachmentCoefficent;
         self.avgDiff = 0;
         self.avgCounter = 1;
