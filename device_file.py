@@ -133,13 +133,12 @@ class Satellite:
         
         stAltitude = 0;
         shellPressure = 0;
-        shellAlt = self.artificalAltFunction();
       
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
         
-        
+        stAltitude = self.artificalAltFunction();
         self.alarmSystem.statusJudge.updateAltitude(stAltitude)
         self.alarmSystem.statusJudge.updateStatus(); 
         
