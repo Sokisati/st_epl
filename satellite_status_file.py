@@ -25,7 +25,7 @@ class SatelliteStatusJudge:
         self.avgCounter+=1;
 
     def checkForDetachment(self,stAlt,shellAlt):
-        altDifference = stAlt-shellAlt
+        altDifference = abs(stAlt-shellAlt)
         print(altDifference);
        
         minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;        
