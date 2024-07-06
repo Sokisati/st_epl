@@ -116,11 +116,11 @@ class Satellite:
 
     def artificalAltFunction(self):
         x = self.dataPackNumber
-        if x<=10:
-            140*x-7*(x**2);
+        if x <= 10:
+            return 140 * x - 7 * (x ** 2)
         else:
-            return 105*x - 3.5*(x**2);   
-
+            return 105 * x - 3.5 * (x ** 2)
+   
     def groundStationConnectionProcedure(self, responseShell):
         
         try:
@@ -140,7 +140,7 @@ class Satellite:
             shellPressure = responseShell[1]*100;
         
         print(self.latestDataPack.satelliteAltitude);
-        self.alarmSystem.statusJudge.updateAltitude(self.artificalAltFunction);
+        self.alarmSystem.statusJudge.updateAltitude(self.artificalAltFunction())
         self.alarmSystem.statusJudge.updateStatus(); 
         
         dataPack = DataPack(
