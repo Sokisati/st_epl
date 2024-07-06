@@ -73,7 +73,8 @@ class SatelliteStatusJudge:
                 self.status = 3
         
         elif self.status == 3:
-            if self.checkForDetachment == True:
+            detached = self.checkForDetachment
+            if detached == True:
                 self.status = 4;            
 
         elif self.status == 4:
