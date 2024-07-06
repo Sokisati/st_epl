@@ -26,6 +26,17 @@ class SatelliteStatusJudge:
                     return False
         return True         
     
+    def checkForDescent(self):
+        if len(self.altitudeList) <= self.consecutiveDescentNeeded:
+            return False
+        else:
+            lastElements = self.altitudeList[-self.consecutiveDescentNeeded:]
+            for i in range(len(lastElements) - 1):
+                if lastElements[i] <= lastElements[i + 1]:
+                    return False
+        return True
+
+    
     def updateAltitude(self, altitude):
         self.altitudeList.append(altitude)
 
@@ -36,7 +47,7 @@ class SatelliteStatusJudge:
                 self.status = 1
         
         elif self.status == 1:
-            if self.checkForAscent():
+            if self.checkForDescent():
                 self.status = 2
         
         elif self.status == 2:
