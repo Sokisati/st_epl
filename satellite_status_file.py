@@ -32,7 +32,7 @@ class SatelliteStatusJudge:
     def updateStatus(self):
         
         if self.status == 0:
-            if max(self.altitudeList) >= self.minAltitudeForFlightAssumption:
+            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption:
                 self.status = 1
         
         elif self.status == 1:
