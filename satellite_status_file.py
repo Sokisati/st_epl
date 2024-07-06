@@ -28,7 +28,8 @@ class SatelliteStatusJudge:
         altDifference = abs(stAlt-shellAlt)
         print(altDifference);
        
-        minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;        
+        minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;   
+        
         print(minDifferenceNeeded);
         if altDifference >= minDifferenceNeeded:
             return True;

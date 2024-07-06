@@ -55,6 +55,7 @@ class Satellite:
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandTransmissionAttempt = 5;
+        self.filterCommandListSent = False;
 
         print("Satellite built succesfully");
                 
@@ -137,7 +138,7 @@ class Satellite:
             shellPressure = responseShell[1]*100;
         
         stAltitude = self.artificalAltFunction();
-        self.alarmSystem.statusJudge.updateAltitude(stAltitude)
+        self.alarmSystem.statusJudge.updateAltitude(stAltitude);
         self.alarmSystem.statusJudge.updateAltDiffAvg(stAltitude,shellAltitude);
         self.alarmSystem.statusJudge.updateStatus(stAltitude,shellAltitude); 
         
@@ -170,7 +171,7 @@ class Satellite:
         
         self.latestDataPack = dataPack;
         
-        if responseGs[1]!='0':
+        if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
         
         self.logDataPack(dataPack);
@@ -187,6 +188,7 @@ class Satellite:
         jsonData = json.dumps(infoList)
         try:
             self.cameraFilterSocket.send(jsonData.encode());
+            self.filterCommandListSent = True;
         except Exception as e:
             print("Problem with sending filter code. Attempt remains: "+str(self.filterCommandTransmissionAttempt));
             if self.filterCommandTransmissionAttempt>0:
