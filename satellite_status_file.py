@@ -51,7 +51,7 @@ class SatelliteStatusJudge:
                 self.status = 2
         
         elif self.status == 2:
-            if min(self.altitudeList) < 400:
+            if self.altitudeList[-1] < 400:
                 self.status = 3
         
         elif self.status == 3:
