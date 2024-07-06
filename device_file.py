@@ -29,7 +29,7 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,2,10,666);
+        self.alarmSystem = AlarmSystem(15,2,15,1);
 
         #TODO: team number?
         self.teamNumber = 8;
@@ -62,9 +62,9 @@ class Satellite:
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
-    def splitData(self,parsed_data):
+    def splitData(self, parsed_data):
         try:
-            parsed_str = parsed_data.decode().strip() 
+            parsed_str = parsed_data.decode().strip()
             parts = parsed_str.split('01010')
         
             if len(parts) == 2:
@@ -74,7 +74,7 @@ class Satellite:
             else:
                 print(f"Invalid data format: {parsed_str}")
                 return [0, 0]
-    
+
         except Exception as e:
             print(f"Error splitting data: {e}")
             return [0, 0]
@@ -115,9 +115,8 @@ class Satellite:
         return responseShell;
 
     def artificalAltFunction(self):
-        x = self.dataPackNumber
-    
-        return 140 * x - 7 * (x ** 2)
+        x = self.dataPackNumber;
+        return 140 * x - 7 * (x ** 2);
     
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -139,6 +138,7 @@ class Satellite:
         
         stAltitude = self.artificalAltFunction();
         self.alarmSystem.statusJudge.updateAltitude(stAltitude)
+        self.alarmSystem.statusJudge.updateAltDiffAvg(stAltitude,shellAltitude);
         self.alarmSystem.statusJudge.updateStatus(); 
         
         dataPack = DataPack(

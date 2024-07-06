@@ -2,9 +2,9 @@ from satellite_status_file import SatelliteStatusJudge
 
 class AlarmSystem:
     
-    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,minValueForDetachmentAssumption):
+    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,detachmentCoefficent):
        self.errorCodeList = [0,0,0,0,0];
-       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption, minValueForDetachmentAssumption)
+       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption,detachmentCoefficent)
         
         
     def satelliteSpeedAbnormal(self):
@@ -22,7 +22,6 @@ class AlarmSystem:
     def seperationFailed(self):
            self.errorCodeList[4]=1;
     
-        
     def resetList(self):
         for i in range (5):
             self.errorCodeList[i]==0; 
