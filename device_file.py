@@ -183,8 +183,8 @@ class Satellite:
             print(f"Error sending data to GS server: {e}")
             
     def sendFilterInfoToFilter(self,infoList):
+        print("Sending command list to filter:");
         jsonData = json.dumps(infoList)
-        
         try:
             self.cameraFilterSocket.send(jsonData.encode());
         except Exception as e:
