@@ -4,11 +4,11 @@ class SatelliteStatusJudge:
         # TODO: implement LDR value function here
         return 0
                    
-    def __init__(self, minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption, minValueForDetachmentAssumption):
+    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption, minValueForDetachmentAssumption):
         self.status = 0
         self.altitudeList = [0, 0, 0]
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
-        self.consecutiveAscentNeeded = consecutiveAscentNeeded
+        self.consecutiveNeeded = consecutiveNeeded
         self.minAltitudeForLandAssumption = minAltitudeForLandAssumption
         self.minValueForDetachmentAssumption = minValueForDetachmentAssumption
         
@@ -17,20 +17,20 @@ class SatelliteStatusJudge:
         self.detachedAngle = 45
         
     def checkForAscent(self):
-        if len(self.altitudeList) <= self.consecutiveAscentNeeded:
+        if len(self.altitudeList) <= self.consecutiveNeeded:
             return False
         else:
-            lastElements = self.altitudeList[-self.consecutiveAscentNeeded:]
+            lastElements = self.altitudeList[-self.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
                 if lastElements[i] >= lastElements[i + 1]:
                     return False
         return True         
     
     def checkForDescent(self):
-        if len(self.altitudeList) <= self.consecutiveDescentNeeded:
+        if len(self.altitudeList) <= self.consecutiveNeeded:
             return False
         else:
-            lastElements = self.altitudeList[-self.consecutiveDescentNeeded:]
+            lastElements = self.altitudeList[-self.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
                 if lastElements[i] <= lastElements[i + 1]:
                     return False
