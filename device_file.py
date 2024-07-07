@@ -37,7 +37,7 @@ class Satellite:
         self.shellSocket.settimeout(3);
         self.gsSocket.settimeout(3);
         self.cameraFilterSocket.settimeout(2);
-        self.sleepBetweenPackage = 0.88;
+        self.sleepBetweenPackage = 0.92;
     
         self.filePath = 'telemetry_data.txt'
         self.latestDataPack = DataPack(0,0,[0,0,0,0,0],'1/1/2038',0,0,0,0,0,0,0,0,0,0,0,0,0,0,['0'],0,0);
