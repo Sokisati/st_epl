@@ -137,13 +137,10 @@ class Satellite:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
         
+        #TODO: fix this
         stAltitude = self.artificalAltFunction();
-        self.alarmSystem.statusJudge.updateAltitude(stAltitude);
-        self.alarmSystem.statusJudge.updateAltDiffAvg(stAltitude,shellAltitude);
         self.alarmSystem.statusJudge.updateStatus(stAltitude,shellAltitude); 
-        
-        if(self.alarmSystem.statusJudge.status==3):
-            stAltitude = 66666;
+       
         
         dataPack = DataPack(
             self.dataPackNumber,
@@ -154,7 +151,7 @@ class Satellite:
             shellPressure, 
             stAltitude, 
             shellAltitude, 
-            8,  
+            abs(stAltitude-shellAltitude),  
             8, 
             8, 
             8, 

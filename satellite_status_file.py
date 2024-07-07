@@ -56,10 +56,14 @@ class SatelliteStatusJudge:
                     return False
         return True
 
-    def updateAltitude(self, altitude):
-        self.altitudeList.append(altitude)
+    def updateAltitude(self, stAltitude):
+        self.altitudeList.append(stAltitude)
 
     def updateStatus(self,stAlt,shellAlt):
+        
+        self.updateAltitude(stAlt);
+        if self.status<3:
+            self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
             if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption:
