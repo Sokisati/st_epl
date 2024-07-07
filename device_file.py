@@ -53,6 +53,8 @@ class Satellite:
         self.tryConnectingAgain = False;
         self.dataPackNumber = 0;
         
+        self.gsConnectionError = False;
+        
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandTransmissionAttempt = 5;
@@ -121,16 +123,28 @@ class Satellite:
         return 140 * x - 7 * (x ** 2);
     
     def groundStationConnectionProcedure(self, responseShell):
-        
-        try:
-            self.gsSocket.send(self.command.encode())
-            responseGs = self.gsSocket.recv(1024).decode()
-            responseGs = json.loads(responseGs);
             
-        except Exception as e:
-            print(f"Error communicating with GS server: {e}")
-            return
+        if self.gsConnectionError==True:
+            try:
+                self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+                self.gsSocket.settimeout(self.groundStation.timeoutDuration);
+                self.gsSocket.connect((self.groundStation.ip, self.groundStation.port));
+                self.gsConnectionError = False;
+            
+            except Exception as e:
+                print(f"Error with reconnection with GS server: {e}")
+        else:
+            try:
+                self.gsSocket.send(self.command.encode())
+                responseGs = self.gsSocket.recv(1024).decode()
+                responseGs = json.loads(responseGs);
+            
+            except Exception as e:
+                print(f"Error communicating with GS server: {e}")
+                self.gsConnectionError = True;
+                return
         
+        responseGs = [0,'0'];
         shellAltitude = 0;
         shellPressure = 0;
       
