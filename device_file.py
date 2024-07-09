@@ -202,6 +202,8 @@ class Satellite:
             self.cameraFilterSocket.send(jsonData.encode());
             self.filterCommandListSent = True;
         except Exception as e:
+            
+            #Only God can help us if we ever see this message
             print("Problem with sending filter code. Attempt remains: "+str(self.filterCommandTransmissionAttempt));
             if self.filterCommandTransmissionAttempt>0:
                 self.filterCommandTransmissionAttempt-=1;
