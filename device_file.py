@@ -124,6 +124,8 @@ class Satellite:
     
     def groundStationConnectionProcedure(self, responseShell):
             
+        responseGs = [0,'0'];        
+
         if self.gsConnectionError==True:
             try:
                 self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -144,7 +146,7 @@ class Satellite:
                 self.gsConnectionError = True;
                 return
         
-        responseGs = [0,'0'];
+
         shellAltitude = 0;
         shellPressure = 0;
       
