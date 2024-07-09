@@ -20,8 +20,6 @@ class SatelliteStatusJudge:
     def updateAltDiffAvg(self,stAlt,shellAlt):
         
         self.avgDiff = ((self.avgDiff + abs(stAlt-shellAlt))/self.avgCounter);       
-        print("avgdiff: ");
-        print(self.avgDiff);
         self.avgCounter+=1;
 
     def checkForDetachment(self,stAlt,shellAlt):

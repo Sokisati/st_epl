@@ -69,7 +69,7 @@ class Satellite:
     def splitData(self, parsed_data):
         try:
             parsed_str = parsed_data.decode().strip()
-            parts = parsed_str.split('01010')
+            parts = parsed_str.split(',')
         
             if len(parts) == 2:
                 altitude = int(parts[0])
