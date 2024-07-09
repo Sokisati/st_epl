@@ -72,7 +72,6 @@ class SatelliteStatusJudge:
                 self.status = 3
         
         elif self.status == 3:
-            print("here");
             detached = self.checkForDetachment(stAlt,shellAlt)
             if detached == True:
                 self.status = 4;            
