@@ -1,5 +1,6 @@
 
 import socket
+from telnetlib import DET
 import time
 import json
 
@@ -29,7 +30,7 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,2,15,1);
+        self.alarmSystem = AlarmSystem(minAltitudeForFlightAssumption=15,consecutiveAscentNeeded=2,minAltitudeForLandAssumption=15,detachmentCoefficent=1.5);
 
         self.toDelete = 0;
 
