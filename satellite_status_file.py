@@ -19,6 +19,7 @@ class SatelliteStatusJudge:
     
     def updateAltDiffAvg(self,stAlt,shellAlt):
         print("avg diff"+str(self.avgDiff));
+        print("avg counter: "+str(self.avgCounter))
         self.avgDiff = ( (self.avgDiff + abs(stAlt-shellAlt)) / self.avgCounter);       
         self.avgCounter+=1;
 
