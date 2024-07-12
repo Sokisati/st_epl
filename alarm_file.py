@@ -38,7 +38,7 @@ class AlarmSystem:
             return True;
         else:
             return False;
-
+    
     def checkForSpeedAnomalyMissionPayload(self):
         descentSpeed = self.statusJudge.getDescentSpeed();
         print("mp: "+str(descentSpeed));

@@ -4,7 +4,7 @@ class SatelliteStatusJudge:
     
     def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent):
         self.status = 0
-        self.altitudeList = [0, 0, 0]
+        self.altitudeList = []
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
         self.consecutiveNeeded = consecutiveNeeded
         self.minAltitudeForLandAssumption = minAltitudeForLandAssumption
@@ -12,18 +12,15 @@ class SatelliteStatusJudge:
         self.avgDiff = 0;
         self.avgCounter = 1;
         
-        # TODO: calculate real values
+        # TODO: revisit these values
         self.attachedAngle = 15
         self.detachedAngle = 45        
     
     def updateAltDiffAvg(self, stAlt, shellAlt):
         diff = abs(stAlt - shellAlt)
-        if self.avgCounter > 3:
-            self.avgDiff = (self.avgDiff * (self.avgCounter - 4) + diff) / (self.avgCounter - 3)
-        else:
-            self.avgDiff = (self.avgDiff * (self.avgCounter - 1) + diff) / self.avgCounter
+        self.avgDiff = (self.avgDiff * (self.avgCounter - 1) + diff) / self.avgCounter
+        print(self.avgDiff);
         self.avgCounter += 1
-
 
     def checkForDetachment(self,stAlt,shellAlt):
         altDifference = abs(stAlt-shellAlt)
@@ -74,7 +71,7 @@ class SatelliteStatusJudge:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
-            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption:
+            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption and self.checkForAscent==True:
                 self.status = 1
         
         elif self.status == 1:
