@@ -67,7 +67,7 @@ class Satellite:
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
-        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self, parsed_data):
         try:
@@ -152,11 +152,11 @@ class Satellite:
                 print(f"Error communicating with GS server: {e}")
                 self.gsConnectionError = True;
                 return
-        
-
-        shellAltitude = 0;
         shellPressure = 0;
         """
+        shellAltitude = 0;
+        
+       
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
@@ -195,10 +195,10 @@ class Satellite:
         )
         
         self.latestDataPack = dataPack;
-        
+        """
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
-        
+        """
         self.logDataPack(dataPack);
     
         dataJson = json.dumps(dataPack.__dict__);

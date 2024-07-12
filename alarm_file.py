@@ -27,13 +27,22 @@ class AlarmSystem:
            self.errorCodeList[4]=1;
     
     def resetList(self):
-        for i in range (5):
-            self.errorCodeList[i]==0; 
+        for i in range(len(self.errorCodeList)):
+            self.errorCodeList[i]=0; 
     
-    def checkForSpeedAnomaly(self):
+    def checkForSpeedAnomalyModelSatellite(self):
         descentSpeed = self.statusJudge.getDescentSpeed();
+        print("ms: "+str(descentSpeed));
              
-        if descentSpeed>max(self.statusJudge.altitudeList) or descentSpeed<min(self.statusJudge.altitudeList):
+        if descentSpeed>max(self.modelSatelliteNormalSpeedRange) or descentSpeed<min(self.modelSatelliteNormalSpeedRange):
+            return True;
+        else:
+            return False;
+
+    def checkForSpeedAnomalyMissionPayload(self):
+        descentSpeed = self.statusJudge.getDescentSpeed();
+        print("mp: "+str(descentSpeed));
+        if descentSpeed>max(self.missionPayloadNormalSpeedRange) or descentSpeed<min(self.missionPayloadNormalSpeedRange):
             return True;
         else:
             return False;
@@ -55,12 +64,12 @@ class AlarmSystem:
              return self.errorCodeList;
     
          elif status==2:
-             if self.checkForSpeedAnomaly()==True:
+             if self.checkForSpeedAnomalyModelSatellite()==True:
                  self.satelliteDescentSpeedAbnormal();
              return self.errorCodeList;   
             
          elif status==3:
-             if self.checkForSpeedAnomaly()==True:
+             if self.checkForSpeedAnomalyModelSatellite()==True:
                  self.satelliteDescentSpeedAbnormal();
              
              detached = self.statusJudge.checkForDetachment(stAlt,shellAlt);   
@@ -69,7 +78,7 @@ class AlarmSystem:
              return self.errorCodeList;   
 
          elif status==4:
-             if self.checkForSpeedAnomaly()==True:
+             if self.checkForSpeedAnomalyMissionPayload()==True:
                  self.missionPayloadDescentSpeedAbnormal();
              return self.errorCodeList;
 
