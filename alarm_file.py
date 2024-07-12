@@ -63,7 +63,7 @@ class AlarmSystem:
              if self.checkForSpeedAnomaly()==True:
                  self.satelliteDescentSpeedAbnormal();
              
-             detached = self.statusJudge.checkForDetachment();   
+             detached = self.statusJudge.checkForDetachment(stAlt,shellAlt);   
              if detached==False:
                 self.detachmentFailed();
              return self.errorCodeList;   
