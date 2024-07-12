@@ -31,6 +31,8 @@ class Satellite:
         
         self.alarmSystem = AlarmSystem(15,2,15,1);
 
+        self.toDelete = 0;
+
         #TODO: team number?
         self.teamNumber = 8;
         
@@ -118,10 +120,14 @@ class Satellite:
 
         return responseShell;
 
-    def artificalAltFunction(self):
+    def artificalSatAltFunction(self):
         x = self.dataPackNumber;
-        return 140 * x - 7 * (x ** 2);
-    
+        return (70*x) - (7/4)*(x ** 2);
+
+    def artificalShellAltFunction(self):
+        x = self.dataPackNumber;
+        return ((self.toDelete+10)+((70*x) - (7/4)*(x ** 2)));  
+
     def groundStationConnectionProcedure(self, responseShell):
             
         responseGs = [0,'0'];        
@@ -149,16 +155,21 @@ class Satellite:
 
         shellAltitude = 0;
         shellPressure = 0;
-      
+        """
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
+        """
+        #TODO: fix this 
+        stAltitude = self.artificalSatAltFunction();
+        shellAltitude = self.artificalShellAltFunction();
+        print(shellAltitude);
         
-        #TODO: fix this
-        stAltitude = self.artificalAltFunction();
-        self.alarmSystem.statusJudge.updateStatus(stAltitude,shellAltitude); 
-       
-        
+        self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
+
+        if self.alarmSystem.statusJudge.status==3:
+            self.toDelete=40;
+
         dataPack = DataPack(
             self.dataPackNumber,
             self.alarmSystem.statusJudge.status,  
