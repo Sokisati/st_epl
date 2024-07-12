@@ -25,6 +25,7 @@ class SatelliteStatusJudge:
     def checkForDetachment(self,stAlt,shellAlt):
         altDifference = abs(stAlt-shellAlt)
         minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;   
+        
         if altDifference >= minDifferenceNeeded:
             return True;
         else:
@@ -49,6 +50,15 @@ class SatelliteStatusJudge:
                 if lastElements[i] <= lastElements[i + 1]:
                     return False
         return True
+    
+    def getDescentSpeed(self):
+        
+        if not self.checkForDescent():
+            return 0
+        descentTime = self.consecutiveNeeded - 1 
+        descentDistance = self.altitudeList[-self.consecutiveNeeded] - self.altitudeList[-1]
+        descentSpeed = descentDistance / descentTime  
+        return descentSpeed
 
     def updateAltitude(self, stAltitude):
         self.altitudeList.append(stAltitude)
@@ -56,6 +66,7 @@ class SatelliteStatusJudge:
     def updateStatus(self,stAlt,shellAlt):
         
         self.updateAltitude(stAlt);
+        
         if self.status<3:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
