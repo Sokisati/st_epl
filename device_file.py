@@ -164,7 +164,6 @@ class Satellite:
         #TODO: fix this 
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
-        print(shellAltitude);
         
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
 
