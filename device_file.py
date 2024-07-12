@@ -169,7 +169,7 @@ class Satellite:
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
 
         if self.dataPackNumber==36:
-            self.toDelete=40;
+            self.toDelete=100;
 
         dataPack = DataPack(
             self.dataPackNumber,
