@@ -1,4 +1,3 @@
-from audioop import avg
 
 
 class SatelliteStatusJudge:

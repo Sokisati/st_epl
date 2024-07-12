@@ -1,4 +1,4 @@
-from re import I
+
 from satellite_status_file import SatelliteStatusJudge
 
 class AlarmSystem:
