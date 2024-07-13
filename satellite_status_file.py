@@ -26,7 +26,6 @@ class SatelliteStatusJudge:
         lastElementsList = self.altitudeList[-self.lastElementsForLand:]
         maxAlt = max(lastElementsList);
         minAlt = min(lastElementsList);
-        print(maxAlt-minAlt);
         
         if (maxAlt-minAlt)<=self.maxLandDifference:
             return True;
