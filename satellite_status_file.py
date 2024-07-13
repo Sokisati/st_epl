@@ -17,12 +17,13 @@ class SatelliteStatusJudge:
         self.detachedAngle = 45        
     
     def updateAltDiffAvg(self, stAlt, shellAlt):
+        
         diff = abs(stAlt - shellAlt)
         self.avgDiff = (self.avgDiff * (self.avgCounter - 1) + diff) / self.avgCounter
-        print(self.avgDiff);
         self.avgCounter += 1
 
     def checkForDetachment(self,stAlt,shellAlt):
+        
         altDifference = abs(stAlt-shellAlt)
         minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;   
         if altDifference >= minDifferenceNeeded:

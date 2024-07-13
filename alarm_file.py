@@ -1,4 +1,3 @@
-
 from satellite_status_file import SatelliteStatusJudge
 
 class AlarmSystem:
@@ -52,13 +51,12 @@ class AlarmSystem:
          self.resetList();
          self.statusJudge.updateStatus(stAlt,shellAlt);
          status = self.statusJudge.status;
-         
+
          #2 and 3 for every status
          if shellNotResponding==True:
             self.shellNotResponding(); 
          if missionPayloadGpsDataError==True:
             self.missionPayloadGpsDataError();
-
 
          if status==0 or status==1 or status==5:
              return self.errorCodeList;
@@ -66,6 +64,7 @@ class AlarmSystem:
          elif status==2:
              if self.checkForSpeedAnomalyModelSatellite()==True:
                  self.satelliteDescentSpeedAbnormal();
+             
              return self.errorCodeList;   
             
          elif status==3:
