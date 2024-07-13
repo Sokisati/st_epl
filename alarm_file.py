@@ -31,8 +31,7 @@ class AlarmSystem:
     
     def checkForSpeedAnomalyModelSatellite(self):
         descentSpeed = self.statusJudge.getDescentSpeed();
-        print("ms: "+str(descentSpeed));
-             
+        
         if descentSpeed>max(self.modelSatelliteNormalSpeedRange) or descentSpeed<min(self.modelSatelliteNormalSpeedRange):
             return True;
         else:
@@ -40,7 +39,6 @@ class AlarmSystem:
     
     def checkForSpeedAnomalyMissionPayload(self):
         descentSpeed = self.statusJudge.getDescentSpeed();
-        print("mp: "+str(descentSpeed));
         if descentSpeed>max(self.missionPayloadNormalSpeedRange) or descentSpeed<min(self.missionPayloadNormalSpeedRange):
             return True;
         else:

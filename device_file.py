@@ -207,8 +207,6 @@ class Satellite:
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
         
-        self.alarmSystem.statusJudge.updateStatus(stAltitude,shellAltitude);
-        
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
         if self.dataPackNumber==36:
             self.toDelete=100;

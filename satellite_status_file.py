@@ -32,29 +32,30 @@ class SatelliteStatusJudge:
             return False;
 
     def checkForAscent(self):
+        
         if len(self.altitudeList) <= self.consecutiveNeeded:
             return False
         else:
             lastElements = self.altitudeList[-self.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
-                if lastElements[i] >= lastElements[i + 1]:
+                if lastElements[i] > lastElements[i + 1]:
                     return False
         return True         
     
     def checkForDescent(self):
+        
         if len(self.altitudeList) <= self.consecutiveNeeded:
             return False
         else:
             lastElements = self.altitudeList[-self.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
-                if lastElements[i] <= lastElements[i + 1]:
+                if lastElements[i] < lastElements[i + 1]:
                     return False
         return True
     
-    def getDescentSpeed(self):
-        
+    def getDescentSpeed(self): 
         if not self.checkForDescent():
-            return 0
+            return 0;
         descentTime = self.consecutiveNeeded - 1 
         descentDistance = self.altitudeList[-self.consecutiveNeeded] - self.altitudeList[-1]
         descentSpeed = descentDistance / descentTime  
@@ -72,7 +73,7 @@ class SatelliteStatusJudge:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
-            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption and self.checkForAscent==True:
+            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption and self.checkForAscent()==True:
                 self.status = 1
         
         elif self.status == 1:
