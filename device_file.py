@@ -30,7 +30,7 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,2,15,1.5);
+        self.alarmSystem = AlarmSystem(15,3,15,1.5,0.2);
 
         self.toDelete = 0;
 

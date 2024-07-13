@@ -1,8 +1,11 @@
 
 
+from re import S
+
+
 class SatelliteStatusJudge:
     
-    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent):
+    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent,landCoefficent):
         self.status = 0
         self.altitudeList = []
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
@@ -11,10 +14,23 @@ class SatelliteStatusJudge:
         self.detachmentCoefficent = detachmentCoefficent;
         self.avgDiff = 0;
         self.avgCounter = 1;
+        self.landCoefficent = landCoefficent;
+        
+        self.lastElementsForLand = 5;
         
         # TODO: revisit these values
         self.attachedAngle = 15
         self.detachedAngle = 45        
+        
+    def checkForLand(self):
+        lastElementsList = self.altitudeList[-self.lastElementsForLand:]
+        maxAlt = max(lastElementsList);
+        minAlt = min(lastElementsList);
+        
+        if (maxAlt-minAlt)<=minAlt*(1+self.landCoefficent):
+            return True;
+        else:
+            return False;
     
     def updateAltDiffAvg(self, stAlt, shellAlt):
         
@@ -90,7 +106,7 @@ class SatelliteStatusJudge:
                 self.status = 4;            
 
         elif self.status == 4:
-            if self.altitudeList[-1] < self.minAltitudeForLandAssumption:
+            if self.altitudeList[-1] < self.minAltitudeForLandAssumption or self.checkForLand==True:
                 self.status = 5
 
     #TODO: servo function uncomment
