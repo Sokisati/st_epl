@@ -5,7 +5,7 @@ from re import S
 
 class SatelliteStatusJudge:
     
-    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent,landCoefficent):
+    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference):
         self.status = 0
         self.altitudeList = []
         self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
@@ -14,7 +14,7 @@ class SatelliteStatusJudge:
         self.detachmentCoefficent = detachmentCoefficent;
         self.avgDiff = 0;
         self.avgCounter = 1;
-        self.landCoefficent = landCoefficent;
+        self.maxLandDifference = maxLandDifference;
         
         self.lastElementsForLand = 5;
         
@@ -26,8 +26,9 @@ class SatelliteStatusJudge:
         lastElementsList = self.altitudeList[-self.lastElementsForLand:]
         maxAlt = max(lastElementsList);
         minAlt = min(lastElementsList);
+        print(maxAlt-minAlt);
         
-        if (maxAlt-minAlt)<=minAlt*(1+self.landCoefficent):
+        if (maxAlt-minAlt)<=self.maxLandDifference:
             return True;
         else:
             return False;
@@ -106,7 +107,7 @@ class SatelliteStatusJudge:
                 self.status = 4;            
 
         elif self.status == 4:
-            if self.altitudeList[-1] < self.minAltitudeForLandAssumption or self.checkForLand==True:
+            if self.altitudeList[-1] < self.minAltitudeForLandAssumption or self.checkForLand()==True:
                 self.status = 5
 
     #TODO: servo function uncomment

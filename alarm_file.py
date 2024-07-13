@@ -2,13 +2,13 @@ from satellite_status_file import SatelliteStatusJudge
 
 class AlarmSystem:
     
-    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,detachmentCoefficent,landCoefficent):
+    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference):
        
        self.modelSatelliteNormalSpeedRange = [12,14];
        self.missionPayloadNormalSpeedRange = [6,8];
 
        self.errorCodeList = [0,0,0,0,0];
-       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption,detachmentCoefficent,landCoefficent)
+       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference)
            
     def satelliteDescentSpeedAbnormal(self):
         self.errorCodeList[0]=1;  

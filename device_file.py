@@ -30,9 +30,10 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,3,15,1.5,0.2);
+        self.alarmSystem = AlarmSystem(15,3,5,1.5,3);
 
         self.toDelete = 0;
+        self.toDeleteList = [10,11,10,9,10,11,10];
 
         #TODO: team number?
         self.teamNumber = 8;
@@ -207,9 +208,14 @@ class Satellite:
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
         
+        if self.alarmSystem.statusJudge.status==4:
+            stAltitude = self.toDeleteList[self.dataPackNumber%5];
+        
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
+        
         if self.dataPackNumber==36:
             self.toDelete=100;
+        
 
         dataPack = DataPack(
             self.dataPackNumber,
