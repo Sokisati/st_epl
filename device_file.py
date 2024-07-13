@@ -194,7 +194,7 @@ class Satellite:
 
     def groundStationConnectionProcedure(self, responseShell):
         
-        responseGs = self.groundStationSendAndReceiveData();
+        responseGs = self.groundStationReceiveData();
         
         shellPressure = 0;
         """
