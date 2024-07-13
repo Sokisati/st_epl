@@ -36,11 +36,6 @@ class Satellite:
 
         #TODO: team number?
         self.teamNumber = 8;
-        
-        self.shellSocket.settimeout(3);
-        self.gsSocket.settimeout(3);
-        self.cameraFilterSocket.settimeout(2);
-        self.sleepBetweenPackage = 0.92;
     
         self.filePath = 'telemetry_data.txt'
         self.latestDataPack = DataPack(0,0,[0,0,0,0,0],'1/1/2038',0,0,0,0,0,0,0,0,0,0,0,0,0,0,['0'],0,0);
@@ -48,6 +43,11 @@ class Satellite:
         self.groundStation = groundStation;
         self.shell = shell;
         self.cameraFilter = cameraFilter;
+        
+        self.shellSocket.settimeout(self.shell.timeoutDuration);
+        self.gsSocket.settimeout(self.groundStation.timeoutDuration);
+        self.cameraFilterSocket.settimeout(self.cameraFilter.timeoutDuration);
+        self.sleepBetweenPackage = 0.92;
         
         self.attemptLimit = 20;
         self.attemptLimitDistance = 5;
@@ -85,7 +85,32 @@ class Satellite:
         except Exception as e:
             print(f"Error splitting data: {e}")
             return [0, 0]
-                
+            
+    def logDataPack(self,dataPack):
+        with open(self.filePath,'a') as file:
+            file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
+            file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
+            file.write(f"HATA KODU:{dataPack.errorCodeList}\n");
+            file.write(f"GONDERME SAATI:{dataPack.transmissionTime}\n");
+            file.write(f"BASINC1:{dataPack.satellitePressure}\n");
+            file.write(f"BASINC2:{dataPack.shellPressure}\n");
+            file.write(f"YUKSEKLIK1:{dataPack.satelliteAltitude}\n");
+            file.write(f"YUKSEKLIK2:{dataPack.shellAltitude}\n");
+            file.write(f"IRTIFA FARKI:{dataPack.altitudeDifference}\n");
+            file.write(f"INIS HIZI:{dataPack.descentSpeed}\n");
+            file.write(f"SICAKLIK:{dataPack.temperature}\n");
+            file.write(f"PIL GERILIMI:{dataPack.batteryVoltage}\n");
+            file.write(f"GPS1 LATITUDE:{dataPack.gpsLat}\n");
+            file.write(f"GPS1 LONGITUDE:{dataPack.gpsLong}\n");
+            file.write(f"GPS1 ALTITUDE:{dataPack.gpsAlt}\n");
+            file.write(f"PITCH:{dataPack.pitch}\n");
+            file.write(f"ROLL:{dataPack.roll}\n");
+            file.write(f"RHRH:{dataPack.filterCommandList}\n");
+            file.write(f"IoT DATA>:{dataPack.iotData}\n");
+            file.write(f"TAKIM NO:{dataPack.teamNumber}\n");
+            
+            file.write(f"\n");                
+
     def shellConnectionProcedure(self):
 
         responseShell = [0,0]
@@ -127,10 +152,10 @@ class Satellite:
 
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
-        return ((self.toDelete+10)+((70*x) - (7/4)*(x ** 2)));  
+        return ((self.toDelete+10)+((70*x) - (7/4)*(x ** 2)));
 
-    def groundStationConnectionProcedure(self, responseShell):
-            
+    def groundStationReceiveData(self):
+        
         responseGs = [0,'0'];        
 
         if self.gsConnectionError==True:
@@ -138,7 +163,12 @@ class Satellite:
                 self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
                 self.gsSocket.settimeout(self.groundStation.timeoutDuration);
                 self.gsSocket.connect((self.groundStation.ip, self.groundStation.port));
+                
                 self.gsConnectionError = False;
+                
+                self.gsSocket.send(self.command.encode())
+                responseGs = self.gsSocket.recv(1024).decode()
+                responseGs = json.loads(responseGs);
             
             except Exception as e:
                 print(f"Error with reconnection with GS server: {e}")
@@ -151,12 +181,24 @@ class Satellite:
             except Exception as e:
                 print(f"Error communicating with GS server: {e}")
                 self.gsConnectionError = True;
-                return
+         
+        return responseGs;
+     
+    def groundStationSendData(self,dataPack):
+        
+        dataJson = json.dumps(dataPack.__dict__);
+        try:
+            self.gsSocket.send(dataJson.encode())
+        except Exception as e:
+            print(f"Error sending data to GS server: {e}")
+
+    def groundStationConnectionProcedure(self, responseShell):
+        
+        responseGs = self.groundStationSendAndReceiveData();
+        
         shellPressure = 0;
         """
         shellAltitude = 0;
-        
-       
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
@@ -164,9 +206,7 @@ class Satellite:
         #TODO: fix this 
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
-        
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
-
         if self.dataPackNumber==36:
             self.toDelete=100;
 
@@ -195,18 +235,15 @@ class Satellite:
         )
         
         self.latestDataPack = dataPack;
+        
         """
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
         """
+        
         self.logDataPack(dataPack);
-    
-        dataJson = json.dumps(dataPack.__dict__);
-    
-        try:
-            self.gsSocket.send(dataJson.encode())
-        except Exception as e:
-            print(f"Error sending data to GS server: {e}")
+        
+        self.groundStationSendData(dataPack);
             
     def sendFilterInfoToFilter(self,infoList):
         print("Sending command list to filter:");
@@ -221,31 +258,6 @@ class Satellite:
             if self.filterCommandTransmissionAttempt>0:
                 self.filterCommandTransmissionAttempt-=1;
                 self.sendFilterInfoToFilter(infoList);
-                
-    def logDataPack(self,dataPack):
-        with open(self.filePath,'a') as file:
-            file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
-            file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
-            file.write(f"HATA KODU:{dataPack.errorCodeList}\n");
-            file.write(f"GONDERME SAATI:{dataPack.transmissionTime}\n");
-            file.write(f"BASINC1:{dataPack.satellitePressure}\n");
-            file.write(f"BASINC2:{dataPack.shellPressure}\n");
-            file.write(f"YUKSEKLIK1:{dataPack.satelliteAltitude}\n");
-            file.write(f"YUKSEKLIK2:{dataPack.shellAltitude}\n");
-            file.write(f"IRTIFA FARKI:{dataPack.altitudeDifference}\n");
-            file.write(f"INIS HIZI:{dataPack.descentSpeed}\n");
-            file.write(f"SICAKLIK:{dataPack.temperature}\n");
-            file.write(f"PIL GERILIMI:{dataPack.batteryVoltage}\n");
-            file.write(f"GPS1 LATITUDE:{dataPack.gpsLat}\n");
-            file.write(f"GPS1 LONGITUDE:{dataPack.gpsLong}\n");
-            file.write(f"GPS1 ALTITUDE:{dataPack.gpsAlt}\n");
-            file.write(f"PITCH:{dataPack.pitch}\n");
-            file.write(f"ROLL:{dataPack.roll}\n");
-            file.write(f"RHRH:{dataPack.filterCommandList}\n");
-            file.write(f"IoT DATA>:{dataPack.iotData}\n");
-            file.write(f"TAKIM NO:{dataPack.teamNumber}\n");
-            
-            file.write(f"\n");
   
     def startMainLoop(self):
         while(True):

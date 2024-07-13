@@ -60,7 +60,7 @@ class AlarmSystem:
 
          if status==0 or status==1 or status==5:
              return self.errorCodeList;
-    
+          
          elif status==2:
              if self.checkForSpeedAnomalyModelSatellite()==True:
                  self.satelliteDescentSpeedAbnormal();
