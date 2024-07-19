@@ -26,7 +26,7 @@ class Buzzer:
         self.counter+=1;
         
         #DELETE THIS WHEN YOU ARE DONE
-        if self.counter==20:
+        if self.counter==30:
             self.off();
             GPIO.cleanup();
 
@@ -36,13 +36,13 @@ class Buzzer:
             return;
 
         if self.onState:
-            
+            print("wow39");
             if self.counter>self.wakeFor:
                 self.counter=0;
                 self.off();
         
         else:
-            
+            print("wow45");
             if self.counter==self.sleepFor:
                 self.counter=0;
                 self.on();
