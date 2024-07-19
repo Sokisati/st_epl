@@ -25,6 +25,11 @@ class Buzzer:
         
         self.counter+=1;
         
+        #DELETE THIS WHEN YOU ARE DONE
+        if self.counter==20:
+            self.off();
+            GPIO.cleanup();
+
         if not self.triggered:
             self.triggered = True;
             self.on();
