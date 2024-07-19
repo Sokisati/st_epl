@@ -19,7 +19,7 @@ class Buzzer:
 
     def off(self):
         GPIO.output(self.pinNumber, GPIO.LOW);
-        self.offState = False;
+        self.onState = False;
 
     def onOffProcedure(self):
         
@@ -36,13 +36,11 @@ class Buzzer:
             return;
 
         if self.onState:
-            print("wow39");
             if self.counter>self.wakeFor:
                 self.counter=0;
                 self.off();
         
         else:
-            print("wow45");
             if self.counter==self.sleepFor:
                 self.counter=0;
                 self.on();
