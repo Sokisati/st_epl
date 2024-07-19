@@ -36,7 +36,7 @@ class Buzzer:
             return;
 
         if self.onState:
-            if self.counter>self.wakeFor:
+            if self.counter==self.wakeFor:
                 self.counter=0;
                 self.off();
         
