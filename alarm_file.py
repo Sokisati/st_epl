@@ -19,7 +19,7 @@ class Buzzer:
 
     def off(self):
         GPIO.output(self.pinNumber, GPIO.LOW);
-        self.offState = True;
+        self.offState = False;
 
     def onOffProcedure(self):
         
