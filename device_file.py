@@ -1,3 +1,4 @@
+from signal import alarm
 import socket
 import time
 import json
@@ -28,8 +29,9 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(minALtitudeForFlightAssumption=15,consecutiveAscentNeeded=3,minAltitudeForLandAssumption=5,
-                                       detachmentCoefficent=1.5,maxLandDifference=3,buzzerPin=12,buzzerWakeFor=2,buzzerSleepFor=1);
+        self.alarmSystem = AlarmSystem(minAltitudeForFlightAssumption=15,consecutiveAscentNeeded=3,
+                                       minAltitudeForLandAssumption=15,detachmentCoefficent=1.5,maxLandDifference=5,
+                                       buzzerPin=12,buzzerWakeFor=2,buzzerSleepFor=3);
 
         self.toDelete = 0;
         self.toDeleteList = [10,11,10,9,10,11,10];
