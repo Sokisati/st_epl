@@ -1,8 +1,4 @@
 
-
-from re import S
-
-
 class SatelliteStatusJudge:
     
     def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference):
@@ -41,7 +37,8 @@ class SatelliteStatusJudge:
     def checkForDetachment(self,stAlt,shellAlt):
         
         altDifference = abs(stAlt-shellAlt)
-        minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;   
+        minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;
+        
         if altDifference >= minDifferenceNeeded:
             return True;
         else:

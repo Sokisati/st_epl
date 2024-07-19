@@ -1,14 +1,60 @@
+from re import S
 from satellite_status_file import SatelliteStatusJudge
+import RPi.GPIO as GPIO
+
+class Buzzer:
+    def __init__(self,pinNumber,wakeFor,sleepFor):
+        self.pinNumber = pinNumber;
+        self.wakeFor = wakeFor;
+        self.sleepFor = sleepFor;
+        GPIO.setmode(GPIO.BCM);
+        GPIO.setup(self.pinNumber, GPIO.OUT);
+        self.counter = 0;
+        self.onState = False;
+        self.triggered = False;
+        
+    def on(self):
+        GPIO.output(self.pinNumber, GPIO.HIGH);
+        self.onState = True;
+
+    def off(self):
+        GPIO.output(self.pinNumber, GPIO.LOW);
+        self.offState = True;
+
+    def onOffProcedure(self):
+        
+        self.counter+=1;
+        
+        if not self.triggered:
+            self.triggered = True;
+            self.on();
+            return;
+
+        if self.onState:
+            
+            if self.counter>self.wakeFor:
+                self.counter=0;
+                self.off();
+        
+        else:
+            
+            if self.counter==self.sleepFor:
+                self.counter=0;
+                self.on();
+            
 
 class AlarmSystem:
     
-    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference):
+    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,
+                 detachmentCoefficent,maxLandDifference,buzzerPin,buzzerWakeFor,buzzerSleepFor):
        
        self.modelSatelliteNormalSpeedRange = [12,14];
        self.missionPayloadNormalSpeedRange = [6,8];
+       self.buzzer = Buzzer(buzzerPin,buzzerWakeFor,buzzerSleepFor);
 
        self.errorCodeList = [0,0,0,0,0];
-       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded, minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference)
+       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded,
+                                               minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference)
            
     def satelliteDescentSpeedAbnormal(self):
         self.errorCodeList[0]=1;  

@@ -1,6 +1,4 @@
-
 import socket
-from telnetlib import DET
 import time
 import json
 
@@ -30,7 +28,8 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(15,3,5,1.5,3);
+        self.alarmSystem = AlarmSystem(minALtitudeForFlightAssumption=15,consecutiveAscentNeeded=3,minAltitudeForLandAssumption=5,
+                                       detachmentCoefficent=1.5,maxLandDifference=3,buzzerPin=12,buzzerWakeFor=2,buzzerSleepFor=1);
 
         self.toDelete = 0;
         self.toDeleteList = [10,11,10,9,10,11,10];
@@ -50,8 +49,8 @@ class Satellite:
         self.cameraFilterSocket.settimeout(self.cameraFilter.timeoutDuration);
         self.sleepBetweenPackage = 0.92;
         
-        self.attemptLimit = 20;
-        self.attemptLimitDistance = 5;
+        self.attemptLimit = 10;
+        self.attemptLimitDistance = 2;
         self.counter = 0;
         self.command = "SEND_DATA\n";
         self.tryConnectingAgain = False;
@@ -271,6 +270,11 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
+            
+            if self.alarmSystem.statusJudge.status==5:
+                self.alarmSystem.buzzer.onOffProcedure();
+                
+
             time.sleep(self.sleepBetweenPackage);
 
         
