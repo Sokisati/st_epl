@@ -272,8 +272,8 @@ class Satellite:
             self.dataPackNumber+=1;
             
             if self.alarmSystem.statusJudge.status==5:
-                self.alarmSystem.buzzer.onOffProcedure();
-                
+                #self.alarmSystem.buzzer.onOffProcedure();
+                 self.alarmSystem.buzzer.on();                   
 
             time.sleep(self.sleepBetweenPackage);
 
