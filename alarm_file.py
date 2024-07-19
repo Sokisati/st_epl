@@ -29,12 +29,12 @@ class Buzzer:
         if self.counter==30:
             self.off();
             GPIO.cleanup();
-
+        """
         if not self.triggered:
             self.triggered = True;
             self.on();
             return;
-
+        """
         if self.onState:
             if self.counter==self.wakeFor:
                 self.counter=0;
