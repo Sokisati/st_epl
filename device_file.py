@@ -253,19 +253,17 @@ class Satellite:
         
         self.groundStationSendData(dataPack);
             
-    def sendFilterInfoToFilter(self,infoList):
-        print("Sending command list to filter:");
+    def sendFilterInfoToFilter(self, infoList):
+        print("Sending command list to filter:")
         jsonData = json.dumps(infoList)
         try:
-            self.cameraFilterSocket.send(jsonData.encode());
-            self.filterCommandListSent = True;
+            self.cameraFilterSocket.send(jsonData.encode())
+            self.filterCommandListSent = True
         except Exception as e:
-            
-            #Only God can help us if we ever see this message
-            print("Problem with sending filter code. Attempt remains: "+str(self.filterCommandTransmissionAttempt));
-            if self.filterCommandTransmissionAttempt>0:
-                self.filterCommandTransmissionAttempt-=1;
-                self.sendFilterInfoToFilter(infoList);
+            print("Problem with sending filter code. Attempt remains: " + str(self.filterCommandTransmissionAttempt))
+            if self.filterCommandTransmissionAttempt > 0:
+                self.filterCommandTransmissionAttempt -= 1
+                self.sendFilterInfoToFilter(infoList)
   
     def startMainLoop(self):
         while(True):
