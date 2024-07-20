@@ -12,6 +12,8 @@ class Buzzer:
         self.counter = 0;
         self.onState = False;
         self.triggered = False;
+    
+        self.off();
         
     def on(self):
         GPIO.output(self.pinNumber, GPIO.HIGH);
