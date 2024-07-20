@@ -31,7 +31,7 @@ class Satellite:
         
         self.alarmSystem = AlarmSystem(minAltitudeForFlightAssumption=15,consecutiveAscentNeeded=3,
                                        minAltitudeForLandAssumption=15,detachmentCoefficent=1.5,maxLandDifference=5,
-                                       buzzerPin=12,buzzerWakeFor=1,buzzerSleepFor=1);
+                                       buzzerPin=6,buzzerWakeFor=1,buzzerSleepFor=1);
 
         self.toDelete = 0;
         self.toDeleteList = [10,11,10,9,10,11,10];
