@@ -279,10 +279,10 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
-            
+            """
             if self.alarmSystem.statusJudge.status==5:
                  #self.alarmSystem.buzzer.onOffProcedure();                
-
+            """
             time.sleep(mp.sleepBetweenPackage);
 
         
