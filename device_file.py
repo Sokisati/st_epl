@@ -1,11 +1,19 @@
-from signal import alarm
 import socket
 import time
 import json
-
 from data_struct_file import DataPack
 from alarm_file import *
+from parameter_file import *
 
+from gpiozero import AngularServo
+from gpiozero.pins.pigpio import PiGPIOFactory
+
+class Servo:
+    def __init__(self,pwmPin):
+        factory = PiGPIOFactory();
+        self.servo = AngularServo(mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
+        self.servo.angle(mp.defaultAngle);
+    
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
         self.ip = ipAddress
@@ -29,10 +37,10 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(minAltitudeForFlightAssumption=15,consecutiveAscentNeeded=3,
-                                       minAltitudeForLandAssumption=15,detachmentCoefficent=1.5,maxLandDifference=5,
-                                       buzzerPin=6,buzzerWakeFor=1,buzzerSleepFor=1);
-
+        self.alarmSystem = AlarmSystem(mp.minAltitudeForFlightAssumption,mp.consecutiveAscentNeeded,
+                                       mp.minAltitudeForLandAssumption,mp.detachmentCoefficent,
+                                       mp.maxLandDifference,mp.buzzerPin,
+                                       mp.buzzerWakeFor,mp.buzzerSleepFor);
         self.toDelete = 0;
         self.toDeleteList = [10,11,10,9,10,11,10];
 
@@ -45,32 +53,32 @@ class Satellite:
         self.groundStation = groundStation;
         self.shell = shell;
         self.cameraFilter = cameraFilter;
+        self.servo = Servo(mp.servoPWMPin,mp.defaultAngle,mp.detachmentAngle);
         
         self.shellSocket.settimeout(self.shell.timeoutDuration);
         self.gsSocket.settimeout(self.groundStation.timeoutDuration);
         self.cameraFilterSocket.settimeout(self.cameraFilter.timeoutDuration);
-        self.sleepBetweenPackage = 0.92;
         
-        self.attemptLimit = 10;
-        self.attemptLimitDistance = 2;
-        self.counter = 0;
-        self.command = "SEND_DATA\n";
+
+        self.shellAttemptCounter = 0;
         self.tryConnectingAgain = False;
+        
         self.dataPackNumber = 0;
         
         self.gsConnectionError = False;
         
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
-        self.filterCommandTransmissionAttempt = 5;
         self.filterCommandListSent = False;
 
         print("Satellite built succesfully");
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
         print("Shell connection succesful");
+        
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         print("Ground station connection succesful");
+        
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
         print("Camera program connection succesful");
 
@@ -121,24 +129,25 @@ class Satellite:
         responseShell = [0,0]
         rawData = 0;
 
-        if self.attemptLimit > 0 and self.tryConnectingAgain:
-            self.counter += 1
-            if self.counter % self.attemptLimitDistance == 0:
+        if mp.shellConnectionAttemptLimit > 0 and self.tryConnectingAgain:
+            self.shellAttemptCounter += 1
+            if (self.shellAttemptCounter % mp.shellConnectionAttemptPeriod) == 0:
                 try:
                     self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    self.shellSocket.settimeout(self.shell.timeoutDuration)
-                    self.shellSocket.connect((self.shell.ip, self.shell.port))
+                    self.shellSocket.settimeout(mp.shellTimeout)
+                    self.shellSocket.connect((mp.shellIp, mp.shellPort))
+                    
                     self.tryConnectingAgain = False
                     
                 except Exception as e:
                     print(f"Error re-connecting to shell server: {e}")
-                    self.attemptLimit -= 1
-                    print("Attempt limit remain: " + str(self.attemptLimit))
-                    tryConnectingAgain = True
+                    mp.shellConnectionAttemptLimit -= 1
+                    print("Attempt limit remain: " + str(mp.shellConnectionAttemptLimit))
+                    self.tryConnectingAgain = True
                     
         elif not self.tryConnectingAgain:
             try:
-                self.shellSocket.send(self.command.encode());
+                self.shellSocket.send(self.mp.command.encode());
                 rawData = self.shellSocket.recv(1024)
                 responseShell = self.splitData(rawData);
 
@@ -148,7 +157,6 @@ class Satellite:
         else:
             print("Out of limit")
        
-
         return responseShell;
 
     def artificalSatAltFunction(self):
@@ -172,7 +180,7 @@ class Satellite:
                 
                 self.gsConnectionError = False;
                 
-                self.gsSocket.send(self.command.encode())
+                self.gsSocket.send(self.mp.command.encode())
                 responseGs = self.gsSocket.recv(1024).decode()
                 responseGs = json.loads(responseGs);
             
@@ -180,7 +188,7 @@ class Satellite:
                 print(f"Error with reconnection with GS server: {e}")
         else:
             try:
-                self.gsSocket.send(self.command.encode())
+                self.gsSocket.send(self.mp.command.encode())
                 responseGs = self.gsSocket.recv(1024).decode()
                 responseGs = json.loads(responseGs);
             
@@ -226,19 +234,19 @@ class Satellite:
             self.alarmSystem.statusJudge.status,  
             self.errorCodeList,
             "19/1/2038", 
-            8,  
+            666,  
             shellPressure, 
             stAltitude, 
             shellAltitude, 
             abs(stAltitude-shellAltitude),  
-            8, 
-            8, 
-            8, 
-            8,  
-            8,  
-            8,  
-            8, 
-            8,  
+            666, 
+            666, 
+            666, 
+            666,  
+            666,  
+            666,  
+            666, 
+            666,  
             self.filterCommandList,  
             responseGs[1], 
             responseGs[0],
@@ -255,17 +263,17 @@ class Satellite:
         self.groundStationSendData(dataPack);
             
     def sendFilterInfoToFilter(self, infoList):
-        print("Sending command list to filter:")
+        print("Sending mp.command list to filter:")
         jsonData = json.dumps(infoList)
         try:
             self.cameraFilterSocket.send(jsonData.encode())
             self.filterCommandListSent = True
         except Exception as e:
-            print("Problem with sending filter code. Attempt remains: " + str(self.filterCommandTransmissionAttempt))
-            if self.filterCommandTransmissionAttempt > 0:
-                self.filterCommandTransmissionAttempt -= 1
+            print("Problem with sending filter code. Attempt remains: " + str(self.mp.cameraFilterAttemptLimit))
+            if self.mp.cameraFilterAttemptLimit > 0:
+                self.mp.cameraFilterAttemptLimit -= 1
                 self.sendFilterInfoToFilter(infoList)
-  
+                
     def startMainLoop(self):
         while(True):
             responseFromShell = self.shellConnectionProcedure();
@@ -275,7 +283,7 @@ class Satellite:
             if self.alarmSystem.statusJudge.status==5:
                  self.alarmSystem.buzzer.onOffProcedure();                
 
-            time.sleep(self.sleepBetweenPackage);
+            time.sleep(mp.sleepBetweenPackage);
 
         
         

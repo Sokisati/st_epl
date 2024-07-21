@@ -1,25 +1,24 @@
 from satellite_status_file import SatelliteStatusJudge
 import RPi.GPIO as GPIO
+from parameter_file import *
 
 class Buzzer:
-    def __init__(self,pinNumber,wakeFor,sleepFor):
-        self.pinNumber = pinNumber;
-        self.wakeFor = wakeFor;
-        self.sleepFor = sleepFor;
+    def __init__(self):
+
         GPIO.setmode(GPIO.BCM);
-        GPIO.setup(self.pinNumber, GPIO.OUT);
+        GPIO.setup(mp.buzzerPin, GPIO.OUT);
         self.counter = 0;
+        
         self.onState = False;
         self.triggered = False;
-    
         self.off();
         
     def on(self):
-        GPIO.output(self.pinNumber, GPIO.HIGH);
+        GPIO.output(mp.buzzerPin, GPIO.HIGH);
         self.onState = True;
 
     def off(self):
-        GPIO.output(self.pinNumber, GPIO.LOW);
+        GPIO.output(mp.buzzerPin, GPIO.LOW);
         self.onState = False;
 
     def onOffProcedure(self):
@@ -27,28 +26,25 @@ class Buzzer:
         self.counter+=1;
 
         if self.onState:
-            if self.counter==self.wakeFor:
+            if self.counter==mp.buzzerWakeFor:
                 self.counter=0;
                 self.off();
         
         else:
-            if self.counter==self.sleepFor:
+            if self.counter==mp.buzzerSleepFor:
                 self.counter=0;
                 self.on();
             
-
 class AlarmSystem:
     
-    def __init__(self,minAltitudeForFlightAssumption,consecutiveAscentNeeded,minAltitudeForLandAssumption,
-                 detachmentCoefficent,maxLandDifference,buzzerPin,buzzerWakeFor,buzzerSleepFor):
+    def __init__(self):
        
        self.modelSatelliteNormalSpeedRange = [12,14];
        self.missionPayloadNormalSpeedRange = [6,8];
-       self.buzzer = Buzzer(buzzerPin,buzzerWakeFor,buzzerSleepFor);
+       self.buzzer = Buzzer();
 
        self.errorCodeList = [0,0,0,0,0];
-       self.statusJudge = SatelliteStatusJudge(minAltitudeForFlightAssumption, consecutiveAscentNeeded,
-                                               minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference)
+       self.statusJudge = SatelliteStatusJudge()
            
     def satelliteDescentSpeedAbnormal(self):
         self.errorCodeList[0]=1;  

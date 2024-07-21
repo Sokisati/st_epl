@@ -1,29 +1,21 @@
+from parameter_file import *
 
 class SatelliteStatusJudge:
     
-    def __init__(self, minAltitudeForFlightAssumption, consecutiveNeeded, minAltitudeForLandAssumption,detachmentCoefficent,maxLandDifference):
+    def __init__(self):
+        
         self.status = 0
         self.altitudeList = []
-        self.minAltitudeForFlightAssumption = minAltitudeForFlightAssumption
-        self.consecutiveNeeded = consecutiveNeeded
-        self.minAltitudeForLandAssumption = minAltitudeForLandAssumption
-        self.detachmentCoefficent = detachmentCoefficent;
+        
         self.avgDiff = 0;
         self.avgCounter = 1;
-        self.maxLandDifference = maxLandDifference;
-        
-        self.lastElementsForLand = 5;
-        
-        # TODO: revisit these values
-        self.attachedAngle = 15
-        self.detachedAngle = 45        
-        
+          
     def checkForLand(self):
-        lastElementsList = self.altitudeList[-self.lastElementsForLand:]
+        lastElementsList = self.altitudeList[-mp.lastElementsForLandAssumption:]
         maxAlt = max(lastElementsList);
         minAlt = min(lastElementsList);
         
-        if (maxAlt-minAlt)<=self.maxLandDifference:
+        if (maxAlt-minAlt)<=mp.maxLandDifference:
             return True;
         else:
             return False;
@@ -37,7 +29,7 @@ class SatelliteStatusJudge:
     def checkForDetachment(self,stAlt,shellAlt):
         
         altDifference = abs(stAlt-shellAlt)
-        minDifferenceNeeded = self.avgDiff*self.detachmentCoefficent;
+        minDifferenceNeeded = self.avgDiff*mp.detachmentCoefficent;
         
         if altDifference >= minDifferenceNeeded:
             return True;
@@ -46,10 +38,10 @@ class SatelliteStatusJudge:
 
     def checkForAscent(self):
         
-        if len(self.altitudeList) <= self.consecutiveNeeded:
+        if len(self.altitudeList) <= mp.consecutiveNeeded:
             return False
         else:
-            lastElements = self.altitudeList[-self.consecutiveNeeded:]
+            lastElements = self.altitudeList[-mp.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
                 if lastElements[i] > lastElements[i + 1]:
                     return False
@@ -57,10 +49,10 @@ class SatelliteStatusJudge:
     
     def checkForDescent(self):
         
-        if len(self.altitudeList) <= self.consecutiveNeeded:
+        if len(self.altitudeList) <= mp.consecutiveNeeded:
             return False
         else:
-            lastElements = self.altitudeList[-self.consecutiveNeeded:]
+            lastElements = self.altitudeList[-mp.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
                 if lastElements[i] < lastElements[i + 1]:
                     return False
@@ -69,8 +61,8 @@ class SatelliteStatusJudge:
     def getDescentSpeed(self): 
         if not self.checkForDescent():
             return 0;
-        descentTime = self.consecutiveNeeded - 1 
-        descentDistance = self.altitudeList[-self.consecutiveNeeded] - self.altitudeList[-1]
+        descentTime = mp.consecutiveNeeded - 1 
+        descentDistance = self.altitudeList[-mp.consecutiveNeeded] - self.altitudeList[-1]
         descentSpeed = descentDistance / descentTime  
         return descentSpeed
 
@@ -86,7 +78,7 @@ class SatelliteStatusJudge:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
-            if self.altitudeList[-1] >= self.minAltitudeForFlightAssumption and self.checkForAscent()==True:
+            if self.altitudeList[-1] >= mp.minAltitudeForFlightAssumption and self.checkForAscent()==True:
                 self.status = 1
         
         elif self.status == 1:
@@ -103,6 +95,6 @@ class SatelliteStatusJudge:
                 self.status = 4;            
 
         elif self.status == 4:
-            if self.altitudeList[-1] < self.minAltitudeForLandAssumption or self.checkForLand()==True:
+            if self.altitudeList[-1] < mp.minAltitudeForLandAssumption or self.checkForLand()==True:
                 self.status = 5
 
