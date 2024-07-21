@@ -68,8 +68,11 @@ class Satellite:
         print("Satellite built succesfully");
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
+        print("Shell connection succesful");
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
+        print("Ground station connection succesful");
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        print("Camera program connection succesful");
 
     def splitData(self, parsed_data):
         try:
@@ -154,7 +157,8 @@ class Satellite:
 
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
-        return ((self.toDelete+10)+((70*x) - (7/4)*(x ** 2)));
+        listLength = len(self.toDeleteList);
+        return self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
 
     def groundStationReceiveData(self):
         
@@ -215,8 +219,7 @@ class Satellite:
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
         
         if self.dataPackNumber==36:
-            self.toDelete=100;
-        
+            self.toDelete=6;
 
         dataPack = DataPack(
             self.dataPackNumber,
@@ -244,11 +247,9 @@ class Satellite:
         
         self.latestDataPack = dataPack;
         
-
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
 
-        
         #self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);

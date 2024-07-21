@@ -1,4 +1,3 @@
-from re import S
 from satellite_status_file import SatelliteStatusJudge
 import RPi.GPIO as GPIO
 

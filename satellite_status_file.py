@@ -106,14 +106,3 @@ class SatelliteStatusJudge:
             if self.altitudeList[-1] < self.minAltitudeForLandAssumption or self.checkForLand()==True:
                 self.status = 5
 
-    #TODO: servo function uncomment
-    def detach(self, servo):
-        #servo.angle(self.detachedAngle)
-        pass;
-
-    def statusAction(self, servo, buzzerPack):
-        if self.status == 3:
-            self.detach(servo)
-            
-        elif self.status == 5:
-            buzzerPack.melody()
