@@ -9,7 +9,7 @@ from gpiozero import AngularServo
 from gpiozero.pins.pigpio import PiGPIOFactory
 
 class Servo:
-    def __init__(self,pwmPin):
+    def __init__(self):
         factory = PiGPIOFactory();
         self.servo = AngularServo(mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
         #self.servo.angle(mp.defaultAngle);
