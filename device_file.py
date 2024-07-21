@@ -12,7 +12,7 @@ class Servo:
     def __init__(self,pwmPin):
         factory = PiGPIOFactory();
         self.servo = AngularServo(mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
-        self.servo.angle(mp.defaultAngle);
+        #self.servo.angle(mp.defaultAngle);
     
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
@@ -79,8 +79,8 @@ class Satellite:
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
         print("Ground station connection succesful");
         
-        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
-        print("Camera program connection succesful");
+        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        #print("Camera program connection succesful");
 
     def splitData(self, parsed_data):
         try:
@@ -254,10 +254,10 @@ class Satellite:
         )
         
         self.latestDataPack = dataPack;
-        
+        """
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
-
+        """
         #self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
@@ -281,7 +281,7 @@ class Satellite:
             self.dataPackNumber+=1;
             
             if self.alarmSystem.statusJudge.status==5:
-                 self.alarmSystem.buzzer.onOffProcedure();                
+                 #self.alarmSystem.buzzer.onOffProcedure();                
 
             time.sleep(mp.sleepBetweenPackage);
 
