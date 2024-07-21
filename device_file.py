@@ -37,7 +37,7 @@ class Satellite:
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
-        self.alarmSystem = AlarmSystem(mp.minAltitudeForFlightAssumption,mp.consecutiveAscentNeeded,
+        self.alarmSystem = AlarmSystem(mp.minAltitudeForFlightAssumption,mp.consecutiveNeeded,
                                        mp.minAltitudeForLandAssumption,mp.detachmentCoefficent,
                                        mp.maxLandDifference,mp.buzzerPin,
                                        mp.buzzerWakeFor,mp.buzzerSleepFor);

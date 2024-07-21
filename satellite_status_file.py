@@ -9,7 +9,8 @@ class SatelliteStatusJudge:
         
         self.avgDiff = 0;
         self.avgCounter = 1;
-          
+        
+  
     def checkForLand(self):
         lastElementsList = self.altitudeList[-mp.lastElementsForLandAssumption:]
         maxAlt = max(lastElementsList);
