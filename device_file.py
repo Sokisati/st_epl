@@ -158,7 +158,7 @@ class Satellite:
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
         listLength = len(self.toDeleteList);
-        return self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
+        return self.toDelete+self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
 
     def groundStationReceiveData(self):
         
