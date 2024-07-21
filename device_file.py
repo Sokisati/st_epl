@@ -50,12 +50,11 @@ class Satellite:
         self.groundStation = groundStation;
         self.shell = shell;
         self.cameraFilter = cameraFilter;
-        self.servo = Servo(mp.servoPWMPin,mp.defaultAngle,mp.detachmentAngle);
+        self.servo = Servo();
         
         self.shellSocket.settimeout(self.shell.timeoutDuration);
         self.gsSocket.settimeout(self.groundStation.timeoutDuration);
         self.cameraFilterSocket.settimeout(self.cameraFilter.timeoutDuration);
-        
 
         self.shellAttemptCounter = 0;
         self.tryConnectingAgain = False;
