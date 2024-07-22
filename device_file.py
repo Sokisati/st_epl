@@ -27,6 +27,7 @@ class Satellite:
         while(True):
             try:
                 socket.connect((device.ip,device.port));
+                print(deviceName+" connection succesful")
                 break;
             except Exception as e:
                 print(f"Initial connection to " +deviceName+ " failed. Trying again: {e}")
@@ -70,11 +71,9 @@ class Satellite:
 
         print("Satellite built succesfully");
                 
-        self.initialConnectionWithDevice(self.shell,self.shellSocket,"shell"); 
-        print("Shell connection succesful");
+        self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
         
-        self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"ground station");
-        print("Ground station connection succesful");
+        self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
         
         #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
         #print("Camera program connection succesful");
@@ -144,7 +143,7 @@ class Satellite:
                     
         elif not self.tryConnectingAgain:
             try:
-                self.shellSocket.send(self.self.mp.command.encode());
+                self.shellSocket.send(self.mp.command.encode());
                 rawData = self.shellSocket.recv(1024)
                 responseShell = self.splitData(rawData);
 
@@ -267,9 +266,9 @@ class Satellite:
             self.cameraFilterSocket.send(jsonData.encode())
             self.filterCommandListSent = True
         except Exception as e:
-            print("Problem with sending filter code. Attempt remains: " + str(self.self.mp.cameraFilterAttemptLimit))
-            if self.self.mp.cameraFilterAttemptLimit > 0:
-                self.self.mp.cameraFilterAttemptLimit -= 1
+            print("Problem with sending filter code. Attempt remains: " + str(self.mp.cameraFilterAttemptLimit))
+            if self.mp.cameraFilterAttemptLimit > 0:
+                self.mp.cameraFilterAttemptLimit -= 1
                 self.sendFilterInfoToFilter(infoList)
                 
     def startMainLoop(self):
