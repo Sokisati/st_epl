@@ -13,7 +13,7 @@ class Servo:
         self.mp = MissionParameters()
         factory = PiGPIOFactory();
         self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
-        #self.servo.angle(self.mp.defaultAngle);
+        self.servo.angle = self.mp.servoDefaultAngle
     
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
@@ -260,7 +260,7 @@ class Satellite:
         self.groundStationSendData(dataPack);
             
     def sendFilterInfoToFilter(self, infoList):
-        print("Sending self.mp.command list to filter:")
+        print("Sending list to filter:")
         jsonData = json.dumps(infoList)
         try:
             self.cameraFilterSocket.send(jsonData.encode())
