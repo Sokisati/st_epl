@@ -286,7 +286,7 @@ class Satellite:
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
             
-            if self.alarmSystem.statusJudge.status==5:
+            if self.alarmSystem.statusJudge.status==3:
                 self.servo.detach();
 
             if self.alarmSystem.statusJudge.status==5:

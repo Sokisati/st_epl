@@ -37,7 +37,7 @@ class MissionParameters:
         self.lastElementsForLandAssumption=5
         self.minAltitudeForLandAssumption=15
         
-        self.buzzerPin=6
+        self.buzzerPin=14
         self.buzzerWakeFor=1
         self.buzzerSleepFor=1
         
