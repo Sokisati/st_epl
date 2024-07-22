@@ -13,7 +13,16 @@ class Servo:
         self.mp = MissionParameters()
         factory = PiGPIOFactory();
         self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
-        self.servo.angle = self.mp.servoDefaultAngle
+        self.servo.angle = self.mp.servoDefaultAngle;
+        self.failedAttemptCounter=0;
+    
+    def detach(self):
+        if self.failedAttemptCounter==mp.servoDetachResetPeriod:
+            self.servo.angle = self.mp.servoDefaultAngle
+            
+        self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter*self.mp.servoDetachOperator);
+        self.failedAttemptCounter+=1;
+        
     
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
@@ -276,10 +285,14 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
-            """
+            
             if self.alarmSystem.statusJudge.status==5:
-                 #self.alarmSystem.buzzer.onOffProcedure();                
-            """
+                self.servo.detach();
+
+            if self.alarmSystem.statusJudge.status==5:
+                 self.alarmSystem.buzzer.onOffProcedure();                
+                
+            
             time.sleep(self.mp.sleepBetweenPackage);
 
         

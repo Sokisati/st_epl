@@ -46,7 +46,10 @@ class MissionParameters:
         self.servoPWMPin = 12
         self.servoDefaultAngle = 90
         self.servoDetachmentAngle = 35
+        
         self.servoDetachOperator = 6
+
+        self.servoDetachResetPeriod = 5
         self.servoDetachAwaitSecond = 5
         
 mp = MissionParameters();
