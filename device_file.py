@@ -10,9 +10,10 @@ from gpiozero.pins.pigpio import PiGPIOFactory
 
 class Servo:
     def __init__(self):
+        self.mp = MissionParameters()
         factory = PiGPIOFactory();
-        self.servo = AngularServo(mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
-        #self.servo.angle(mp.defaultAngle);
+        self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
+        #self.servo.angle(self.mp.defaultAngle);
     
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
@@ -32,7 +33,7 @@ class Satellite:
                 time.sleep(0.5)
     
     def __init__(self, groundStation, shell, cameraFilter):
-        
+        self.mp = MissionParameters()
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -125,25 +126,25 @@ class Satellite:
         responseShell = [0,0]
         rawData = 0;
 
-        if mp.shellConnectionAttemptLimit > 0 and self.tryConnectingAgain:
+        if self.mp.shellConnectionAttemptLimit > 0 and self.tryConnectingAgain:
             self.shellAttemptCounter += 1
-            if (self.shellAttemptCounter % mp.shellConnectionAttemptPeriod) == 0:
+            if (self.shellAttemptCounter % self.mp.shellConnectionAttemptPeriod) == 0:
                 try:
                     self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    self.shellSocket.settimeout(mp.shellTimeout)
-                    self.shellSocket.connect((mp.shellIp, mp.shellPort))
+                    self.shellSocket.settimeout(self.mp.shellTimeout)
+                    self.shellSocket.connect((self.mp.shellIp, self.mp.shellPort))
                     
                     self.tryConnectingAgain = False
                     
                 except Exception as e:
                     print(f"Error re-connecting to shell server: {e}")
-                    mp.shellConnectionAttemptLimit -= 1
-                    print("Attempt limit remain: " + str(mp.shellConnectionAttemptLimit))
+                    self.mp.shellConnectionAttemptLimit -= 1
+                    print("Attempt limit remain: " + str(self.mp.shellConnectionAttemptLimit))
                     self.tryConnectingAgain = True
                     
         elif not self.tryConnectingAgain:
             try:
-                self.shellSocket.send(self.mp.command.encode());
+                self.shellSocket.send(self.self.mp.command.encode());
                 rawData = self.shellSocket.recv(1024)
                 responseShell = self.splitData(rawData);
 
@@ -171,6 +172,7 @@ class Satellite:
         if self.gsConnectionError==True:
             try:
                 self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+                
                 self.gsSocket.settimeout(self.groundStation.timeoutDuration);
                 self.gsSocket.connect((self.groundStation.ip, self.groundStation.port));
                 
@@ -259,15 +261,15 @@ class Satellite:
         self.groundStationSendData(dataPack);
             
     def sendFilterInfoToFilter(self, infoList):
-        print("Sending mp.command list to filter:")
+        print("Sending self.mp.command list to filter:")
         jsonData = json.dumps(infoList)
         try:
             self.cameraFilterSocket.send(jsonData.encode())
             self.filterCommandListSent = True
         except Exception as e:
-            print("Problem with sending filter code. Attempt remains: " + str(self.mp.cameraFilterAttemptLimit))
-            if self.mp.cameraFilterAttemptLimit > 0:
-                self.mp.cameraFilterAttemptLimit -= 1
+            print("Problem with sending filter code. Attempt remains: " + str(self.self.mp.cameraFilterAttemptLimit))
+            if self.self.mp.cameraFilterAttemptLimit > 0:
+                self.self.mp.cameraFilterAttemptLimit -= 1
                 self.sendFilterInfoToFilter(infoList)
                 
     def startMainLoop(self):
@@ -279,7 +281,7 @@ class Satellite:
             if self.alarmSystem.statusJudge.status==5:
                  #self.alarmSystem.buzzer.onOffProcedure();                
             """
-            time.sleep(mp.sleepBetweenPackage);
+            time.sleep(self.mp.sleepBetweenPackage);
 
         
         

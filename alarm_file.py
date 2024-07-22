@@ -4,9 +4,10 @@ from parameter_file import *
 
 class Buzzer:
     def __init__(self):
-
+        self.mp = MissionParameters();
+        
         GPIO.setmode(GPIO.BCM);
-        GPIO.setup(mp.buzzerPin, GPIO.OUT);
+        GPIO.setup(self.mp.buzzerPin, GPIO.OUT);
         self.counter = 0;
         
         self.onState = False;
@@ -14,11 +15,11 @@ class Buzzer:
         self.off();
         
     def on(self):
-        GPIO.output(mp.buzzerPin, GPIO.HIGH);
+        GPIO.output(self.mp.buzzerPin, GPIO.HIGH);
         self.onState = True;
 
     def off(self):
-        GPIO.output(mp.buzzerPin, GPIO.LOW);
+        GPIO.output(self.mp.buzzerPin, GPIO.LOW);
         self.onState = False;
 
     def onOffProcedure(self):
@@ -26,19 +27,19 @@ class Buzzer:
         self.counter+=1;
 
         if self.onState:
-            if self.counter==mp.buzzerWakeFor:
+            if self.counter==self.mp.buzzerWakeFor:
                 self.counter=0;
                 self.off();
         
         else:
-            if self.counter==mp.buzzerSleepFor:
+            if self.counter==self.mp.buzzerSleepFor:
                 self.counter=0;
                 self.on();
             
 class AlarmSystem:
     
     def __init__(self):
-       
+       self.mp = MissionParameters()
        self.modelSatelliteNormalSpeedRange = [12,14];
        self.missionPayloadNormalSpeedRange = [6,8];
        self.buzzer = Buzzer();
