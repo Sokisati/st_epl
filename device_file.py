@@ -14,10 +14,10 @@ class Servo:
         factory = PiGPIOFactory();
         self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
         self.servo.angle = self.mp.servoDefaultAngle;
-        self.failedAttemptCounter=0;
+        self.failedAttemptCounter=1;
     
     def detach(self):
-        if self.failedAttemptCounter==mp.servoDetachResetPeriod:
+        if (not self.failedAttemptCounter==1) and (self.failedAttemptCounter%mp.servoDetachResetPeriod==0):
             self.servo.angle = self.mp.servoDefaultAngle
             
         self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter*self.mp.servoDetachOperator);
@@ -81,11 +81,8 @@ class Satellite:
         print("Satellite built succesfully");
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
-        
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
-        
-        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
-        #print("Camera program connection succesful");
+        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self, parsed_data):
         try:
@@ -260,10 +257,10 @@ class Satellite:
         )
         
         self.latestDataPack = dataPack;
-        """
+
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
-        """
+
         #self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
