@@ -83,7 +83,7 @@ class Satellite:
                 
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
-        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self, parsed_data):
         try:
@@ -249,10 +249,10 @@ class Satellite:
         )
         
         self.latestDataPack = dataPack;
-
+        """
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
-
+        """
         #self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
@@ -274,13 +274,13 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
-            
+            """
             if self.alarmSystem.statusJudge.status==3:
                 self.servo.detach();
 
             if self.alarmSystem.statusJudge.status==5:
                  self.alarmSystem.buzzer.onOffProcedure();                
-                
+            """    
             self.sensorPack.updateSensorDataPack();
             time.sleep(self.mp.sleepBetweenPackage);
 
