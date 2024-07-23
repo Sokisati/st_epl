@@ -171,36 +171,39 @@ class Satellite:
         listLength = len(self.toDeleteList);
         return self.toDelete+self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
 
-    def groundStationReceiveData(self):
-        
-        responseGs = [0,'0'];        
+def groundStationReceiveData(self):
+    responseGs = [0, '0']  # Default response
 
-        if self.gsConnectionError==True:
-            try:
-                self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
-                
-                self.gsSocket.settimeout(self.groundStation.timeoutDuration);
-                self.gsSocket.connect((self.groundStation.ip, self.groundStation.port));
-                
-                self.gsConnectionError = False;
-                
-                self.gsSocket.send(self.mp.command.encode())
-                responseGs = self.gsSocket.recv(1024).decode()
-                responseGs = json.loads(responseGs);
+    if self.gsConnectionError:
+        try:
+            self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.gsSocket.settimeout(self.groundStation.timeoutDuration)
+            self.gsSocket.connect((self.groundStation.ip, self.groundStation.port))
+
+            self.gsConnectionError = False
+
+            self.gsSocket.send(self.mp.command.encode())
+            raw_response = self.gsSocket.recv(1024).decode()
+            responseGs = json.loads(raw_response)
             
-            except Exception as e:
-                print(f"Error with reconnection with GS server: {e}")
-        else:
-            try:
-                self.gsSocket.send(self.mp.command.encode())
-                responseGs = self.gsSocket.recv(1024).decode()
-                responseGs = json.loads(responseGs);
+        except Exception as e:
+            print(f"Error with reconnection with GS server: {e}")
+    else:
+        try:
+            self.gsSocket.send(self.mp.command.encode())
+            raw_response = self.gsSocket.recv(1024).decode()
+            responseGs = json.loads(raw_response)
             
-            except Exception as e:
-                print(f"Error communicating with GS server: {e}")
-                self.gsConnectionError = True;
-         
-        return responseGs;
+        except Exception as e:
+            print(f"Error communicating with GS server: {e}")
+            self.gsConnectionError = True
+
+   
+    if not isinstance(responseGs, list) or len(responseGs) < 2:
+        responseGs = [0, '0'] 
+
+    return responseGs
+
      
     def groundStationSendData(self,dataPack):
         
