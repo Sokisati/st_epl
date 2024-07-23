@@ -7,6 +7,7 @@ from parameter_file import *
 
 from gpiozero import AngularServo
 from gpiozero.pins.pigpio import PiGPIOFactory
+from sensor_file import *
 
 class Servo:
     def __init__(self):
@@ -22,8 +23,7 @@ class Servo:
             
         self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter*self.mp.servoDetachOperator);
         self.failedAttemptCounter+=1;
-        
-    
+           
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
         self.ip = ipAddress
@@ -44,6 +44,7 @@ class Satellite:
     
     def __init__(self, groundStation, shell, cameraFilter):
         self.mp = MissionParameters()
+        self.sensorPack = SensorPack(); 
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -214,43 +215,34 @@ class Satellite:
         responseGs = self.groundStationReceiveData();
         
         shellPressure = 0;
-        """
         shellAltitude = 0;
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
-        """
-        #TODO: fix this 
-        stAltitude = self.artificalSatAltFunction();
-        shellAltitude = self.artificalShellAltFunction();
         
-        if self.alarmSystem.statusJudge.status==4:
-            stAltitude = self.toDeleteList[self.dataPackNumber%5];
-        
+        stAltitude = self.sensorPack.sensorDataPack.altitude;
+
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
-        
-        if self.dataPackNumber==36:
-            self.toDelete=6;
 
         dataPack = DataPack(
             self.dataPackNumber,
             self.alarmSystem.statusJudge.status,  
             self.errorCodeList,
             "19/1/2038", 
-            666,  
+            self.sensorPack.sensorDataPack.pressure,  
             shellPressure, 
             stAltitude, 
             shellAltitude, 
             abs(stAltitude-shellAltitude),  
-            666, 
-            666, 
-            666, 
-            666,  
-            666,  
-            666,  
-            666, 
-            666,  
-            self.filterCommandList,  
+            self.alarmSystem.statusJudge.getDescentSpeed(), 
+            self.sensorPack.sensorDataPack.temperature, 
+            0, 
+            self.sensorPack.sensorDataPack.lat,  
+            self.sensorPack.sensorDataPack.long,  
+            self.sensorPack.sensorDataPack.alt,  
+            self.sensorPack.sensorDataPack.pitch, 
+            self.sensorPack.sensorDataPack.roll,  
+            self.sensorPack.sensorDataPack.yaw, 
             responseGs[1], 
             responseGs[0],
             self.teamNumber
@@ -289,7 +281,7 @@ class Satellite:
             if self.alarmSystem.statusJudge.status==5:
                  self.alarmSystem.buzzer.onOffProcedure();                
                 
-            
+            self.sensorPack.updateSensorDataPack();
             time.sleep(self.mp.sleepBetweenPackage);
 
         
