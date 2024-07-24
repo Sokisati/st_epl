@@ -118,8 +118,10 @@ class OLED:
         self.disp.begin()
         self.disp.clear()
         self.disp.display()
-        self.sensorPage = self.mp.sensorPage
-        self.pageList = [self.mp.bmpPage,self.sensorPage];
+        self.bmpPage = BMPPage(self.mp.logoPath,self.mp.bmpActionSecond)
+        self.sensorPage = SensorPage(self.mp.fontSize,self.mp.sensorPageActionSecond)
+        
+        self.pageList = [self.bmpPage,self.sensorPage];
         self.counter = 0
         self.index = 0
     
