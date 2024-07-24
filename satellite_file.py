@@ -285,6 +285,7 @@ class Satellite:
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
+            
             """
             if self.alarmSystem.statusJudge.status==3:
                 self.servo.detach();
@@ -294,14 +295,24 @@ class Satellite:
             """    
             
             self.sensorPack.updateSensorDataPack();
+            
+            """
             if self.alarmSystem.statusJudge.status==0:
                 self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
                                                  self.sensorPack.sensorDataPack.pressure,
                                                  self.sensorPack.sensorDataPack.altitude,
                                                  self.sensorPack.sensorDataPack.voltage,
                                                  self.alarmSystem.errorCodeList)
+                                               
             elif not self.oledOff:
                 self.oled.cleanup();
                 self.oledOff = True
-                
+            """
+            
+            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                    self.sensorPack.sensorDataPack.pressure,
+                                    self.sensorPack.sensorDataPack.altitude,
+                                    self.sensorPack.sensorDataPack.voltage,
+                                    self.alarmSystem.errorCodeList)            
+
             self.sleep();
