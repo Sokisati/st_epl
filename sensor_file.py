@@ -94,14 +94,17 @@ class BMESensor:
         return False
 
     def getTemp(self):
-        return self.sensor.data.temperature
+        if self.sensor.get_sensor_data():
+            return self.sensor.data.temperature
 
     def getPressure(self):
-        return self.sensor.data.pressure * 100 
+        if self.sensor.get_sensor_data():
+            return self.sensor.data.pressure * 100 
 
     def getAlt(self):
-        pressure = self.getPressure();
-        return (44330 * (1 - (pressure / 101325) ** (1 / 5.255)))
+        if self.sensor.get_sensor_data():
+            pressure = self.getPressure();
+            return (44330 * (1 - (pressure / 101325) ** (1 / 5.255)))
     
     def test(self):
         if self.sensor.get_sensor_data():
