@@ -44,7 +44,6 @@ class BMPPage(OLEDPage):
     def display(self, disp):
         disp.image(self.bmp)
         disp.display()
-        time.sleep(self.actionSecond)
 class TextPage(OLEDPage):
     def __init__(self, fontSize, textLines, actionSecond):
         super().__init__(actionSecond)
@@ -139,8 +138,8 @@ class OLED:
                 self.index = 0
             else:
                 self.index += 1
-        
-        self.counter+=1
+        else:
+            self.counter+=1
 
         
 
