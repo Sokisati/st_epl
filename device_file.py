@@ -126,8 +126,7 @@ class OLED:
         
         self.sensorPage.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,errorCodeList);
 
-        if self.counter == 0:
-            self.display(self.pageList[self.index])
+        self.display(self.pageList[self.index])
         
         if self.pageList[self.index].actionSecond==self.counter:            
             self.counter = 0
