@@ -1,3 +1,7 @@
+from device_file import OLEDPage, SensorPage
+from device_file import BMPPage
+from device_file import TextPage
+
 class MissionParameters:
     def __init__(self):
         
@@ -51,5 +55,14 @@ class MissionParameters:
 
         self.servoDetachResetPeriod = 5
         self.servoDetachAwaitSecond = 5
+        
+
+        #OLED
+        self.logoPath = 'logo.bmp'
+        self.bmpPage = BMPPage(self.logoPath,5)
+        
+        self.fontSize = 10
+        self.sensorPageActionSecond = 9
+        self.sensorPage = SensorPage(self.fontSize,self.sensorPageActionSecond);
         
 mp = MissionParameters();

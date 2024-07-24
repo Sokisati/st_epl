@@ -76,6 +76,8 @@ class Satellite:
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandListSent = False;
+        
+        self.oled = OLED();
 
         print("Satellite built succesfully");
                 
@@ -281,4 +283,10 @@ class Satellite:
                  self.alarmSystem.buzzer.onOffProcedure();                
             """    
             self.sensorPack.updateSensorDataPack();
+            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                             self.sensorPack.sensorDataPack.pressure,
+                                             self.sensorPack.sensorDataPack.altitude,
+                                             self.sensorPack.sensorDataPack.voltage,
+                                             self.alarmSystem.errorCodeList)
+            
             time.sleep(self.mp.sleepBetweenPackage);
