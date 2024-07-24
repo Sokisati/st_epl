@@ -92,7 +92,8 @@ class SensorPage(TextPage):
         line1 = "Basınç: " + str(self.pressure) + " kPa"
         line2 = "İrtifa: " + str(int(self.altitude)) + " m"
         line3 = "Batarya voltajı: " + str(self.batteryVoltage) + " V"
-        line4 = "Tarih/saat: " + str(self.dateAndTime)
+        dateAndTimePart = self.dateAndTime.split('-')[1] if '-' in self.dateAndTime else self.dateAndTime
+        line4 = "Saat: " + dateAndTimePart
         
         sensorText = [line0, line1, line2, line3,line4]
         image = Image.new('1', (128, 64))
