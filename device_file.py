@@ -90,11 +90,10 @@ class SensorPage(TextPage):
         self.pressure /= 100  
         line0 = "Sıcaklık: " + str(self.temperature) + "C"
         line1 = "Basınç: " + str(self.pressure) + "kPa"
-        line2 = "İrtifa: " + str(self.altitude) + "m"
+        line2 = "İrtifa: " + str(int(self.altitude)) + "m"
         line3 = "Batarya voltajı: " + str(self.batteryVoltage) + "V"
-        line4 = "N/A,N/A," + str(self.errorCodeList[2]) + "," + str(self.errorCodeList[3]) + ",N/A"
-
-        sensorText = [line0, line1, line2, line3, line4]
+        
+        sensorText = [line0, line1, line2, line3]
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
         y = 0
@@ -141,7 +140,6 @@ class OLED:
             self.index = (self.index + 1) % len(self.pageList)
 
         
-
     def display(self, page):
         page.display(self.disp)
 

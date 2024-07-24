@@ -25,7 +25,6 @@ class MissionParameters:
         
         self.command = "SEND_DATA\n"
         
-
         #teknofest
         self.teamNumber = 666
 
@@ -60,7 +59,7 @@ class MissionParameters:
         self.logoPath = 'logo.bmp'
         self.bmpActionSecond = 5
         
-        self.fontSize = 10
+        self.fontSize = 12
         self.sensorPageActionSecond = 9
      
         
