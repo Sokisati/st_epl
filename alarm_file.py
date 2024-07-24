@@ -81,16 +81,16 @@ class AlarmSystem:
         else:
             return False;
 
-    def getErrorCodeList(self,stAlt,shellAlt,shellNotResponding,missionPayloadGpsDataError):
+    def getErrorCodeList(self,stAlt,shellAlt,gpsLat):
          
          self.resetList();
          self.statusJudge.updateStatus(stAlt,shellAlt);
          status = self.statusJudge.status;
 
          #2 and 3 for every status
-         if shellNotResponding==True:
+         if shellAlt==-666:
             self.shellNotResponding(); 
-         if missionPayloadGpsDataError==True:
+         if gpsLat == -666:
             self.missionPayloadGpsDataError();
 
          if status==0 or status==1 or status==5:

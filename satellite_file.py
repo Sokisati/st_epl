@@ -217,15 +217,16 @@ class Satellite:
         
         responseGs = self.groundStationReceiveData();
         
-        shellPressure = 0;
-        shellAltitude = 0;
+        shellPressure = -666;
+        shellAltitude = -666;
+        
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
 
-        self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,False,False);
+        self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude);
 
         dataPack = DataPack(
             self.dataPackNumber,
