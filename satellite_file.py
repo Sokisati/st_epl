@@ -78,6 +78,7 @@ class Satellite:
         self.filterCommandListSent = False;
         
         self.oled = OLED();
+        self.oledOff = False;
 
         print("Satellite built succesfully");
                 
@@ -270,8 +271,15 @@ class Satellite:
                 self.mp.cameraFilterAttemptLimit -= 1
                 self.sendFilterInfoToFilter(infoList)
                 
+    def sleep(self):
+        if not self.oledOff:
+            time.sleep(self.mp.sleepBetweenPackageDisplayOn);
+        else:
+            time.sleep(self.mp.sleepBetweenPackageDisplayOff);
+                
     def startMainLoop(self):
         while(True):
+            
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             self.dataPackNumber+=1;
@@ -282,11 +290,16 @@ class Satellite:
             if self.alarmSystem.statusJudge.status==5:
                  self.alarmSystem.buzzer.onOffProcedure();                
             """    
-            self.sensorPack.updateSensorDataPack();
-            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                             self.sensorPack.sensorDataPack.pressure,
-                                             self.sensorPack.sensorDataPack.altitude,
-                                             self.sensorPack.sensorDataPack.voltage,
-                                             self.alarmSystem.errorCodeList)
             
-            time.sleep(self.mp.sleepBetweenPackage);
+            self.sensorPack.updateSensorDataPack();
+            if self.alarmSystem.statusJudge.status==0:
+                self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                                 self.sensorPack.sensorDataPack.pressure,
+                                                 self.sensorPack.sensorDataPack.altitude,
+                                                 self.sensorPack.sensorDataPack.voltage,
+                                                 self.alarmSystem.errorCodeList)
+            elif not self.oledOff:
+                self.oled.cleanup();
+                self.oledOff = True
+                
+            self.sleep();
