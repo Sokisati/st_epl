@@ -67,8 +67,7 @@ class TextPage(OLEDPage):
     def display(self, disp):
         image = self.drawText()
         disp.image(image)
-        disp.display()
-        
+        disp.display()       
 class SensorPage(TextPage):
     def __init__(self, fontSize, actionSecond):
         super().__init__(fontSize, [], actionSecond)
@@ -108,7 +107,6 @@ class SensorPage(TextPage):
         image = self.getSensorImage()
         disp.image(image)
         disp.display()
-        time.sleep(self.actionSecond)
 
 class OLED:
     def __init__(self):
