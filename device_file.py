@@ -132,10 +132,10 @@ class SensorPage1(TextPage):
         line0 = "R:" + str(int(self.roll)) + " P:" + str(int(self.pitch)) + " Y:"+ str(int(self.yaw))
         line1 = "IoT: " + str(self.iot)
         line2 = "Tasıyıcı irtifası: " + str(self.shellAltitude)
-        line3 = "Hata kodu: " + "N/A,N/A,N/A, "+str(self.errorCodeList[2])+" , "+str(self.errorCodeList)+" ,N/A"
-
+        line3 = "Hata kodu: " + "N/A,N/A->" 
+        line4 = "N/A,"+str(self.errorCodeList[2])+","+str(self.errorCodeList)+",N/A"
         
-        sensorText = [line0, line1, line2, line3]
+        sensorText = [line0, line1, line2, line3,line4]
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
         y = 0
@@ -177,8 +177,11 @@ class OLED:
         self.counter += 1
 
         if self.counter >= self.pageList[self.index].actionSecond:
-            self.counter = 1
-            self.index = (self.index + 1) % len(self.pageList)
+            self.counter = 0
+            if self.index + 1 == len(self.pageList):
+                self.index = 1
+            else:
+                self.index += 1;
 
         
     def display(self, page):
