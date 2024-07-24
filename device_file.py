@@ -36,6 +36,7 @@ class DistantDevice:
 class OLEDPage:
     def __init__(self, actionSecond):
         self.actionSecond = actionSecond
+        
 class BMPPage(OLEDPage):
     def __init__(self, path, actionSecond):
         super().__init__(actionSecond)
@@ -44,6 +45,7 @@ class BMPPage(OLEDPage):
     def display(self, disp):
         disp.image(self.bmp)
         disp.display()
+        
 class TextPage(OLEDPage):
     def __init__(self, fontSize, textLines, actionSecond):
         super().__init__(actionSecond)
@@ -126,7 +128,8 @@ class OLED:
         
         self.sensorPage.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,errorCodeList);
 
-        self.display(self.pageList[self.index])
+        if self.counter%2==1 or self.counter==0:
+            self.display(self.pageList[self.index])
         
         if self.pageList[self.index].actionSecond==self.counter:            
             self.counter = 0
