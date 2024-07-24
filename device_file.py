@@ -131,7 +131,7 @@ class OLED:
 
         if self.counter == 0:
             self.display(self.pageList[self.index])
-
+        print(self.pageList[self.index].actionSecond)
         if self.pageList[self.index].actionSecond==self.counter:            
             self.counter = 0
             
