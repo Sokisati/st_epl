@@ -87,7 +87,7 @@ class SensorPage(TextPage):
         self.errorCodeList = errorCodeList;
         
     def getSensorImage(self):
-        pressure /= 100  
+        self.pressure /= 100  
         line0 = "Sıcaklık: " + str(self.temperature) + "C"
         line1 = "Basınç: " + str(self.pressure) + "kPa"
         line2 = "İrtifa: " + str(self.altitude) + "m"
