@@ -22,10 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="alarm_file.py" />
-    <Compile Include="data_struct_file.py" />
     <Compile Include="device_file.py" />
-    <Compile Include="led_file.py" />
     <Compile Include="parameter_file.py" />
+    <Compile Include="satellite_file.py" />
     <Compile Include="satellite_status_file.py" />
     <Compile Include="sensor_file.py" />
     <Compile Include="st_epl.py" />

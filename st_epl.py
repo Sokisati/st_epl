@@ -1,4 +1,4 @@
-from device_file import *
+from satellite_file import *
 
 shell = DistantDevice(mp.shellIp,mp.shellPort,mp.shellTimeout);
 groundStation = DistantDevice(mp.groundStationIp,mp.groundStationPort,mp.groundStationTimeout);
