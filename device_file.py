@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import date
 from sys import setdlopenflags
 from alarm_file import *
 from parameter_file import *
@@ -83,7 +84,7 @@ class SensorPage(TextPage):
         self.pressure = pressure;
         self.altitude = altitude;
         self.batteryVoltage = batteryVoltage;
-        self.errorCodeList = errorCodeList;
+        self.dateAndTime = dateAndTime;
         
     def getSensorImage(self):
         self.pressure /= 100  
