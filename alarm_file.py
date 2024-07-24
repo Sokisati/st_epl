@@ -84,6 +84,8 @@ class AlarmSystem:
     def getErrorCodeList(self,stAlt,shellAlt,gpsLat):
          
          self.resetList();
+         print("Shell alt:")
+         print(shellAlt);
          self.statusJudge.updateStatus(stAlt,shellAlt);
          status = self.statusJudge.status;
 

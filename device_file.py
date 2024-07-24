@@ -70,7 +70,7 @@ class TextPage(OLEDPage):
         image = self.drawText()
         disp.image(image)
         disp.display()       
-class SensorPage(TextPage):
+class SensorPage0(TextPage):
     def __init__(self, fontSize, actionSecond):
         super().__init__(fontSize, [], actionSecond)
         self.temperature = 0;
@@ -110,6 +110,46 @@ class SensorPage(TextPage):
         image = self.getSensorImage()
         disp.image(image)
         disp.display()
+class SensorPage1(TextPage):
+    def __init__(self, fontSize, actionSecond):
+        super().__init__(fontSize, [], actionSecond)
+        self.roll = 0;
+        self.pitch = 0;
+        self.yaw = 0;
+        self.iot = 0;
+        self.shellAltitude = 0
+    
+    def updateSensorInfo(self,roll, pitch, yaw, iot, shellAltitude,errorCodeList):
+        self.roll = roll;
+        self.pitch = pitch;
+        self.yaw = yaw;
+        self.iot = iot;
+        self.shellAltitude = shellAltitude;
+        self.errorCodeList = errorCodeList
+        
+    def getSensorImage(self):
+        self.pressure /= 100  
+        line0 = "R:" + str(int(self.roll)) + " P:" + str(int(self.pitch)) + " Y:"+ str(int(self.yaw))
+        line1 = "IoT: " + str(self.iot)
+        line2 = "Taşıyıcı verisi: " + str(self.shellAltitude)
+        line3 = "Hata kodu: " + "N/A,N/A,N/A, "+str(self.errorCodeList[2])+" , "+str(self.errorCodeList)+" ,N/A"
+
+        
+        sensorText = [line0, line1, line2, line3]
+        image = Image.new('1', (128, 64))
+        draw = ImageDraw.Draw(image)
+        y = 0
+
+        for line in sensorText:
+            draw.text((0, y), line, font=self.font, fill=255)
+            y += self.fontSize
+
+        return image
+
+    def display(self, disp):
+        image = self.getSensorImage()
+        disp.image(image)
+        disp.display()
 
 class OLED:
     def __init__(self):
@@ -119,10 +159,11 @@ class OLED:
         self.disp.clear()
         self.disp.display()
         self.bmpPage = BMPPage(self.mp.logoPath,self.mp.bmpActionSecond)
-        self.sensorPage = SensorPage(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
+        self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
+        self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
         
         
-        self.pageList = [self.bmpPage,self.sensorPage];
+        self.pageList = [self.bmpPage,self.sensorPage0,self.sensorPage1];
         self.counter = 0
         self.index = 0
     
@@ -135,7 +176,7 @@ class OLED:
         self.counter += 1
 
         if self.counter >= self.pageList[self.index].actionSecond:
-            self.counter = 0
+            self.counter = 1
             self.index = (self.index + 1) % len(self.pageList)
 
         

@@ -16,7 +16,7 @@ class MissionParameters:
         self.groundStationTimeout=6
         self.cameraFilterTimeout=2
         
-        self.sleepBetweenPackageDisplayOn = 0.77
+        self.sleepBetweenPackageDisplayOn = 0.73
         self.sleepBetweenPackageDisplayOff = 0.90
         
         self.shellConnectionAttemptLimit = 12
@@ -61,7 +61,7 @@ class MissionParameters:
         
         self.fontSize = 10
         self.sensorPage0ActionSecond = 8
-        self.sensorPage1ActionSecond = 6
+        self.sensorPage1ActionSecond = 8
      
         
 mp = MissionParameters();
