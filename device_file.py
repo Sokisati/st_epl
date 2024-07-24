@@ -44,8 +44,7 @@ class BMPPage(OLEDPage):
 
     def display(self, disp):
         disp.image(self.bmp)
-        disp.display()
-        
+        disp.display()     
 class TextPage(OLEDPage):
     def __init__(self, fontSize, textLines, actionSecond):
         super().__init__(actionSecond)
@@ -88,10 +87,10 @@ class SensorPage(TextPage):
         
     def getSensorImage(self):
         self.pressure /= 100  
-        line0 = "Sıcaklık: " + str(self.temperature) + "C"
-        line1 = "Basınç: " + str(self.pressure) + "kPa"
-        line2 = "İrtifa: " + str(int(self.altitude)) + "m"
-        line3 = "Batarya voltajı: " + str(self.batteryVoltage) + "V"
+        line0 = "Sıcaklık: " + str(self.temperature) + " C"
+        line1 = "Basınç: " + str(self.pressure) + " kPa"
+        line2 = "İrtifa: " + str(int(self.altitude)) + " m"
+        line3 = "Batarya voltajı: " + str(self.batteryVoltage) + " V"
         
         sensorText = [line0, line1, line2, line3]
         image = Image.new('1', (128, 64))
@@ -119,15 +118,12 @@ class OLED:
         self.bmpPage = BMPPage(self.mp.logoPath,self.mp.bmpActionSecond)
         self.sensorPage = SensorPage(self.mp.fontSize,self.mp.sensorPageActionSecond)
         
+        
         self.pageList = [self.bmpPage,self.sensorPage];
         self.counter = 0
         self.index = 0
     
-    def updateDisplayProcedure(self,temperature,pressure,altitude,batteryVoltage,errorCodeList):
-        
-        self.sensorPage.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,errorCodeList);
-
-        
+ 
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, errorCodeList):
         self.sensorPage.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, errorCodeList)
         
