@@ -152,7 +152,7 @@ class SensorDataPack:
         self.roll = 0;
         self.pitch = 0;
         self.yaw = 0;
-        self.dateAndTime = '1/1/2038-00/00/00'
+        self.dateAndTime = '1/1/2038-31/52/13'
         
 class SensorPack:
     
