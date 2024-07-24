@@ -128,7 +128,7 @@ class SensorPage1(TextPage):
         self.errorCodeList = errorCodeList
         
     def getSensorImage(self):
-        self.pressure /= 100  
+     
         line0 = "R:" + str(int(self.roll)) + " P:" + str(int(self.pitch)) + " Y:"+ str(int(self.yaw))
         line1 = "IoT: " + str(self.iot)
         line2 = "Taşıyıcı verisi: " + str(self.shellAltitude)
