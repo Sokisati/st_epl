@@ -133,7 +133,7 @@ class SensorPage1(TextPage):
         line1 = "IoT: " + str(self.iot)
         line2 = "Tasıyıcı irtifası: " + str(self.shellAltitude)
         line3 = "Hata kodu: " + "N/A,N/A->" 
-        line4 = "N/A,"+str(self.errorCodeList[2])+","+str(self.errorCodeList)+",N/A"
+        line4 = "N/A,"+str(self.errorCodeList[2])+","+str(self.errorCodeList[3])+",N/A"
         
         sensorText = [line0, line1, line2, line3,line4]
         image = Image.new('1', (128, 64))

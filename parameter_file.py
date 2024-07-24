@@ -59,7 +59,7 @@ class MissionParameters:
         self.logoPath = 'logo.bmp'
         self.bmpActionSecond = 5
         
-        self.fontSize = 10
+        self.fontSize = 11
         self.sensorPage0ActionSecond = 8
         self.sensorPage1ActionSecond = 8
      
