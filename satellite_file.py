@@ -226,7 +226,8 @@ class Satellite:
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
 
-        self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude);
+        self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,
+                                                               self.sensorPack.sensorDataPack.lat)
 
         dataPack = DataPack(
             self.dataPackNumber,
