@@ -128,7 +128,10 @@ class OLED:
     def updateDisplayProcedure(self,temperature,pressure,altitude,batteryVoltage,errorCodeList):
         
         self.sensorPage.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,errorCodeList);
-        
+
+        if self.counter == 0:
+            self.display(self.pageList[self.index])
+
         if self.pageList[self.index].actionSecond==self.counter:            
             self.counter = 0
             
@@ -139,7 +142,7 @@ class OLED:
         
         self.counter+=1
         
-        #self.display(self.pageList[self.index])
+        
 
     def display(self, page):
         page.display(self.disp)
