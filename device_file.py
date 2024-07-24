@@ -162,14 +162,15 @@ class OLED:
         self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
         self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
         
-        
         self.pageList = [self.bmpPage,self.sensorPage0,self.sensorPage1];
         self.counter = 0
         self.index = 0
     
  
-    def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime):
-        self.sensorPage.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, dateAndTime)
+    def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,
+                               iot,shellAltitude,errorCodeList):
+        self.sensorPage0.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, dateAndTime)
+        self.sensorPage1.updateSensorInfo(roll,pitch,yaw,iot,shellAltitude,errorCodeList)
         
         self.display(self.pageList[self.index])
         

@@ -73,6 +73,9 @@ class Satellite:
         
         self.gsConnectionError = False;
         
+        self.iot = 0;
+        self.shellAltitude = 0
+        
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandListSent = False;
@@ -229,6 +232,9 @@ class Satellite:
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,
                                                                self.sensorPack.sensorDataPack.lat)
 
+        self.iot = responseGs[0];
+        self.shellAltitude = shellAltitude
+        
         dataPack = DataPack(
             self.dataPackNumber,
             self.alarmSystem.statusJudge.status,  
@@ -313,6 +319,11 @@ class Satellite:
                                     self.sensorPack.sensorDataPack.pressure,
                                     self.sensorPack.sensorDataPack.altitude,
                                     self.sensorPack.sensorDataPack.voltage,
-                                    self.sensorPack.sensorDataPack.dateAndTime)            
+                                    self.sensorPack.sensorDataPack.dateAndTime,
+                                    self.sensorPack.sensorDataPack.roll,
+                                    self.sensorPack.sensorDataPack.pitch,
+                                    self.sensorPack.sensorDataPack.yaw,
+                                    self.iot,self.shellAltitude,
+                                    self.alarmSystem.getErrorCodeList())            
 
             self.sleep();
