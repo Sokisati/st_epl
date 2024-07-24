@@ -76,9 +76,9 @@ class SensorPage(TextPage):
         self.pressure = 0;
         self.altitude = 0;
         self.batteryVoltage = 0;
-        self.errorCodeList = [0,0,0,0,0];
+        self.dateAndTime = 0
     
-    def updateSensorInfo(self,temperature, pressure, altitude, batteryVoltage, errorCodeList):
+    def updateSensorInfo(self,temperature, pressure, altitude, batteryVoltage, dateAndTime):
         self.temperature = temperature;
         self.pressure = pressure;
         self.altitude = altitude;
@@ -91,8 +91,9 @@ class SensorPage(TextPage):
         line1 = "Basınç: " + str(self.pressure) + " kPa"
         line2 = "İrtifa: " + str(int(self.altitude)) + " m"
         line3 = "Batarya voltajı: " + str(self.batteryVoltage) + " V"
+        line4 = "Tarih/saat: " + str(self.dateAndTime)
         
-        sensorText = [line0, line1, line2, line3]
+        sensorText = [line0, line1, line2, line3,line4]
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
         y = 0
@@ -116,7 +117,7 @@ class OLED:
         self.disp.clear()
         self.disp.display()
         self.bmpPage = BMPPage(self.mp.logoPath,self.mp.bmpActionSecond)
-        self.sensorPage = SensorPage(self.mp.fontSize,self.mp.sensorPageActionSecond)
+        self.sensorPage = SensorPage(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
         
         
         self.pageList = [self.bmpPage,self.sensorPage];
@@ -124,8 +125,8 @@ class OLED:
         self.index = 0
     
  
-    def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, errorCodeList):
-        self.sensorPage.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, errorCodeList)
+    def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime):
+        self.sensorPage.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, dateAndTime)
         
         self.display(self.pageList[self.index])
         

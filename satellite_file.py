@@ -313,6 +313,6 @@ class Satellite:
                                     self.sensorPack.sensorDataPack.pressure,
                                     self.sensorPack.sensorDataPack.altitude,
                                     self.sensorPack.sensorDataPack.voltage,
-                                    self.alarmSystem.errorCodeList)            
+                                    self.sensorPack.sensorDataPack.dateAndTime)            
 
             self.sleep();
