@@ -53,6 +53,8 @@ class Satellite:
     
     def __init__(self, groundStation, shell, cameraFilter):
         self.mp = MissionParameters()
+        self.oled = OLED();
+        self.oled.display(self.oled.logoPage);
         self.sensorPack = SensorPack(); 
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -90,12 +92,10 @@ class Satellite:
         self.filterCommandList = [];
         self.filterCommandListSent = False;
         
-        self.oled = OLED();
+
         self.oledOff = False;
 
         print("Satellite built succesfully");
-        self.oled.display(self.oled.logoPage);
-        time.sleep(self.mp.logoActionSecond);   
         self.oled.display(self.oled.shellAwait);
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
         self.oled.display(self.oled.gsAwait);
