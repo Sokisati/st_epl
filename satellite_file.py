@@ -147,8 +147,8 @@ class Satellite:
 
     def shellConnectionProcedure(self):
 
-        responseShell = [0,0]
-        rawData = 0;
+        responseShell = [-666,-666]
+        rawData = -666;
 
         if self.mp.shellConnectionAttemptLimit > 0 and self.tryConnectingAgain:
             self.shellAttemptCounter += 1
@@ -234,9 +234,7 @@ class Satellite:
         
         responseGs = self.groundStationReceiveData();
         
-        shellPressure = -666;
-        shellAltitude = -666;
-        
+
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
