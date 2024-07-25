@@ -56,7 +56,7 @@ class MissionParameters:
 
         #OLED
 
-        self.logoActionSecond = 2
+        self.logoActionSecond = 1
         
         self.fontSize = 11
         self.errorFontSize = 15;

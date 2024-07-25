@@ -171,7 +171,7 @@ class ErrorPage(TextPage):
         return image
 
     def display(self, disp):
-        image = self.getSensorImage()
+        image = self.getErrorImage()
         disp.image(image)
         disp.display()
 
