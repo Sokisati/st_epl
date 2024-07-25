@@ -32,15 +32,20 @@ class DataPack:
 
 class Satellite:
     
-    def initialConnectionWithDevice(self,device,socket,deviceName):
-        while(True):
+    def initialConnectionWithDevice(self, device, sock, deviceName):
+        while True:
             try:
-                socket.connect((device.ip,device.port));
-                print(deviceName+" connection succesful")
-                break;
+                print(f"Attempting connection to {deviceName} at {device.ip}:{device.port}")
+                sock.connect((device.ip, device.port))
+                print(f"{deviceName} connection successful")
+                break
+            except socket.timeout:
+                print(f"Initial connection to {deviceName} timed out. Trying again.")
+            except socket.error as e:
+                print(f"Initial connection to {deviceName} failed. Trying again: {e}")
             except Exception as e:
-                print(f"Initial connection to " +deviceName+ " failed. Trying again: {e}")
-                time.sleep(0.5)
+                print(f"Unexpected error when connecting to {deviceName}: {e}")
+            time.sleep(0.2)
     
     def __init__(self, groundStation, shell, cameraFilter):
         self.mp = MissionParameters()
