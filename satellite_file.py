@@ -85,7 +85,7 @@ class Satellite:
         self.oledOff = False;
 
         print("Satellite built succesfully");
-        self.oled.display(self.oled.bmpPage);
+        self.oled.display(self.oled.logoPage);
         time.sleep(self.mp.logoActionSecond);   
         self.oled.display(self.oled.shellAwait);
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
