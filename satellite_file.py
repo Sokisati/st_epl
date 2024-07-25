@@ -55,6 +55,8 @@ class Satellite:
         self.mp = MissionParameters()
         self.oled = OLED();
         self.oled.display(self.oled.logoPage);
+        time.sleep(self.oled.logoPage.actionSecond);
+        
         self.sensorPack = SensorPack(); 
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.gsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);

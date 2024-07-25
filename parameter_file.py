@@ -59,6 +59,7 @@ class MissionParameters:
         self.logoActionSecond = 2
         
         self.fontSize = 11
+        self.errorFontSize = 15;
         self.sensorPage0ActionSecond = 5
         self.sensorPage1ActionSecond = 8
      

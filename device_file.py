@@ -54,7 +54,6 @@ class TextPage(OLEDPage):
         self.font = ImageFont.truetype(self.fontSelection, self.fontSize)
         self.textLines = textLines
         
-    
     def drawText(self):
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
@@ -151,6 +150,32 @@ class SensorPage1(TextPage):
         image = self.getSensorImage()
         disp.image(image)
         disp.display()
+class ErrorPage(TextPage):
+    def __init__(self, fontSize, actionSecond):
+        super().__init__(fontSize, [], actionSecond)
+
+        
+    def getErrorImage(self):
+      
+        textLine = ["Yer istasyonu baglantısı kesildi","Yeniden baglanılmaya calısılıyor..."]
+
+        image = Image.new('1', (128, 64))
+        draw = ImageDraw.Draw(image)
+        
+        y = self.fontSize
+
+        for line in textLine:
+            draw.text((0, y), line, font=self.font, fill=255)
+            y += self.fontSize
+
+        return image
+
+    def display(self, disp):
+        image = self.getSensorImage()
+        disp.image(image)
+        disp.display()
+
+        
 
 class OLED:
     def __init__(self):
@@ -164,7 +189,7 @@ class OLED:
         self.shellAwait = BMPPage('logo_shell_await.bmp',1);
         self.gsAwait = BMPPage('logo_gs_await.bmp',1);
         self.gsSucces = BMPPage('logo_gs_succes.bmp',1);
-        self.gsError = BMPPage('gs_error.bmp',1);
+        self.gsError = ErrorPage(self.mp.errorFontSize,1);
         
         self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
         self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
