@@ -323,7 +323,7 @@ class Satellite:
                                              self.sensorPack.sensorDataPack.roll,
                                              self.sensorPack.sensorDataPack.pitch,
                                              self.sensorPack.sensorDataPack.yaw,
-                                             self.sensorPack.sensorDataPack.iot,
+                                             self.iot,
                                              self.shellAltitude,self.alarmSystem.getErrorCodeList
                                              (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
                                               self.sensorPack.sensorDataPack.lat))
