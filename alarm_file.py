@@ -91,7 +91,7 @@ class AlarmSystem:
          #2 and 3 for every status
          if shellAlt==-666:
             self.shellNotResponding(); 
-         if gpsLat == -666:
+         if gpsLat < 30 or gpsLat > 44:
             self.missionPayloadGpsDataError();
 
          if status==0 or status==1 or status==5:

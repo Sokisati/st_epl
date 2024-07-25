@@ -1,5 +1,4 @@
 
-
 class MissionParameters:
     def __init__(self):
         
@@ -56,15 +55,11 @@ class MissionParameters:
         
 
         #OLED
-        self.logoPath = 'logo.bmp'
-        self.logoShellAwaitPath = 'logo_shell_await.bmp'  
-        self.logoGsAwaitPath = 'logo_gs_await.bmp'
-        self.logoGsSuccesPath = 'logo_gs_succes.bmp'
-        
+
         self.logoActionSecond = 2
         
         self.fontSize = 11
-        self.sensorPage0ActionSecond = 8
+        self.sensorPage0ActionSecond = 5
         self.sensorPage1ActionSecond = 8
      
         

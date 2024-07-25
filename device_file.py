@@ -159,11 +159,12 @@ class OLED:
         self.disp.begin()
         self.disp.clear()
         self.disp.display()
-        self.logoPage = BMPPage(self.mp.logoPath,self.mp.logoActionSecond)
+        self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
         
-        self.shellAwait = BMPPage(self.mp.logoShellAwaitPath,1);
-        self.gsAwait = BMPPage(self.mp.logoGsAwaitPath,1);
-        self.gsSucces = BMPPage(self.mp.logoGsSuccesPath,1);
+        self.shellAwait = BMPPage('logo_shell_await.bmp',1);
+        self.gsAwait = BMPPage('logo_gs_await.bmp',1);
+        self.gsSucces = BMPPage('logo_gs_succes.bmp',1);
+        self.gsError = BMPPage('gs_error.bmp',1);
         
         self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
         self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
@@ -172,7 +173,6 @@ class OLED:
         self.counter = 0
         self.index = 0
     
- 
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,
                                iot,shellAltitude,errorCodeList):
         
@@ -189,8 +189,7 @@ class OLED:
                 self.index = 0
             else:
                 self.index += 1;
-
-        
+       
     def display(self, page):
         page.display(self.disp)
 
