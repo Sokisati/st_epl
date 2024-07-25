@@ -43,8 +43,12 @@ class Satellite:
                 print(f"Initial connection to {deviceName} timed out. Trying again.")
             except socket.error as e:
                 print(f"Initial connection to {deviceName} failed. Trying again: {e}")
+                sock.close()
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             except Exception as e:
                 print(f"Unexpected error when connecting to {deviceName}: {e}")
+                sock.close()
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             time.sleep(0.2)
     
     def __init__(self, groundStation, shell, cameraFilter):
