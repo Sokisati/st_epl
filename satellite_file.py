@@ -176,7 +176,7 @@ class Satellite:
                 self.tryConnectingAgain = True
                 print(f"Lost connection with shell: {e}")
         else:
-            print("Out of limit")
+            pass
        
         return responseShell;
 
