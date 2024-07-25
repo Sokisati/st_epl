@@ -36,31 +36,39 @@ class MPUSensor:
         self.gyroZBias = biasSum / numSamples
 
     def getRoll(self):
-        accelData = self.mpu.readAccelerometerMaster()
-        ax, ay, az = accelData
-        roll = math.atan2(ay, az) * (180 / math.pi)
-        return roll
+        try:
+            accelData = self.mpu.readAccelerometerMaster()
+            ax, ay, az = accelData
+            roll = math.atan2(ay, az) * (180 / math.pi)
+            return roll
+        except Exception as e:
+            print(f"Error reading roll: {e}")
+            return -666
 
     def getPitch(self):
-        accelData = self.mpu.readAccelerometerMaster()
-        ax, ay, az = accelData
-        pitch = math.atan2(-ax, math.sqrt(ay * ay + az * az)) * (180 / math.pi)
-        return pitch
+        try:
+            accelData = self.mpu.readAccelerometerMaster()
+            ax, ay, az = accelData
+            pitch = math.atan2(-ax, math.sqrt(ay * ay + az * az)) * (180 / math.pi)
+            return pitch
+        except Exception as e:
+            print(f"Error reading pitch: {e}")
+            return -666
 
     def getYaw(self):
-        gyroData = self.mpu.readGyroscopeMaster()
-        gyroZ = gyroData[2]
-        self.yaw += (gyroZ - self.gyroZBias) * self.dt
-        return self.yaw
+        try:
+            gyroData = self.mpu.readGyroscopeMaster()
+            gyroZ = gyroData[2]
+            self.yaw += (gyroZ - self.gyroZBias) * self.dt
+            return self.yaw
+        except Exception as e:
+            print(f"Error reading yaw: {e}")
+            return -666
     
     def test(self):
-
-        print("Roll");
-        print(self.getRoll());
-        print("Pitch");
-        print(self.getPitch());
-        print("Yaw");
-        print(self.getYaw());
+        print("Roll:", self.getRoll())
+        print("Pitch:", self.getPitch())
+        print("Yaw:", self.getYaw())
 
 class BMESensor:
     def __init__(self):
@@ -85,58 +93,81 @@ class BMESensor:
         time.sleep(0.4);
 
     def readSensorData(self):
-        if self.sensor.get_sensor_data():
-            self.temperature = self.sensor.data.temperature
-            self.pressure = self.sensor.data.pressure * 100  
-            self.humidity = self.sensor.data.humidity
-            self.altitude = 44330 * (1 - (self.pressure / 101325) ** (1 / 5.255)) 
-            return True
+        try:
+            if self.sensor.get_sensor_data():
+                self.temperature = self.sensor.data.temperature
+                self.pressure = self.sensor.data.pressure * 100  
+                self.humidity = self.sensor.data.humidity
+                self.altitude = 44330 * (1 - (self.pressure / 101325) ** (1 / 5.255)) 
+                return True
+        except Exception as e:
+            print(f"Error reading BME680 data: {e}")
         return False
 
     def getTemp(self):
-        if self.sensor.get_sensor_data():
-            return self.sensor.data.temperature
+        try:
+            if self.sensor.get_sensor_data():
+                return self.sensor.data.temperature
+        except Exception as e:
+            print(f"Error reading temperature: {e}")
+            return -666
 
     def getPressure(self):
-        if self.sensor.get_sensor_data():
-            return self.sensor.data.pressure * 100 
+        try:
+            if self.sensor.get_sensor_data():
+                return self.sensor.data.pressure * 100 
+        except Exception as e:
+            print(f"Error reading pressure: {e}")
+            return -666
 
     def getAlt(self):
-        if self.sensor.get_sensor_data():
-            pressure = self.getPressure();
-            return (44330 * (1 - (pressure / 101325) ** (1 / 5.255)))
+        try:
+            if self.sensor.get_sensor_data():
+                pressure = self.getPressure();
+                return (44330 * (1 - (pressure / 101325) ** (1 / 5.255)))
+        except Exception as e:
+            print(f"Error reading altitude: {e}")
+            return -666
     
     def test(self):
         if self.sensor.get_sensor_data():
-            print("temp:")
-            print(self.getTemp());
-            print("pressure:")
-            print(self.getPressure());
-            print("alt:")
-            print(self.getAlt());
+            print("temp:", self.getTemp())
+            print("pressure:", self.getPressure())
+            print("alt:", self.getAlt())
         else:
             print("error")
             
 class GPSSensor:
     def __init__(self):
-
-        gpsd.connect()
-        time.sleep(1);
+        try:
+            gpsd.connect()
+            time.sleep(1)
+        except Exception as e:
+            print(f"Error connecting to GPSD: {e}")
     
     def getLat(self):
-
-        packet = gpsd.get_current()
-        return packet.lat
+        try:
+            packet = gpsd.get_current()
+            return packet.lat
+        except Exception as e:
+            print(f"Error reading latitude: {e}")
+            return -666
 
     def getLong(self):
-
-        packet = gpsd.get_current()
-        return packet.lon
+        try:
+            packet = gpsd.get_current()
+            return packet.lon
+        except Exception as e:
+            print(f"Error reading longitude: {e}")
+            return -666
 
     def getAlt(self):
-
-        packet = gpsd.get_current()
-        return packet.alt
+        try:
+            packet = gpsd.get_current()
+            return packet.alt
+        except Exception as e:
+            print(f"Error reading altitude: {e}")
+            return -666
 
     def test(self):
         print("Latitude:", self.getLat())
@@ -145,41 +176,41 @@ class GPSSensor:
         
 class SensorDataPack:
     def __init__(self):
-        self.lat = 0;
-        self.long = 0;
-        self.alt = 0;
-        self.temperature = 0;
-        self.pressure = 0;
-        self.altitude = 0;
-        self.voltage = 0;
-        self.roll = 0;
-        self.pitch = 0;
-        self.yaw = 0;
+        self.lat = 0
+        self.long = 0
+        self.alt = 0
+        self.temperature = 0
+        self.pressure = 0
+        self.altitude = 0
+        self.voltage = 0
+        self.roll = 0
+        self.pitch = 0
+        self.yaw = 0
         self.dateAndTime = '1/1/2038-31:52:12'
         
 class SensorPack:
     
     def __init__(self):
-        self.bme = BMESensor();
-        self.gyro = MPUSensor();
-        self.gps = GPSSensor();
-        self.sensorDataPack = SensorDataPack();
+        self.bme = BMESensor()
+        self.gyro = MPUSensor()
+        self.gps = GPSSensor()
+        self.sensorDataPack = SensorDataPack()
     
     def test(self):
-        self.bme.test();
-        self.gyro.test();
-        self.gps.test();
+        self.bme.test()
+        self.gyro.test()
+        self.gps.test()
 
     def updateSensorDataPack(self):
-        self.sensorDataPack.lat = 0;
-        self.sensorDataPack.long = 0;
-        self.sensorDataPack.alt = 0;
-        self.sensorDataPack.roll = self.gyro.getRoll();
-        self.sensorDataPack.pitch = self.gyro.getPitch();
-        self.sensorDataPack.yaw = self.gyro.getYaw();
-        self.sensorDataPack.temperature = self.bme.getTemp();
-        self.sensorDataPack.pressure = self.bme.getPressure();
-        self.sensorDataPack.altitude = self.bme.getAlt();
+        self.sensorDataPack.lat = self.gps.getLat()
+        self.sensorDataPack.long = self.gps.getLong()
+        self.sensorDataPack.alt = self.gps.getAlt()
+        self.sensorDataPack.roll = self.gyro.getRoll()
+        self.sensorDataPack.pitch = self.gyro.getPitch()
+        self.sensorDataPack.yaw = self.gyro.getYaw()
+        self.sensorDataPack.temperature = self.bme.getTemp()
+        self.sensorDataPack.pressure = self.bme.getPressure()
+        self.sensorDataPack.altitude = self.bme.getAlt()
     
     def printDataPack(self):
         print(f"Latitude: {self.sensorDataPack.lat}")
@@ -193,4 +224,3 @@ class SensorPack:
         print(f"Pitch: {self.sensorDataPack.pitch}")
         print(f"Yaw: {self.sensorDataPack.yaw}")
         print(f"Date and Time: {self.sensorDataPack.dateAndTime}")
-        
