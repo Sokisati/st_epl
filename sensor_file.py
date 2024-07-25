@@ -171,9 +171,9 @@ class SensorPack:
         self.gps.test();
 
     def updateSensorDataPack(self):
-        self.sensorDataPack.lat = self.gps.getLat();
-        self.sensorDataPack.long = self.gps.getLong();
-        self.sensorDataPack.alt = self.gps.getAlt();
+        self.sensorDataPack.lat = 0;
+        self.sensorDataPack.long = 0;
+        self.sensorDataPack.alt = 0;
         self.sensorDataPack.roll = self.gyro.getRoll();
         self.sensorDataPack.pitch = self.gyro.getPitch();
         self.sensorDataPack.yaw = self.gyro.getYaw();
