@@ -157,7 +157,7 @@ class ErrorPage(TextPage):
         
     def getErrorImage(self):
       
-        textLine = ["Yer istasyonu baglantısı","kesildi"," ","Yeniden baglanılmaya","calısılıyor..."]
+        textLine = ["Yer istasyonu baglantısı","kesildi."," ","Yeniden baglanılmaya","calısılıyor..."]
 
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
