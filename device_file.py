@@ -77,14 +77,15 @@ class SensorPage0(TextPage):
         self.pressure = 0;
         self.altitude = 0;
         self.batteryVoltage = 0;
-        self.dateAndTime = 0
+        self.shellAltitude = 0;
     
-    def updateSensorInfo(self,temperature, pressure, altitude, batteryVoltage, dateAndTime):
+    def updateSensorInfo(self,temperature, pressure, altitude, batteryVoltage, shellAltitude):
         self.temperature = temperature;
         self.pressure = pressure;
         self.altitude = altitude;
         self.batteryVoltage = batteryVoltage;
-        self.dateAndTime = dateAndTime;
+        self.shellAltitude = shellAltitude;
+        
         
     def getSensorImage(self):
         self.pressure /= 100  
@@ -92,8 +93,7 @@ class SensorPage0(TextPage):
         line1 = "Basınç: " + str(self.pressure) + " kPa"
         line2 = "İrtifa: " + str(int(self.altitude)) + " m"
         line3 = "Batarya voltajı: " + str(self.batteryVoltage) + " V"
-        dateAndTimePart = self.dateAndTime.split('-')[1] if '-' in self.dateAndTime else self.dateAndTime
-        line4 = "Saat: " + dateAndTimePart
+        line4 = "Tasıyıcı irtifa: "+str(self.shellAltitude)+" m"
         
         sensorText = [line0, line1, line2, line3,line4]
         image = Image.new('1', (128, 64))
@@ -118,24 +118,25 @@ class SensorPage1(TextPage):
         self.yaw = 0;
         self.iot = 0;
         self.shellAltitude = 0
+        self.dateAndTime = 0;
     
-    def updateSensorInfo(self,roll, pitch, yaw, iot, shellAltitude,errorCodeList):
+    def updateSensorInfo(self,roll, pitch, yaw, iot, dateAndTime,errorCodeList):
         self.roll = roll;
         self.pitch = pitch;
         self.yaw = yaw;
         self.iot = iot;
-        self.shellAltitude = shellAltitude;
-        self.errorCodeList = errorCodeList
+        self.dateAndTime = dateAndTime;
+        self.errorCodeList = errorCodeList;
         
     def getSensorImage(self):
+        dateAndTimePart = self.dateAndTime.split('-')[1] if '-' in self.dateAndTime else self.dateAndTime
      
-        line0 = "R:" + str(int(self.roll)) + " P:" + str(int(self.pitch)) + " Y:"+ str(int(self.yaw))
+        line0 = "R: " + str(int(self.roll)) + " P: " + str(int(self.pitch)) + " Y: "+ str(int(self.yaw))
         line1 = "IoT: " + str(self.iot)
-        line2 = "Tasıyıcı irtifası: " + str(self.shellAltitude)
-        line3 = "Hata kodu: " + "N/A,N/A->" 
-        line4 = "N/A,"+str(self.errorCodeList[2])+","+str(self.errorCodeList[3])+",N/A"
+        line2 = "Saat: " + dateAndTimePart
+        line3 = "Hata kodu: " + "x,x,"+str(self.errorCodeList[2])+","+str(self.errorCodeList[3])+",x" 
         
-        sensorText = [line0, line1, line2, line3,line4]
+        sensorText = [line0, line1, line2, line3]
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
         y = 0
@@ -169,8 +170,9 @@ class OLED:
  
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,
                                iot,shellAltitude,errorCodeList):
-        self.sensorPage0.updateSensorInfo(temperature, pressure, altitude, batteryVoltage, dateAndTime)
-        self.sensorPage1.updateSensorInfo(roll,pitch,yaw,iot,shellAltitude,errorCodeList)
+        
+        self.sensorPage0.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,shellAltitude);
+        self.sensorPage1.updateSensorInfo(roll,pitch,yaw,iot,dateAndTime,errorCodeList);
         
         self.display(self.pageList[self.index])
         

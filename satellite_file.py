@@ -316,15 +316,16 @@ class Satellite:
             """
             
             self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                    self.sensorPack.sensorDataPack.pressure,
-                                    self.sensorPack.sensorDataPack.altitude,
-                                    self.sensorPack.sensorDataPack.voltage,
-                                    self.sensorPack.sensorDataPack.dateAndTime,
-                                    self.sensorPack.sensorDataPack.roll,
-                                    self.sensorPack.sensorDataPack.pitch,
-                                    self.sensorPack.sensorDataPack.yaw,
-                                    self.iot,self.shellAltitude,
-                                    self.alarmSystem.getErrorCodeList(self.sensorPack.sensorDataPack.altitude,
-                                    self.shellAltitude,self.sensorPack.sensorDataPack.lat))            
+                                             self.sensorPack.sensorDataPack.pressure,
+                                             self.sensorPack.sensorDataPack.altitude,
+                                             self.sensorPack.sensorDataPack.voltage,
+                                             self.sensorPack.sensorDataPack.dateAndTime,
+                                             self.sensorPack.sensorDataPack.roll,
+                                             self.sensorPack.sensorDataPack.pitch,
+                                             self.sensorPack.sensorDataPack.yaw,
+                                             self.sensorPack.sensorDataPack.iot,
+                                             self.shellAltitude,self.alarmSystem.getErrorCodeList
+                                             (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
+                                              self.sensorPack.sensorDataPack.lat))
 
             self.sleep();
