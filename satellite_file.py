@@ -1,3 +1,4 @@
+from re import S
 from device_file import *
 import socket
 import time
@@ -84,9 +85,13 @@ class Satellite:
         self.oledOff = False;
 
         print("Satellite built succesfully");
-                
+        self.oled.display(self.oled.bmpPage);
+        time.sleep(self.mp.logoActionSecond);   
+        self.oled.display(self.oled.shellAwait);
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
+        self.oled.display(self.oled.gsAwait);
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
+        self.oled.display(self.oled.gsSucces);
         #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self, parsed_data):

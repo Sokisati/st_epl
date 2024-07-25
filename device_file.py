@@ -159,11 +159,16 @@ class OLED:
         self.disp.begin()
         self.disp.clear()
         self.disp.display()
-        self.bmpPage = BMPPage(self.mp.logoPath,self.mp.bmpActionSecond)
+        self.logoPage = BMPPage(self.mp.logoPath,self.mp.logoActionSecond)
+        
+        self.shellAwait = BMPPage(self.mp.logoShellAwaitPath,1);
+        self.gsAwait = BMPPage(self.mp.logoGsAwaitPath,1);
+        self.gsSucces = BMPPage(self.mp.logoGsSuccesPath,1);
+        
         self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
         self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
         
-        self.pageList = [self.bmpPage,self.sensorPage0,self.sensorPage1];
+        self.pageList = [self.sensorPage0,self.sensorPage1];
         self.counter = 0
         self.index = 0
     
@@ -181,7 +186,7 @@ class OLED:
         if self.counter >= self.pageList[self.index].actionSecond:
             self.counter = 0
             if self.index + 1 == len(self.pageList):
-                self.index = 1
+                self.index = 0
             else:
                 self.index += 1;
 
