@@ -190,7 +190,7 @@ class Satellite:
         return self.toDelete+self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
 
     def groundStationReceiveData(self):
-        responseGs = [0, '0'] 
+        responseGs = [-666, '0'] 
 
         if self.gsConnectionError:
             try:
@@ -206,6 +206,7 @@ class Satellite:
             
             except Exception as e:
                 print(f"Error with reconnection with GS server: {e}")
+                
         else:
             try:
                 self.gsSocket.send(self.mp.command.encode())
@@ -314,30 +315,21 @@ class Satellite:
             
             self.sensorPack.updateSensorDataPack();
             
-            """
-            if self.alarmSystem.statusJudge.status==0:
+            if self.gsConnectionError==True:
+                self.oled.display(self.oled.gsError);
+            
+            else:
                 self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
                                                  self.sensorPack.sensorDataPack.pressure,
                                                  self.sensorPack.sensorDataPack.altitude,
                                                  self.sensorPack.sensorDataPack.voltage,
-                                                 self.alarmSystem.errorCodeList)
-                                               
-            elif not self.oledOff:
-                self.oled.cleanup();
-                self.oledOff = True
-            """
-            
-            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                             self.sensorPack.sensorDataPack.pressure,
-                                             self.sensorPack.sensorDataPack.altitude,
-                                             self.sensorPack.sensorDataPack.voltage,
-                                             self.sensorPack.sensorDataPack.dateAndTime,
-                                             self.sensorPack.sensorDataPack.roll,
-                                             self.sensorPack.sensorDataPack.pitch,
-                                             self.sensorPack.sensorDataPack.yaw,
-                                             self.iot,
-                                             self.shellAltitude,self.alarmSystem.getErrorCodeList
-                                             (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
-                                              self.sensorPack.sensorDataPack.lat))
+                                                 self.sensorPack.sensorDataPack.dateAndTime,
+                                                 self.sensorPack.sensorDataPack.roll,
+                                                 self.sensorPack.sensorDataPack.pitch,
+                                                 self.sensorPack.sensorDataPack.yaw,
+                                                 self.iot,
+                                                 self.shellAltitude,self.alarmSystem.getErrorCodeList
+                                                 (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
+                                                  self.sensorPack.sensorDataPack.lat))
 
             self.sleep();
