@@ -4,8 +4,18 @@ from mpu9250_jmdev.registers import *
 from mpu9250_jmdev.mpu_9250 import MPU9250
 import bme680
 import gpsd
+from datetime import datetime
 
 from parameter_file import MissionParameters
+
+class TimeSensor:
+    #I have NO idea why we even use an RTC module. RPI's own RTC works just fine...
+    def getDateAndTime():
+        currentTime = datetime.now()
+        return currentTime.strftime("%Y/%m/%d-%H:%M:%S")
+    def test():
+        currentTime = datetime.now()
+        print(currentTime.strftime("%Y/%m/%d-%H:%M:%S"))
 
 class MPUSensor:
     def __init__(self, dt=1.0):
@@ -197,12 +207,15 @@ class SensorPack:
         self.bme = BMESensor()
         self.gyro = MPUSensor()
         self.gps = GPSSensor()
+        self.time = TimeSensor()
         self.sensorDataPack = SensorDataPack()
+        
     
     def test(self):
         self.bme.test()
         self.gyro.test()
         self.gps.test()
+        self.time.test();
 
     def updateSensorDataPack(self):
         self.sensorDataPack.lat = self.gps.getLat()
@@ -214,6 +227,7 @@ class SensorPack:
         self.sensorDataPack.temperature = self.bme.getTemp()
         self.sensorDataPack.pressure = self.bme.getPressure()
         self.sensorDataPack.altitude = self.bme.getAlt()
+        self.sensorDataPack.dateAndTime = self.time.getDateAndTime();
     
     def printDataPack(self):
         print(f"Latitude: {self.sensorDataPack.lat}")

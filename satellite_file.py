@@ -292,10 +292,11 @@ class Satellite:
                 self.sendFilterInfoToFilter(infoList)
                 
     def sleep(self):
-        if not self.oled.off:
-            time.sleep(self.mp.sleepBetweenPackageDisplayOn);
-        else:
-            time.sleep(self.mp.sleepBetweenPackageDisplayOff);
+        currentTime = self.sensorPack.time.getDateAndTime();
+        updatedTime = self.sensorPack.time.getDateAndTime();
+        while currentTime==updatedTime:
+            updatedTime = self.sensorPack.time.getDateAndTime();
+        
                 
     def startMainLoop(self):
         while(True):
