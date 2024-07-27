@@ -17,7 +17,7 @@ class MissionParameters:
         
         
         self.shellConnectionAttemptLimit = 12
-        self.shellConnectionAttemptPeriod = 2
+        self.shellConnectionAttemptPeriod = 5
         self.cameraFilterAttemptLimit = 5
         
         self.command = "SEND_DATA\n"
