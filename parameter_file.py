@@ -16,7 +16,7 @@ class MissionParameters:
         self.cameraFilterTimeout=2
         
         self.sleepBetweenPackageDisplayOn = 0.52
-        self.sleepBetweenPackageDisplayOff = 0.80
+        self.sleepBetweenPackageDisplayOff = 0.65
         
         self.shellConnectionAttemptLimit = 12
         self.shellConnectionAttemptPeriod = 2
@@ -34,7 +34,7 @@ class MissionParameters:
 
         #alarm system
         self.minAltitudeForFlightAssumption=15
-        self.consecutiveNeeded=3
+        self.consecutiveNeeded=4
 
         self.detachmentCoefficent=1.5
         
