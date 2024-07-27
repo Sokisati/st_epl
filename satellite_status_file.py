@@ -9,9 +9,9 @@ class SatelliteStatusJudge:
         self.altitudeList = []
         
         self.avgDiff = 0;
+        self.avgDiffMemory = 0;
         self.avgCounter = 1;
         
-  
     def checkForLand(self):
         lastElementsList = self.altitudeList[-self.mp.lastElementsForLandAssumption:]
         maxAlt = max(lastElementsList);
@@ -27,13 +27,17 @@ class SatelliteStatusJudge:
         diff = abs(stAlt - shellAlt)
         self.avgDiff = (self.avgDiff * (self.avgCounter - 1) + diff) / self.avgCounter
         self.avgCounter += 1
+        
+        if self.avgCounter == 4:
+            self.avgDiffMemory = self.avgDiff
 
     def checkForDetachment(self,stAlt,shellAlt):
         
         altDifference = abs(stAlt-shellAlt)
-        minDifferenceNeeded = self.avgDiff*self.mp.detachmentCoefficent;
         
-        if altDifference >= minDifferenceNeeded:
+        #minDifferenceNeeded = self.avgDiff*self.mp.detachmentCoefficent;
+        
+        if altDifference >= self.mp.detachmentDifference:
             return True;
         else:
             return False;
@@ -45,7 +49,7 @@ class SatelliteStatusJudge:
         else:
             lastElements = self.altitudeList[-self.mp.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
-                if lastElements[i] > lastElements[i + 1]:
+                if lastElements[i] > lastElements[i + 1] + self.mp.measurementDeviation:
                     return False
         return True         
     
@@ -56,7 +60,7 @@ class SatelliteStatusJudge:
         else:
             lastElements = self.altitudeList[-self.mp.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
-                if lastElements[i] < lastElements[i + 1]:
+                if lastElements[i] + self.mp.measurementDeviation < lastElements[i + 1] :
                     return False
         return True
     

@@ -30,10 +30,14 @@ class MissionParameters:
         self.sensorInitialSleep = 2
 
 
-        #alarm system
+        #alarm system (be very careful about these parameters!)
+        self.measurementDeviation = 0.4
         self.minAltitudeForFlightAssumption=15
         self.consecutiveNeeded=4
 
+        self.detachmentDifference=10
+        self.detachmentMaxAvgDifferenceDifference=20 #it's not a typo
+        
         self.detachmentCoefficent=1.5
         
         self.maxLandDifference=5

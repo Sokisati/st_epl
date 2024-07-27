@@ -295,7 +295,7 @@ class Satellite:
         updatedTime = self.sensorPack.time.getDateAndTime();
         while currentTime==updatedTime:
             updatedTime = self.sensorPack.time.getDateAndTime();
-            time.sleep(0.05);
+            time.sleep(0.025); #to avoid excessive cpu usage
                   
     def startMainLoop(self):
         while(True):
