@@ -9,7 +9,7 @@ class SatelliteStatusJudge:
         self.altitudeList = []
         
         self.avgDiff = 0;
-        self.avgDiffMemory = 0;
+
         self.avgCounter = 1;
         
     def checkForLand(self):
@@ -21,27 +21,23 @@ class SatelliteStatusJudge:
             return True;
         else:
             return False;
-    
+
     def updateAltDiffAvg(self, stAlt, shellAlt):
         
         diff = abs(stAlt - shellAlt)
         self.avgDiff = (self.avgDiff * (self.avgCounter - 1) + diff) / self.avgCounter
         self.avgCounter += 1
-        
-        if self.avgCounter == 4:
-            self.avgDiffMemory = self.avgDiff
 
     def checkForDetachment(self,stAlt,shellAlt):
         
         altDifference = abs(stAlt-shellAlt)
-        
-        #minDifferenceNeeded = self.avgDiff*self.mp.detachmentCoefficent;
-        
+
         if altDifference >= self.mp.detachmentDifference:
             return True;
         else:
             return False;
 
+            
     def checkForAscent(self):
         if len(self.altitudeList) <= self.mp.consecutiveNeeded:
             return False
