@@ -302,19 +302,7 @@ class Satellite:
                 
     def startMainLoop(self):
         while(True):
-            
-            responseFromShell = self.shellConnectionProcedure();
-            self.groundStationConnectionProcedure(responseFromShell);
-            self.dataPackNumber+=1;
-            
-            """
-            if self.alarmSystem.statusJudge.status==3:
-                self.servo.detach();
-
-            if self.alarmSystem.statusJudge.status==5:
-                 self.alarmSystem.buzzer.onOffProcedure();                
-            """    
-            
+ 
             self.sensorPack.updateSensorDataPack();
             
             if self.gsConnectionError==True:
@@ -334,5 +322,18 @@ class Satellite:
                                                  (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
                                                   self.sensorPack.sensorDataPack.lat),
                                                   self.sensorPack.sensorDataPack.current)
+                
+            responseFromShell = self.shellConnectionProcedure();
+            self.groundStationConnectionProcedure(responseFromShell);
+            self.dataPackNumber+=1;
+            
+            """
+            if self.alarmSystem.statusJudge.status==3:
+                self.servo.detach();
+
+            if self.alarmSystem.statusJudge.status==5:
+                 self.alarmSystem.buzzer.onOffProcedure();                
+            """    
+           
 
             self.sleep();
