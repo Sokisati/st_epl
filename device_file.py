@@ -237,6 +237,12 @@ class OLED:
         self.off = True
         self.disp.clear()
         self.disp.display()
+        
+    def turnOn(self):
+        self.disp.begin()
+        self.disp.clear()
+        self.disp.display()
+        self.off = False;
 
 
 

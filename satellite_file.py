@@ -54,6 +54,7 @@ class Satellite:
     def __init__(self, groundStation, shell, cameraFilter):
         self.mp = MissionParameters()
         self.oled = OLED();
+        
         self.oled.display(self.oled.logoPage);
         time.sleep(self.oled.logoPage.actionSecond);
         
@@ -63,8 +64,6 @@ class Satellite:
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
         self.alarmSystem = AlarmSystem();
-        self.toDelete = 0;
-        self.toDeleteList = [10,11,10,9,10,11,10];
 
         #TODO: team number?
         self.teamNumber = 8;
@@ -296,17 +295,13 @@ class Satellite:
         updatedTime = self.sensorPack.time.getDateAndTime();
         while currentTime==updatedTime:
             updatedTime = self.sensorPack.time.getDateAndTime();
-        
-                
+            time.sleep(0.05);
+                  
     def startMainLoop(self):
         while(True):
  
             self.sensorPack.updateSensorDataPack();
-            
-            #DELETE WHEN YOU ARE DONE
-            if self.dataPackNumber>15:
-                self.oled.shutOff();
-            
+                      
             self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
                                                 self.sensorPack.sensorDataPack.pressure,
                                                 self.sensorPack.sensorDataPack.altitude,
@@ -323,6 +318,7 @@ class Satellite:
                 
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
+            
             self.dataPackNumber+=1;
             
             """

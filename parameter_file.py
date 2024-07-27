@@ -15,9 +15,6 @@ class MissionParameters:
         self.groundStationTimeout=6
         self.cameraFilterTimeout=2
         
-        #we don't use this method anymore
-        self.sleepBetweenPackageDisplayOn = 0.52
-        self.sleepBetweenPackageDisplayOff = 0.65
         
         self.shellConnectionAttemptLimit = 12
         self.shellConnectionAttemptPeriod = 2
@@ -60,7 +57,6 @@ class MissionParameters:
         
 
         #OLED
-
         self.logoActionSecond = 1
         
         self.fontSize = 11
