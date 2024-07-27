@@ -43,16 +43,13 @@ class SatelliteStatusJudge:
             return False;
 
     def checkForAscent(self):
-        print("cfa")
         if len(self.altitudeList) <= self.mp.consecutiveNeeded:
             return False
         else:
             lastElements = self.altitudeList[-self.mp.consecutiveNeeded:]
             print(lastElements)
             for i in range(len(lastElements) - 1):
-                print(lastElements[i])
-                print(lastElements[i+1]+self.mp.measurementDeviation)
-                if lastElements[i] > lastElements[i + 1] + self.mp.measurementDeviation:
+                if lastElements[i] + self.mp.measurementDeviation > lastElements[i + 1]:
                     return False
         return True         
     
@@ -63,7 +60,7 @@ class SatelliteStatusJudge:
         else:
             lastElements = self.altitudeList[-self.mp.consecutiveNeeded:]
             for i in range(len(lastElements) - 1):
-                if lastElements[i] + self.mp.measurementDeviation < lastElements[i + 1] :
+                if lastElements[i] < lastElements[i + 1] + self.mp.measurementDeviation :
                     return False
         return True
     
