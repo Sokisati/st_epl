@@ -33,7 +33,7 @@ class MissionParameters:
         #alarm system (be very careful about these parameters!)
         self.measurementDeviation = 3
         self.minAltitudeForFlightAssumption=25
-        self.consecutiveNeeded=4
+        self.consecutiveNeeded=3
 
         self.detachmentDifference=10
         self.detachmentMaxAvgDifferenceDifference=20 #it's not a typo
