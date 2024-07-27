@@ -5,6 +5,8 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 import bme680
 import gpsd
 
+from parameter_file import MissionParameters
+
 class MPUSensor:
     def __init__(self, dt=1.0):
         self.dt = dt  
@@ -21,9 +23,7 @@ class MPUSensor:
             mfs=AK8963_BIT_16,  
             mode=AK8963_MODE_C100HZ 
         )
-        time.sleep(0.4)
         self.mpu.configure()
-        time.sleep(0.4)
         self.calculateGyroBias()
 
     def calculateGyroBias(self):
@@ -90,7 +90,6 @@ class BMESensor:
         self.humidity = None
         self.altitude = None
         
-        time.sleep(0.4);
 
     def readSensorData(self):
         try:
@@ -141,7 +140,6 @@ class GPSSensor:
     def __init__(self):
         try:
             gpsd.connect()
-            time.sleep(1)
         except Exception as e:
             print(f"Error connecting to GPSD: {e}")
     
@@ -176,6 +174,8 @@ class GPSSensor:
         
 class SensorDataPack:
     def __init__(self):
+        self.mp = MissionParameters()
+        
         self.lat = 0
         self.long = 0
         self.alt = 0
@@ -187,7 +187,9 @@ class SensorDataPack:
         self.pitch = 0
         self.yaw = 0
         self.dateAndTime = '1/1/2038-31:52:12'
-        self.current = 0;
+        self.current = 0
+        
+        time.sleep(self.mp.sensorInitialSleep);
         
 class SensorPack:
     

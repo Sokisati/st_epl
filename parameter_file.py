@@ -28,6 +28,10 @@ class MissionParameters:
         self.teamNumber = 666
 
 
+        #sensor
+        self.sensorInitialSleep = 2
+
+
         #alarm system
         self.minAltitudeForFlightAssumption=15
         self.consecutiveNeeded=3
