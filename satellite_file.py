@@ -68,6 +68,9 @@ class Satellite:
         #TODO: team number?
         self.teamNumber = 8;
     
+        self.toDelete = 0;
+        self.toDeleteList = [10,11,9,11,10,9,10];
+
         self.filePath = 'telemetry_data.txt'
 
         self.groundStation = groundStation;
@@ -233,11 +236,16 @@ class Satellite:
         
         responseGs = self.groundStationReceiveData();
         
-        if len(responseShell)==2:
-            shellAltitude = responseShell[0];
-            shellPressure = responseShell[1]*100;
+        shellAltitude = responseShell[0];
+        shellPressure = responseShell[1]*100;
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
+
+        stAltitude = self.artificalSatAltFunction();
+        shellAltitude = self.artificalShellAltFunction();
+
+        if self.dataPackNumber == 35:
+            self.toDelete = 20;
 
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,
                                                                self.sensorPack.sensorDataPack.lat)
@@ -257,7 +265,7 @@ class Satellite:
             abs(stAltitude-shellAltitude),  
             self.alarmSystem.statusJudge.getDescentSpeed(), 
             self.sensorPack.sensorDataPack.temperature, 
-            0, 
+            self.sensorPack.sensorDataPack.voltage, 
             self.sensorPack.sensorDataPack.lat,  
             self.sensorPack.sensorDataPack.long,  
             self.sensorPack.sensorDataPack.alt,  
