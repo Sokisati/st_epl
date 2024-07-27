@@ -47,7 +47,6 @@ class SatelliteStatusJudge:
             return False
         else:
             lastElements = self.altitudeList[-self.mp.consecutiveNeeded:]
-            print(lastElements)
             for i in range(len(lastElements) - 1):
                 if lastElements[i] + self.mp.measurementDeviation > lastElements[i + 1]:
                     return False
