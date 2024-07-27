@@ -233,7 +233,6 @@ class Satellite:
         
         responseGs = self.groundStationReceiveData();
         
-
         if len(responseShell)==2:
             shellAltitude = responseShell[0];
             shellPressure = responseShell[1]*100;
