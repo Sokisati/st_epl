@@ -251,7 +251,7 @@ class Satellite:
             self.dataPackNumber,
             self.alarmSystem.statusJudge.status,  
             self.errorCodeList,
-            "19/1/2038-12/11/19", 
+            self.sensorPack.sensorDataPack.dateAndTime, 
             self.sensorPack.sensorDataPack.pressure,  
             shellPressure, 
             stAltitude, 
