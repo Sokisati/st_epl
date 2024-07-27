@@ -15,7 +15,7 @@ class MissionParameters:
         self.groundStationTimeout=6
         self.cameraFilterTimeout=2
         
-        self.sleepBetweenPackageDisplayOn = 0.55
+        self.sleepBetweenPackageDisplayOn = 0.52
         self.sleepBetweenPackageDisplayOff = 0.90
         
         self.shellConnectionAttemptLimit = 12

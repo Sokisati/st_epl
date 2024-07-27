@@ -304,7 +304,7 @@ class Satellite:
             
             #DELETE WHEN YOU ARE DONE
             if self.dataPackNumber>15:
-                self.oled.off();
+                self.oled.shutOff();
             
             self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
                                                 self.sensorPack.sensorDataPack.pressure,

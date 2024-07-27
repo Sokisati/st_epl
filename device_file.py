@@ -233,7 +233,7 @@ class OLED:
         else:
             pass
 
-    def off(self):
+    def shutOff(self):
         self.off = True
         self.disp.clear()
         self.disp.display()
