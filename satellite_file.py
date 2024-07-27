@@ -332,6 +332,7 @@ class Satellite:
                                                  self.iot,
                                                  self.shellAltitude,self.alarmSystem.getErrorCodeList
                                                  (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
-                                                  self.sensorPack.sensorDataPack.lat))
+                                                  self.sensorPack.sensorDataPack.lat),
+                                                  self.sensorPack.sensorDataPack.current)
 
             self.sleep();

@@ -187,6 +187,7 @@ class SensorDataPack:
         self.pitch = 0
         self.yaw = 0
         self.dateAndTime = '1/1/2038-31:52:12'
+        self.current = 0;
         
 class SensorPack:
     
