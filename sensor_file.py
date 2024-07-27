@@ -10,10 +10,10 @@ from parameter_file import MissionParameters
 
 class TimeSensor:
     #I have NO idea why we even use an RTC module. RPI's own RTC works just fine...
-    def getDateAndTime():
+    def getDateAndTime(self):
         currentTime = datetime.now()
         return currentTime.strftime("%Y/%m/%d-%H:%M:%S")
-    def test():
+    def test(self):
         currentTime = datetime.now()
         print(currentTime.strftime("%Y/%m/%d-%H:%M:%S"))
 
