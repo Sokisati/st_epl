@@ -84,7 +84,7 @@ class SatelliteStatusJudge:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
-            if self.altitudeList[-1] >= self.mp.minAltitudeForFlightAssumption and self.checkForAscent()==True:
+            if ((self.altitudeList[-1] >= self.mp.minAltitudeForFlightAssumption) and (self.checkForAscent()==True)):
                 self.status = 1
         
         elif self.status == 1:

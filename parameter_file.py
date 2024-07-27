@@ -31,8 +31,8 @@ class MissionParameters:
 
 
         #alarm system (be very careful about these parameters!)
-        self.measurementDeviation = 1
-        self.minAltitudeForFlightAssumption=200
+        self.measurementDeviation = 3
+        self.minAltitudeForFlightAssumption=25
         self.consecutiveNeeded=4
 
         self.detachmentDifference=10
