@@ -187,6 +187,8 @@ class OLED:
         self.disp.begin()
         self.disp.clear()
         self.disp.display()
+        self.off = False;        
+
         self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
         
         self.shellAwait = BMPPage('logo_shell_await.bmp',1);
@@ -202,26 +204,37 @@ class OLED:
         self.index = 0
     
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,
-                               iot,shellAltitude,errorCodeList,batteryCurrent):
-        
-        self.sensorPage0.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,shellAltitude);
-        self.sensorPage1.updateSensorInfo(roll,pitch,yaw,iot,dateAndTime,errorCodeList,batteryCurrent);
-        
-        self.display(self.pageList[self.index])
-        
-        self.counter += 1
+                               iot,shellAltitude,errorCodeList,batteryCurrent,gsConnectionError):
+        if not self.off:
+            if gsConnectionError==False:            
 
-        if self.counter >= self.pageList[self.index].actionSecond:
-            self.counter = 0
-            if self.index + 1 == len(self.pageList):
-                self.index = 0
+                self.sensorPage0.updateSensorInfo(temperature,pressure,altitude,batteryVoltage,shellAltitude);
+                self.sensorPage1.updateSensorInfo(roll,pitch,yaw,iot,dateAndTime,errorCodeList,batteryCurrent);
+        
+                self.display(self.pageList[self.index])
+        
+                self.counter += 1
+
+                if self.counter >= self.pageList[self.index].actionSecond:
+                    self.counter = 0
+                    if self.index + 1 == len(self.pageList):
+                        self.index = 0
+                    else:
+                        self.index += 1;
+        
             else:
-                self.index += 1;
+                self.display(self.gsError);
+        else:
+            pass
        
     def display(self, page):
-        page.display(self.disp)
+        if not self.off:
+            page.display(self.disp)
+        else:
+            pass
 
-    def cleanup(self):
+    def off(self):
+        self.off = True
         self.disp.clear()
         self.disp.display()
 

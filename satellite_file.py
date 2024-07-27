@@ -93,9 +93,6 @@ class Satellite:
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandListSent = False;
-        
-
-        self.oledOff = False;
 
         print("Satellite built succesfully");
         self.oled.display(self.oled.shellAwait);
@@ -295,7 +292,7 @@ class Satellite:
                 self.sendFilterInfoToFilter(infoList)
                 
     def sleep(self):
-        if not self.oledOff:
+        if not self.oled.off:
             time.sleep(self.mp.sleepBetweenPackageDisplayOn);
         else:
             time.sleep(self.mp.sleepBetweenPackageDisplayOff);
@@ -305,23 +302,23 @@ class Satellite:
  
             self.sensorPack.updateSensorDataPack();
             
-            if self.gsConnectionError==True:
-                self.oled.display(self.oled.gsError);
+            #DELETE WHEN YOU ARE DONE
+            if self.dataPackNumber>15:
+                self.oled.off();
             
-            else:
-                self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                                 self.sensorPack.sensorDataPack.pressure,
-                                                 self.sensorPack.sensorDataPack.altitude,
-                                                 self.sensorPack.sensorDataPack.voltage,
-                                                 self.sensorPack.sensorDataPack.dateAndTime,
-                                                 self.sensorPack.sensorDataPack.roll,
-                                                 self.sensorPack.sensorDataPack.pitch,
-                                                 self.sensorPack.sensorDataPack.yaw,
-                                                 self.iot,
-                                                 self.shellAltitude,self.alarmSystem.getErrorCodeList
-                                                 (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
-                                                  self.sensorPack.sensorDataPack.lat),
-                                                  self.sensorPack.sensorDataPack.current)
+            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                                self.sensorPack.sensorDataPack.pressure,
+                                                self.sensorPack.sensorDataPack.altitude,
+                                                self.sensorPack.sensorDataPack.voltage,
+                                                self.sensorPack.sensorDataPack.dateAndTime,
+                                                self.sensorPack.sensorDataPack.roll,
+                                                self.sensorPack.sensorDataPack.pitch,
+                                                self.sensorPack.sensorDataPack.yaw,
+                                                self.iot,
+                                                self.shellAltitude,self.alarmSystem.getErrorCodeList
+                                                (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
+                                                self.sensorPack.sensorDataPack.lat),
+                                                self.sensorPack.sensorDataPack.current,self.gsConnectionError)
                 
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
