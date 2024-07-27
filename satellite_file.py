@@ -310,9 +310,7 @@ class Satellite:
                                                 self.sensorPack.sensorDataPack.pitch,
                                                 self.sensorPack.sensorDataPack.yaw,
                                                 self.iot,
-                                                self.shellAltitude,self.alarmSystem.getErrorCodeList
-                                                (self.sensorPack.sensorDataPack.altitude,self.shellAltitude,
-                                                self.sensorPack.sensorDataPack.lat),
+                                                self.shellAltitude,self.alarmSystem.errorCodeList,
                                                 self.sensorPack.sensorDataPack.current,self.gsConnectionError)
                 
             responseFromShell = self.shellConnectionProcedure();

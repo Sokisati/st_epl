@@ -84,28 +84,23 @@ class SatelliteStatusJudge:
             self.updateAltDiffAvg(stAlt,shellAlt);
         
         if self.status == 0:
-            print(0);
             if self.altitudeList[-1] >= self.mp.minAltitudeForFlightAssumption and self.checkForAscent()==True:
                 self.status = 1
         
         elif self.status == 1:
-            print(1);
             if self.checkForDescent():
                 self.status = 2
         
         elif self.status == 2:
-            print(2);
             if self.altitudeList[-1] < 400:
                 self.status = 3
         
         elif self.status == 3:
-            print(3);
             detached = self.checkForDetachment(stAlt,shellAlt)
             if detached == True:
                 self.status = 4;            
 
         elif self.status == 4:
-            print(4);
             if self.altitudeList[-1] < self.mp.minAltitudeForLandAssumption or self.checkForLand()==True:
                 self.status = 5
 
