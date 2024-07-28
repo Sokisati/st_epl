@@ -207,7 +207,7 @@ class Satellite:
             return 700 - (6.67*x) + add
 
     def groundStationReceiveData(self):
-        responseGs = [-666, '0',0] 
+        responseGs = [-666,'0',0] 
 
         if self.gsConnectionError:
             try:
@@ -256,10 +256,10 @@ class Satellite:
         shellPressure = responseShell[1]*100;
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
-
+        """
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
-
+        """
         if self.dataPackNumber == 35:
             self.toDelete = 20;
 
