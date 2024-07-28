@@ -70,9 +70,6 @@ class Satellite:
         
         self.commandToSend = "SEND_DATA\n"
         self.missionEndCounter = 0;
-    
-        self.toDelete = 0;
-        self.toDeleteList = [10,11,9,11,10,9,10];
 
         self.filePath = 'telemetry_data.txt'
 
@@ -186,12 +183,23 @@ class Satellite:
 
     def artificalSatAltFunction(self):
         x = self.dataPackNumber;
-        return (70*x) - (7/4)*(x ** 2);
-
+        
+        if x<20:
+            return x*35
+        elif x>=20 and x<=45:
+            return 940 - (12*x)
+        else:
+            return (1225 - 11.67*x)
+        
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
-        listLength = len(self.toDeleteList);
-        return self.toDelete+self.toDeleteList[x%listLength]+self.artificalSatAltFunction();
+        
+        if x<20:
+            return x*35
+        elif x>=20 and x<=45:
+            return 940 - (12*x)
+        else:
+            return (1225 - 11.67*x)
 
     def groundStationReceiveData(self):
         responseGs = [-666, '0'] 
