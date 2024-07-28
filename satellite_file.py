@@ -325,6 +325,7 @@ class Satellite:
         else:
             print(f"No process named '{processName}' found.")
             
+        print("Nice serving with you lads o7");
         exit()
                   
     def startMainLoop(self):
@@ -362,6 +363,8 @@ class Satellite:
                  self.alarmSystem.buzzer.onOffProcedure();                
             """    
            
+            if self.missionEndCounter==30:
+                self.endMission();
             
             self.sleep();
 
