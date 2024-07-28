@@ -133,7 +133,9 @@ class BMESensor:
         try:
             if self.sensor.get_sensor_data():
                 pressure = self.getPressure();
+                print((44330 * (1 - (pressure / 101325) ** (1 / 5.255))))
                 return (44330 * (1 - (pressure / 101325) ** (1 / 5.255)))
+            
         except Exception as e:
             print(f"Error reading altitude: {e}")
             return -666
@@ -219,6 +221,8 @@ class SensorPack:
         
         for i in range(self.mp.offsetSampleSize):
             self.altitudeOffset += self.bme.getAlt()/(i+1);
+    
+        print(self.altitudeOffset);
 
     def test(self):
         self.bme.test()

@@ -37,7 +37,6 @@ class SatelliteStatusJudge:
         else:
             return False;
 
-            
     def checkForAscent(self):
         if len(self.altitudeList) <= self.mp.consecutiveNeeded:
             return False
