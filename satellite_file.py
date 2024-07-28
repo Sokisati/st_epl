@@ -4,6 +4,9 @@ import socket
 import time
 import json
 from sensor_file import *
+import psutil
+import os
+import signal
 
 class DataPack:
     def __init__(self, packetNumber, stStatus, errorCodeList, transmissionTime, satellitePressure, shellPressure,satelliteAltitude,shellAltitude,altitudeDifference,
@@ -64,9 +67,9 @@ class Satellite:
         self.cameraFilterSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         
         self.alarmSystem = AlarmSystem();
-
-        #TODO: team number?
-        self.teamNumber = 8;
+        
+        self.commandToSend = "SEND_DATA\n"
+        self.missionEndCounter = 0;
     
         self.toDelete = 0;
         self.toDeleteList = [10,11,9,11,10,9,10];
@@ -90,7 +93,7 @@ class Satellite:
         self.gsConnectionError = False;
         
         self.iot = 0;
-        self.shellAltitude = 0
+        self.shellAltitude = 0;
         
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
@@ -169,7 +172,7 @@ class Satellite:
                     
         elif not self.tryConnectingAgain:
             try:
-                self.shellSocket.send(self.mp.command.encode());
+                self.shellSocket.send(self.commandToSend.encode());
                 rawData = self.shellSocket.recv(1024)
                 responseShell = self.splitData(rawData);
 
@@ -201,7 +204,7 @@ class Satellite:
 
                 self.gsConnectionError = False
 
-                self.gsSocket.send(self.mp.command.encode())
+                self.gsSocket.send(self.commandToSend.encode())
                 raw_response = self.gsSocket.recv(1024).decode()
                 responseGs = json.loads(raw_response)
             
@@ -210,7 +213,7 @@ class Satellite:
                 
         else:
             try:
-                self.gsSocket.send(self.mp.command.encode())
+                self.gsSocket.send(self.commandToSend.encode())
                 raw_response = self.gsSocket.recv(1024).decode()
                 responseGs = json.loads(raw_response)
             
@@ -274,7 +277,7 @@ class Satellite:
             self.sensorPack.sensorDataPack.yaw, 
             responseGs[1], 
             responseGs[0],
-            self.teamNumber
+            self.mp.teamNumber
         )
         
         """
@@ -303,10 +306,35 @@ class Satellite:
         while currentTime==updatedTime:
             updatedTime = self.sensorPack.time.getDateAndTime();
             time.sleep(0.025); #to avoid excessive cpu usage
+    
+    def prepareToEndMission(self):
+        self.oled.shutOff();
+        self.commandToSend = "END_MISSION\n"
+        
+    def endMission(self):
+        processName = "camera_epl.py"
+
+        for proc in psutil.process_iter(['pid', 'name']):
+            if proc.info['name'] == processName:
+                pid = proc.info['pid']
+                print(f"Found process '{processName}' with PID {pid}")
+        
+                os.kill(pid, signal.SIGINT)
+                print(f"Sent SIGINT to process '{processName}' with PID {pid}")
+                break
+        else:
+            print(f"No process named '{processName}' found.")
+            
+        exit()
                   
     def startMainLoop(self):
         while(True):
- 
+
+            if self.alarmSystem.statusJudge.status==5:
+                self.missionEndCounter+=1
+                if self.missionEndCounter==30:
+                    self.prepareToEndMission();
+
             self.sensorPack.updateSensorDataPack();
                       
             self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
@@ -334,5 +362,7 @@ class Satellite:
                  self.alarmSystem.buzzer.onOffProcedure();                
             """    
            
-
+            
             self.sleep();
+
+

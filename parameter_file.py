@@ -19,8 +19,6 @@ class MissionParameters:
         self.shellConnectionAttemptPeriod = 6
         self.cameraFilterAttemptLimit = 5
         
-        self.command = "SEND_DATA\n"
-        
 
         #teknofest
         self.teamNumber = 666
