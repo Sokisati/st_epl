@@ -178,7 +178,7 @@ class ErrorPage(TextPage):
         disp.image(image)
         disp.display()
 
-        
+       
 
 class OLED:
     def __init__(self):
