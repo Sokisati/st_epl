@@ -6,7 +6,7 @@ import bme680
 import gpsd
 from datetime import datetime
 
-#from parameter_file import MissionParameters
+from parameter_file import MissionParameters
 
 class TimeSensor:
     #I have NO idea why we even use an RTC module. RPI's own RTC works just fine...
@@ -184,7 +184,7 @@ class GPSSensor:
         
 class SensorDataPack:
     def __init__(self):
-        #self.mp = MissionParameters()
+        self.mp = MissionParameters()
         
         self.lat = 0
         self.long = 0
@@ -241,10 +241,4 @@ class SensorPack:
         print(f"Yaw: {self.sensorDataPack.yaw}")
         print(f"Date and Time: {self.sensorDataPack.dateAndTime}")
 
-
-sensorPack = SensorPack()
-
-while True:
-    sensorPack.test();
-    time.sleep(1);
 
