@@ -221,6 +221,7 @@ class SensorPack:
         
         for i in range(self.mp.offsetSampleSize):
             self.altitudeOffset += self.bme.getAlt()/(i+1);
+            time.sleep(0.2)
     
         print(self.altitudeOffset);
 
