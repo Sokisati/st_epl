@@ -197,7 +197,10 @@ class Satellite:
         if x<20:
             return x*35
         elif x>=20 and x<=45:
-            return 940 - (12*x)
+            if self.alarmSystem.statusJudge.status==3:
+               return 980 - (12*x) 
+            else:
+                return 940 - (12*x)
         else:
             return (1225 - 11.67*x)
 
