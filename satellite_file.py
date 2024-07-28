@@ -322,18 +322,19 @@ class Satellite:
         self.commandToSend = "END_MISSION\n"
         
     def endMission(self):
-        processName = "camera_epl.py"
+        process_name = "python3"
+        target_script = "camera_epl.py"
 
-        for proc in psutil.process_iter(['pid', 'name']):
-            if proc.info['name'] == processName:
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            if proc.info['name'] == process_name and target_script in proc.info['cmdline']:
                 pid = proc.info['pid']
-                print(f"Found process '{processName}' with PID {pid}")
+                print(f"Found process '{target_script}' with PID {pid}")
         
                 os.kill(pid, signal.SIGINT)
-                print(f"Sent SIGINT to process '{processName}' with PID {pid}")
+                print(f"Sent SIGINT to process '{target_script}' with PID {pid}")
                 break
         else:
-            print(f"No process named '{processName}' found.")
+            print(f"No process named '{target_script}' found.")
             
         print("Nice serving with you lads o7");
         exit()
