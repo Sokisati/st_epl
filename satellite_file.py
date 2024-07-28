@@ -1,4 +1,3 @@
-from re import S
 from device_file import *
 import socket
 import time

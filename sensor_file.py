@@ -158,7 +158,7 @@ class GPSSensor:
             packet = gpsd.get_current()
             return packet.lat
         except Exception as e:
-            print(f"Error reading latitude: {e}")
+            
             return -666
 
     def getLong(self):
@@ -166,7 +166,7 @@ class GPSSensor:
             packet = gpsd.get_current()
             return packet.lon
         except Exception as e:
-            print(f"Error reading longitude: {e}")
+          
             return -666
 
     def getAlt(self):
@@ -174,7 +174,7 @@ class GPSSensor:
             packet = gpsd.get_current()
             return packet.alt
         except Exception as e:
-            print(f"Error reading altitude: {e}")
+         
             return -666
 
     def test(self):
