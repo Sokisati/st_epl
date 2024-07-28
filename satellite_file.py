@@ -201,7 +201,7 @@ class Satellite:
         elif x>=20 and x<=45:
             return 940 - (12*x) + add
         else:
-            return 1225 - (11.67*x) + add
+            return 700 - (6.67*x) + add
 
     def groundStationReceiveData(self):
         responseGs = [-666, '0'] 
