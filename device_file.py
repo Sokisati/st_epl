@@ -18,11 +18,12 @@ class Servo:
         factory = PiGPIOFactory();
         self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
         self.servo.angle = self.mp.servoDefaultAngle;
-        self.failedAttemptCounter=1;
+        self.failedAttemptCounter=0;
     
     def detach(self):
-        if (not self.failedAttemptCounter==1) and (self.failedAttemptCounter%mp.servoDetachResetPeriod==0):
+        if (not self.failedAttemptCounter==0) and (self.failedAttemptCounter%mp.servoDetachResetPeriod==0):
             self.servo.angle = self.mp.servoDefaultAngle
+            return
             
         self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter*self.mp.servoDetachOperator);
         self.failedAttemptCounter+=1;
@@ -179,7 +180,6 @@ class ErrorPage(TextPage):
         disp.display()
 
        
-
 class OLED:
     def __init__(self):
         self.mp = MissionParameters();

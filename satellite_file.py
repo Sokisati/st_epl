@@ -207,7 +207,7 @@ class Satellite:
             return 700 - (6.67*x) + add
 
     def groundStationReceiveData(self):
-        responseGs = [-666, '0'] 
+        responseGs = [-666, '0',0] 
 
         if self.gsConnectionError:
             try:
@@ -236,7 +236,7 @@ class Satellite:
 
    
         if not isinstance(responseGs, list) or len(responseGs) < 2:
-            responseGs = [0, '0'] 
+            responseGs = [0, '0',0] 
 
         return responseGs
 
@@ -293,9 +293,11 @@ class Satellite:
             self.mp.teamNumber
         )
         
-
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
+        
+        if responseGs[2]==1:
+            self.servo.detach();
 
         self.logDataPack(dataPack);
         
@@ -318,7 +320,7 @@ class Satellite:
         updatedTime = self.sensorPack.time.getDateAndTime();
         while currentTime==updatedTime:
             updatedTime = self.sensorPack.time.getDateAndTime();
-            time.sleep(0.025); #to avoid excessive cpu usage
+            time.sleep(0.01); #to avoid excessive cpu usage
     
     def prepareToEndMission(self):
         self.oled.shutOff();

@@ -204,12 +204,20 @@ class SensorDataPack:
 class SensorPack:
     
     def __init__(self):
+        self.mp = MissionParameters()
         self.bme = BMESensor()
         self.gyro = MPUSensor()
         self.gps = GPSSensor()
         self.time = TimeSensor()
         self.sensorDataPack = SensorDataPack()
         
+        self.altitudeOffset = 0
+    
+    def calcOffset(self):
+        
+        for i in range(self.mp.offsetSampleSize):
+            self.altitudeOffset += self.bme.getAlt()/(i+1);
+
     def test(self):
         self.bme.test()
         self.gyro.test()
@@ -225,7 +233,7 @@ class SensorPack:
         self.sensorDataPack.yaw = self.gyro.getYaw()
         self.sensorDataPack.temperature = self.bme.getTemp()
         self.sensorDataPack.pressure = self.bme.getPressure()
-        self.sensorDataPack.altitude = self.bme.getAlt()
+        self.sensorDataPack.altitude = self.bme.getAlt() - self.altitudeOffset
         self.sensorDataPack.dateAndTime = self.time.getDateAndTime();
     
     def printDataPack(self):
