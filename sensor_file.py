@@ -212,6 +212,8 @@ class SensorPack:
         self.sensorDataPack = SensorDataPack()
         
         self.altitudeOffset = 0
+        
+        self.calcOffset();
     
     def calcOffset(self):
         
