@@ -7,6 +7,7 @@ from sensor_file import *
 import psutil
 import os
 import signal
+import subprocess
 
 class DataPack:
     def __init__(self, packetNumber, stStatus, errorCodeList, transmissionTime, satellitePressure, shellPressure,satelliteAltitude,shellAltitude,altitudeDifference,
@@ -95,6 +96,8 @@ class Satellite:
         self.errorCodeList = [0,0,0,0,0];
         self.filterCommandList = [];
         self.filterCommandListSent = False;
+        cameraFilterPath = '/path/to/camera_filter_epl/camera_filter_epl.py'
+        subprocess.Popen(['python3', cameraFilterPath])
 
         print("Satellite built succesfully");
         self.oled.display(self.oled.shellAwait);
