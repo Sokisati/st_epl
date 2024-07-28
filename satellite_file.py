@@ -193,16 +193,15 @@ class Satellite:
         
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
-        
+        add = 0
+        if self.alarmSystem.statusJudge.status==3:
+            add = 120
         if x<20:
-            return x*35
+            return x*35 + add
         elif x>=20 and x<=45:
-            if self.alarmSystem.statusJudge.status==3:
-               return 980 - (12*x) 
-            else:
-                return 940 - (12*x)
+            return 940 - (12*x) + add
         else:
-            return (1225 - 11.67*x)
+            return 1225 - (11.67*x) + add
 
     def groundStationReceiveData(self):
         responseGs = [-666, '0'] 

@@ -93,7 +93,9 @@ class SatelliteStatusJudge:
         elif self.status == 3:
             detached = self.checkForDetachment(stAlt,shellAlt)
             if detached == True:
-                self.status = 4;            
+                self.status = 4; 
+            elif self.checkForLand()==True:
+                self.status = 5
 
         elif self.status == 4:
             if self.altitudeList[-1] < self.mp.minAltitudeForLandAssumption or self.checkForLand()==True:
