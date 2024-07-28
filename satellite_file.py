@@ -56,7 +56,7 @@ class Satellite:
             time.sleep(0.2)
     
     def __init__(self, groundStation, shell, cameraFilter):
-        cameraFilterPath = '/path/to/camera_filter_epl/camera_filter_epl.py'
+        cameraFilterPath = '/home/glados/camera_filter_epl/camera_filter_epl.py'
         subprocess.Popen(['python3', cameraFilterPath])
         self.mp = MissionParameters()
         self.oled = OLED();
