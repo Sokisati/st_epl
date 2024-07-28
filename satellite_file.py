@@ -102,7 +102,7 @@ class Satellite:
         self.oled.display(self.oled.gsAwait);
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
         self.oled.display(self.oled.gsSucces);
-        #self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
+        self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
 
     def splitData(self, parsed_data):
         try:
@@ -290,11 +290,11 @@ class Satellite:
             self.mp.teamNumber
         )
         
-        """
+
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
-        """
-        #self.logDataPack(dataPack);
+
+        self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
             
@@ -321,7 +321,7 @@ class Satellite:
         self.oled.shutOff();
         self.commandToSend = "END_MISSION\n"
         
-    def endMission(self):
+    def killCameraProgram(self):
         process_name = "python3"
         target_script = "camera_epl.py"
 
@@ -335,7 +335,10 @@ class Satellite:
                 break
         else:
             print(f"No process named '{target_script}' found.")
-            
+        
+    def endMission(self):
+
+        self.killCameraProgram();    
         print("Nice serving with you lads o7");
         exit()
                   
@@ -366,13 +369,12 @@ class Satellite:
             
             self.dataPackNumber+=1;
             
-            """
             if self.alarmSystem.statusJudge.status==3:
                 self.servo.detach();
-
+            """
             if self.alarmSystem.statusJudge.status==5:
                  self.alarmSystem.buzzer.onOffProcedure();                
-            """    
+            """
            
             if self.missionEndCounter==30:
                 self.endMission();
