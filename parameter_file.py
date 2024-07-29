@@ -51,7 +51,7 @@ class MissionParameters:
         self.servoDefaultAngle = 0
         self.servoDetachmentAngle = 65
         
-        self.servoDetachOperator = -6
+        self.servoDetachOperator = 9
 
         self.servoDetachResetPeriod = 5
         self.servoDetachAwaitSecond = 5

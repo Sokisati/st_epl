@@ -1,4 +1,5 @@
 from satellite_file import *
+import sys
 
 shell = DistantDevice(mp.shellIp,mp.shellPort,mp.shellTimeout);
 groundStation = DistantDevice(mp.groundStationIp,mp.groundStationPort,mp.groundStationTimeout);
@@ -7,5 +8,8 @@ groundStation = DistantDevice(mp.groundStationIp,mp.groundStationPort,mp.groundS
 cameraFilter = DistantDevice(mp.cameraFilterIp,mp.cameraFilterPort,mp.cameraFilterTimeout);
 
 satellite = Satellite(groundStation,shell,cameraFilter);
+
+if (len(sys.argv)==2)and(sys.argv[1]=='sim'):
+    satellite.simulation = True
 
 satellite.startMainLoop();

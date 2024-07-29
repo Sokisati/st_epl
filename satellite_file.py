@@ -100,6 +100,8 @@ class Satellite:
         self.filterCommandList = [];
         self.filterCommandListSent = False;
 
+        self.simulation = False
+
         print("Satellite built succesfully");
         self.oled.display(self.oled.shellAwait);
         self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
@@ -107,7 +109,7 @@ class Satellite:
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
         self.oled.display(self.oled.gsSucces);
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
-
+    
     def splitData(self, parsed_data):
         try:
             parsed_str = parsed_data.decode().strip()
@@ -192,8 +194,7 @@ class Satellite:
             return x*35
         else:
             return (1225 - 11.67*x)
-
-        
+     
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
         add = 0
@@ -245,6 +246,13 @@ class Satellite:
             self.gsSocket.send(dataJson.encode())
         except Exception as e:
             print(f"Error sending data to GS server: {e}")
+            
+    def groundStationResponseActions(self,responseGs):
+        if responseGs[1]!='0' and not self.filterCommandListSent:
+            self.sendFilterInfoToFilter(list(responseGs[1]));
+        
+        if responseGs[2]==1:
+            self.servo.detach();
 
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -262,15 +270,12 @@ class Satellite:
             else:
                 stAltitude = self.sensorPack.sensorDataPack.alt
 
-        stAltitude = self.artificalSatAltFunction();
-        shellAltitude = self.artificalShellAltFunction();
-
-        if self.dataPackNumber == 35:
-            self.toDelete = 20;
+        if self.simulation:
+            stAltitude = self.artificalSatAltFunction();
+            shellAltitude = self.artificalShellAltFunction();
 
         self.errorCodeList = self.alarmSystem.getErrorCodeList(stAltitude,shellAltitude,
                                                                self.sensorPack.sensorDataPack.lat)
-
         self.iot = responseGs[0];
         self.shellAltitude = shellAltitude
         
@@ -297,16 +302,12 @@ class Satellite:
             responseGs[0],
             self.mp.teamNumber
         )
-        
-        if responseGs[1]!='0' and not self.filterCommandListSent:
-            self.sendFilterInfoToFilter(list(responseGs[1]));
-        
-        if responseGs[2]!=0:
-            self.servo.detach();
-
+       
         self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
+    
+        return responseGs
             
     def sendFilterInfoToFilter(self, infoList):
         print("Sending list to filter:")
@@ -325,7 +326,8 @@ class Satellite:
         updatedTime = self.sensorPack.time.getDateAndTime();
         while currentTime==updatedTime:
             updatedTime = self.sensorPack.time.getDateAndTime();
-            time.sleep(0.01); #to avoid excessive cpu usage
+            #to avoid excessive cpu usage
+            time.sleep(0.01);
     
     def prepareToEndMission(self):
         self.oled.shutOff();
@@ -346,9 +348,7 @@ class Satellite:
                 break
         else:
             print(f"No process named '{target_script}' found.")
-
-
-        
+     
     def endMission(self):
 
         self.killCameraProgram();    
@@ -370,8 +370,9 @@ class Satellite:
                 self.prepareToEndMission();
                   
     def startMainLoop(self):
+        responseGs = []
         while(True):
-
+         
             self.statusAction();
 
             self.sensorPack.updateSensorDataPack();
@@ -389,8 +390,11 @@ class Satellite:
                                             self.sensorPack.sensorDataPack.current,self.gsConnectionError)  
                 
             responseFromShell = self.shellConnectionProcedure();
-            self.groundStationConnectionProcedure(responseFromShell);
             
+            responseGs = self.groundStationConnectionProcedure(responseFromShell);
+            
+            self.groundStationResponseActions(responseGs)
+
             self.dataPackNumber+=1;
             
             if self.missionEndCounter==30:
