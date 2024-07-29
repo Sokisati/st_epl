@@ -190,10 +190,9 @@ class Satellite:
         
         if x<20:
             return x*35
-        elif x>=20 and x<=45:
-            return 940 - (12*x)
         else:
             return (1225 - 11.67*x)
+
         
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
@@ -202,8 +201,6 @@ class Satellite:
             add = 120
         if x<20:
             return x*35 + add
-        elif x>=20 and x<=45:
-            return 940 - (12*x) + add
         else:
             return 700 - (6.67*x) + add
 
@@ -258,7 +255,7 @@ class Satellite:
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
         
-        #just in case bme680 break
+        #just in case bme680 fail midflight
         if stAltitude==-666:
             if self.alarmSystem.statusJudge.status==3:
                 stAltitude = shellAltitude
