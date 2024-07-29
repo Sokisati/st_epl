@@ -336,9 +336,8 @@ class Satellite:
         target_script = "camera_epl.py"
 
         for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-            
-            cmdline = proc.info.get('cmdline', [])
-            if proc.info['name'] == process_name and target_script in cmdline:
+            cmdline = proc.info.get('cmdline')
+            if isinstance(cmdline, list) and proc.info['name'] == process_name and target_script in cmdline:
                 pid = proc.info['pid']
                 print(f"Found process '{target_script}' with PID {pid}")
 
@@ -347,6 +346,7 @@ class Satellite:
                 break
         else:
             print(f"No process named '{target_script}' found.")
+
 
         
     def endMission(self):
