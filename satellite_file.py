@@ -359,7 +359,7 @@ class Satellite:
         
     def statusAction(self):
         if self.alarmSystem.statusJudge.status!=0:            
-            self.oled.off();
+            self.oled.shutOff();
 
         if self.alarmSystem.statusJudge.status==3:
             self.servo.detach();
