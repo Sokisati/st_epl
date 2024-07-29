@@ -72,6 +72,7 @@ class Satellite:
         self.alarmSystem = AlarmSystem();
         
         self.commandToSend = "SEND_DATA\n"
+        self.missionEndLine = "Thank you for participating in this Aperture Science computer-aided enrichment activity."
         self.missionEndCounter = 0;
 
         self.filePath = 'telemetry_data.txt'
@@ -256,10 +257,17 @@ class Satellite:
         shellPressure = responseShell[1]*100;
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
-        """
+        
+        #just in case bme680 break
+        if stAltitude==-666:
+            if self.alarmSystem.statusJudge.status==3:
+                stAltitude = shellAltitude
+            else:
+                stAltitude = self.sensorPack.sensorDataPack.alt
+
         stAltitude = self.artificalSatAltFunction();
         shellAltitude = self.artificalShellAltFunction();
-        """
+
         if self.dataPackNumber == 35:
             self.toDelete = 20;
 
@@ -344,43 +352,45 @@ class Satellite:
     def endMission(self):
 
         self.killCameraProgram();    
-        print("Nice serving with you lads o7");
-        exit()
+        print(self.missionEndLine);
+    
+        #it landed and it's been 30 seconds, we don't need transmission anymore
+        self.alarmSystem.buzzer.onOffLoop();
+        
+    def statusAction(self):
+        if self.alarmSystem.statusJudge.status==0:            
+            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                            self.sensorPack.sensorDataPack.pressure,
+                                            self.sensorPack.sensorDataPack.altitude,
+                                            self.sensorPack.sensorDataPack.voltage,
+                                            self.sensorPack.sensorDataPack.dateAndTime,
+                                            self.sensorPack.sensorDataPack.roll,
+                                            self.sensorPack.sensorDataPack.pitch,
+                                            self.sensorPack.sensorDataPack.yaw,
+                                            self.iot,
+                                            self.shellAltitude,self.alarmSystem.errorCodeList,
+                                            self.sensorPack.sensorDataPack.current,self.gsConnectionError)        
+
+        if self.alarmSystem.statusJudge.status==3:
+            self.servo.detach();
+        
+        if self.alarmSystem.statusJudge.status==5:
+            self.missionEndCounter+=1
+            if self.missionEndCounter==30:
+                self.prepareToEndMission();
                   
     def startMainLoop(self):
         while(True):
 
-            if self.alarmSystem.statusJudge.status==5:
-                self.missionEndCounter+=1
-                if self.missionEndCounter==30:
-                    self.prepareToEndMission();
+            self.statusAction();
 
             self.sensorPack.updateSensorDataPack();
-                      
-            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                                self.sensorPack.sensorDataPack.pressure,
-                                                self.sensorPack.sensorDataPack.altitude,
-                                                self.sensorPack.sensorDataPack.voltage,
-                                                self.sensorPack.sensorDataPack.dateAndTime,
-                                                self.sensorPack.sensorDataPack.roll,
-                                                self.sensorPack.sensorDataPack.pitch,
-                                                self.sensorPack.sensorDataPack.yaw,
-                                                self.iot,
-                                                self.shellAltitude,self.alarmSystem.errorCodeList,
-                                                self.sensorPack.sensorDataPack.current,self.gsConnectionError)
                 
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
             
             self.dataPackNumber+=1;
             
-            if self.alarmSystem.statusJudge.status==3:
-                self.servo.detach();
-            """
-            if self.alarmSystem.statusJudge.status==5:
-                 self.alarmSystem.buzzer.onOffProcedure();                
-            """
-           
             if self.missionEndCounter==30:
                 self.endMission();
             

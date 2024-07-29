@@ -1,6 +1,7 @@
 from satellite_status_file import SatelliteStatusJudge
 import RPi.GPIO as GPIO
 from parameter_file import *
+import time
 
 class Buzzer:
     def __init__(self):
@@ -35,6 +36,13 @@ class Buzzer:
             if self.counter==self.mp.buzzerSleepFor:
                 self.counter=0;
                 self.on();
+
+    def onOffLoop(self):
+        while True:
+            self.on();
+            time.sleep(self.mp.buzzerWakeFor);
+            self.off();
+            time.sleep(self.mp.buzzerSleepFor)
             
 class AlarmSystem:
     

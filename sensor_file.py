@@ -211,17 +211,23 @@ class SensorPack:
         self.time = TimeSensor()
         self.sensorDataPack = SensorDataPack()
         
-        self.altitudeOffset = 0
+        self.bmeAltOffset = 0
+        self.gpsAltOffset = 0
         
         self.calcOffset();
     
+        
     def calcOffset(self):
-        calcSum = 0
+        gpsCalcSum = 0
+        bmeCalcSum = 0
+        
         for i in range(self.mp.offsetSampleSize):
-            calcSum += self.bme.getAlt();
+            bmeCalcSum += self.bme.getAlt();
+            gpsCalcSum += self.gps.getAlt();
             time.sleep(0.1)
             
-        self.altitudeOffset = calcSum / self.mp.offsetSampleSize 
+        self.bmeAltOffset = bmeCalcSum / self.mp.offsetSampleSize 
+        self.gpsAltOffset = gpsCalcSum / self.mp.offsetSampleSize
 
     def test(self):
         self.bme.test()
@@ -238,7 +244,7 @@ class SensorPack:
         self.sensorDataPack.yaw = self.gyro.getYaw()
         self.sensorDataPack.temperature = self.bme.getTemp()
         self.sensorDataPack.pressure = self.bme.getPressure()
-        self.sensorDataPack.altitude = self.bme.getAlt() - self.altitudeOffset
+        self.sensorDataPack.altitude = self.bme.getAlt() - self.bmeAltOffset
         self.sensorDataPack.dateAndTime = self.time.getDateAndTime();
     
     def printDataPack(self):

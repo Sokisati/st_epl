@@ -34,7 +34,6 @@ class DistantDevice:
         self.port = port
         self.timeoutDuration = timeoutDuration
 
-
 class OLEDPage:
     def __init__(self, actionSecond):
         self.actionSecond = actionSecond
