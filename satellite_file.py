@@ -296,7 +296,7 @@ class Satellite:
         if responseGs[1]!='0' and not self.filterCommandListSent:
             self.sendFilterInfoToFilter(list(responseGs[1]));
         
-        if responseGs[2]==1:
+        if responseGs[2]!=0:
             self.servo.detach();
 
         self.logDataPack(dataPack);
