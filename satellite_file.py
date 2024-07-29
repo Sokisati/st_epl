@@ -358,18 +358,8 @@ class Satellite:
         self.alarmSystem.buzzer.onOffLoop();
         
     def statusAction(self):
-        if self.alarmSystem.statusJudge.status==0:            
-            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
-                                            self.sensorPack.sensorDataPack.pressure,
-                                            self.sensorPack.sensorDataPack.altitude,
-                                            self.sensorPack.sensorDataPack.voltage,
-                                            self.sensorPack.sensorDataPack.dateAndTime,
-                                            self.sensorPack.sensorDataPack.roll,
-                                            self.sensorPack.sensorDataPack.pitch,
-                                            self.sensorPack.sensorDataPack.yaw,
-                                            self.iot,
-                                            self.shellAltitude,self.alarmSystem.errorCodeList,
-                                            self.sensorPack.sensorDataPack.current,self.gsConnectionError)        
+        if self.alarmSystem.statusJudge.status!=0:            
+            self.oled.off();
 
         if self.alarmSystem.statusJudge.status==3:
             self.servo.detach();
@@ -385,6 +375,18 @@ class Satellite:
             self.statusAction();
 
             self.sensorPack.updateSensorDataPack();
+            
+            self.oled.updateDisplayProcedure(self.sensorPack.sensorDataPack.temperature,
+                                            self.sensorPack.sensorDataPack.pressure,
+                                            self.sensorPack.sensorDataPack.altitude,
+                                            self.sensorPack.sensorDataPack.voltage,
+                                            self.sensorPack.sensorDataPack.dateAndTime,
+                                            self.sensorPack.sensorDataPack.roll,
+                                            self.sensorPack.sensorDataPack.pitch,
+                                            self.sensorPack.sensorDataPack.yaw,
+                                            self.iot,
+                                            self.shellAltitude,self.alarmSystem.errorCodeList,
+                                            self.sensorPack.sensorDataPack.current,self.gsConnectionError)  
                 
             responseFromShell = self.shellConnectionProcedure();
             self.groundStationConnectionProcedure(responseFromShell);
