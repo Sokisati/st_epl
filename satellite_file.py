@@ -193,7 +193,7 @@ class Satellite:
         if x<20:
             return x*35
         else:
-            return (21700 - 78*x)
+            return (957.88 - 12.28*x)
      
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
@@ -204,7 +204,7 @@ class Satellite:
         if x<20:
             return x*35 + add
         else:
-            return (21700 - 78*x)
+            return (958 - 12*x)
 
     def groundStationReceiveData(self):
         responseGs = [-666,'0',0] 
