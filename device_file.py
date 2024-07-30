@@ -24,8 +24,10 @@ class Servo:
         if (not self.failedAttemptCounter==0) and (self.failedAttemptCounter%mp.servoDetachResetPeriod==0):
             self.servo.angle = self.mp.servoDefaultAngle
             return
+        
         plusAngle = (self.failedAttemptCounter*self.mp.servoDetachOperator)
-        if plusAngle<=90 or plusAngle>=90:
+        
+        if self.mp.servoDefaultAngle+plusAngle<=90 or self.mp.servoDefaultAngle+plusAngle>=90:
             return;
         
         self.servo.angle = self.mp.servoDetachmentAngle + plusAngle;
