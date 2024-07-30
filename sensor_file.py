@@ -8,6 +8,7 @@ from datetime import datetime
 
 from parameter_file import MissionParameters
 
+
 class TimeSensor:
     #I have NO idea why we even use an RTC module. RPI's own RTC works just fine...
     def getDateAndTime(self):
