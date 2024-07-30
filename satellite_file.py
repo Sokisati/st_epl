@@ -193,17 +193,18 @@ class Satellite:
         if x<20:
             return x*35
         else:
-            return (1225 - 11.67*x)
+            return (21700 - 78*x)
      
     def artificalShellAltFunction(self):
         x = self.dataPackNumber;
         add = 0
         if self.alarmSystem.statusJudge.status==3:
             add = 120
+            
         if x<20:
             return x*35 + add
         else:
-            return 700 - (6.67*x) + add
+            return (21700 - 78*x)
 
     def groundStationReceiveData(self):
         responseGs = [-666,'0',0] 
@@ -333,7 +334,7 @@ class Satellite:
         self.oled.shutOff();
         self.commandToSend = "END_MISSION\n"
         
-    def killCameraProgram(self):
+    def terminateCameraProgram(self):
         process_name = "python3"
         target_script = "camera_epl.py"
 
@@ -351,7 +352,7 @@ class Satellite:
      
     def endMission(self):
 
-        self.killCameraProgram();    
+        self.terminateCameraProgram();    
         print(self.missionEndLine);
     
         #it landed and it's been 30 seconds, we don't need transmission anymore
