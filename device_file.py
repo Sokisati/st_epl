@@ -21,12 +21,14 @@ class Servo:
         self.failedAttemptCounter=0;
     
     def detach(self):
-        if (not self.failedAttemptCounter==0) and (self.failedAttemptCounter%mp.servoDetachResetPeriod==0):
+        if (not self.failedAttemptCounter == 0) and (self.failedAttemptCounter % self.mp.servoDetachResetPeriod == 0):
             self.servo.angle = self.mp.servoDefaultAngle
             return
-            
-        self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter*self.mp.servoDetachOperator);
-        self.failedAttemptCounter+=1;
+
+        try:
+            self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter * self.mp.servoDetachOperator)
+        except ValueError:
+            pass
            
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
