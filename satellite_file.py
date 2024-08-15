@@ -128,6 +128,20 @@ class Satellite:
             return [0, 0]
             
     def logDataPack(self,dataPack):
+        
+        attributes = [
+            'packetNumber', 'stStatus', 'errorCodeList', 'transmissionTime',
+            'satellitePressure', 'shellPressure', 'satelliteAltitude', 'shellAltitude',
+            'altitudeDifference', 'descentSpeed', 'temperature', 'batteryVoltage',
+            'gpsLat', 'gpsLong', 'gpsAlt', 'pitch', 'roll', 'filterCommandList',
+            'iotData', 'teamNumber'
+        ]
+    
+        # Replace all -666 values with 'n/a'
+        for attr in attributes:
+            if getattr(dataPack, attr) == -666:
+                setattr(dataPack, attr, 'n/a')
+            
         with open(self.filePath,'a') as file:
             file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
             file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
@@ -149,7 +163,6 @@ class Satellite:
             file.write(f"RHRH:{dataPack.filterCommandList}\n");
             file.write(f"IoT DATA>:{dataPack.iotData}\n");
             file.write(f"TAKIM NO:{dataPack.teamNumber}\n");
-            
             file.write(f"\n");                
 
     def shellConnectionProcedure(self):
