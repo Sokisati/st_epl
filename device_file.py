@@ -142,9 +142,8 @@ class SensorPage1(TextPage):
         line1 = "IoT: " + str(self.iot)
         line2 = "Saat: " + dateAndTimePart
         line3 = "Hata kodu: " + "x,x,"+str(self.errorCodeList[2])+","+str(self.errorCodeList[3])+",x"
-        line4 = "Batarya akımı: " + str(self.batteryCurrent)
         
-        sensorText = [line0, line1, line2, line3,line4]
+        sensorText = [line0, line1, line2, line3]
         image = Image.new('1', (128, 64))
         draw = ImageDraw.Draw(image)
         y = 0
@@ -187,29 +186,33 @@ class ErrorPage(TextPage):
        
 class OLED:
     def __init__(self):
-        self.mp = MissionParameters();
-        self.disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_address=0x3C)
-        self.disp.begin()
-        self.disp.clear()
-        self.disp.display()
-        self.off = False;        
-
-        self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
-        
-        self.shellAwait = BMPPage('logo_shell_await.bmp',1);
-        self.gsAwait = BMPPage('logo_gs_await.bmp',1);
-        self.gsSucces = BMPPage('logo_gs_succes.bmp',1);
-        self.gsError = ErrorPage(self.mp.errorFontSize,1);
-        
-        self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
-        self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
-        
-        self.pageList = [self.sensorPage0,self.sensorPage1];
-        self.counter = 0
-        self.index = 0
+        self.error = False
+        try:
+            self.mp = MissionParameters();
+            self.disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_address=0x3C)
+            self.disp.begin()
+            self.disp.clear()
+            self.disp.display()
+            self.off = False;        
+            self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
+            self.shellAwait = BMPPage('logo_shell_await.bmp',1);
+            self.gsAwait = BMPPage('logo_gs_await.bmp',1);
+            self.gsSucces = BMPPage('logo_gs_succes.bmp',1);
+            self.gsError = ErrorPage(self.mp.errorFontSize,1);
+            self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
+            self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
+            self.pageList = [self.sensorPage0,self.sensorPage1];
+            self.counter = 0
+            self.index = 0
+            
+        except Exception as e:
+            self.error = True            
     
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,
                                iot,shellAltitude,errorCodeList,batteryCurrent,gsConnectionError):
+        if self.error:
+            return
+        
         if not self.off:
             if gsConnectionError==False:            
 
@@ -233,17 +236,26 @@ class OLED:
             pass
        
     def display(self, page):
+        if self.error:
+            return
+        
         if not self.off:
             page.display(self.disp)
         else:
             pass
 
     def shutOff(self):
+        if self.error:
+            return
+        
         self.off = True
         self.disp.clear()
         self.disp.display()
         
     def turnOn(self):
+        if self.error:
+            return
+        
         self.disp.begin()
         self.disp.clear()
         self.disp.display()

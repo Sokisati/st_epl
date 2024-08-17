@@ -60,7 +60,7 @@ class Satellite:
         
         self.mp = MissionParameters()
         self.oled = OLED();
-        
+
         self.oled.display(self.oled.logoPage);
         time.sleep(self.oled.logoPage.actionSecond);
         
