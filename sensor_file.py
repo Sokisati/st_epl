@@ -84,23 +84,27 @@ class MPUSensor:
 class BMESensor:
     def __init__(self):
         try:
-            self.sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
-        except (RuntimeError, IOError):
-            self.sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
-        self.sensor.set_humidity_oversample(bme680.OS_2X)
-        self.sensor.set_pressure_oversample(bme680.OS_4X)
-        self.sensor.set_temperature_oversample(bme680.OS_8X)
-        self.sensor.set_filter(bme680.FILTER_SIZE_3)
-        
-        # Disable gas measurements to prevent overheating (we don't need it)
-        self.sensor.set_gas_status(bme680.DISABLE_GAS_MEAS)
+            try:
+                self.sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
+            except (RuntimeError, IOError):
+                self.sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
-        self.temperature = None
-        self.pressure = None
-        self.humidity = None
-        self.altitude = None
+            self.sensor.set_humidity_oversample(bme680.OS_2X)
+            self.sensor.set_pressure_oversample(bme680.OS_4X)
+            self.sensor.set_temperature_oversample(bme680.OS_8X)
+            self.sensor.set_filter(bme680.FILTER_SIZE_3)
         
+            # Disable gas measurements to prevent overheating (we don't need it)
+            self.sensor.set_gas_status(bme680.DISABLE_GAS_MEAS)
+
+            self.temperature = None
+            self.pressure = None
+            self.humidity = None
+            self.altitude = None
+            
+        except Exception as e:
+            print("Problem with bme creation")        
 
     def readSensorData(self):
         try:
@@ -216,8 +220,7 @@ class SensorPack:
         self.gpsAltOffset = 0
         
         self.calcOffset();
-    
-        
+         
     def calcOffset(self):
         gpsCalcSum = 0
         bmeCalcSum = 0
