@@ -20,22 +20,27 @@ class TimeSensor:
 
 class MPUSensor:
     def __init__(self, dt=1.0):
-        self.dt = dt  
-        self.yaw = 0  
-        self.gyroZBias = 0  
+        try:
 
-        self.mpu = MPU9250(
-            address_ak=AK8963_ADDRESS,
-            address_mpu_master=MPU9050_ADDRESS_68,
-            address_mpu_slave=None,
-            bus=1,
-            gfs=GFS_250, 
-            afs=AFS_2G,  
-            mfs=AK8963_BIT_16,  
-            mode=AK8963_MODE_C100HZ 
-        )
-        self.mpu.configure()
-        self.calculateGyroBias()
+            self.dt = dt  
+            self.yaw = 0  
+            self.gyroZBias = 0  
+
+            self.mpu = MPU9250(
+                address_ak=AK8963_ADDRESS,
+                address_mpu_master=MPU9050_ADDRESS_68,
+                address_mpu_slave=None,
+                bus=1,
+                gfs=GFS_250, 
+                afs=AFS_2G,  
+                mfs=AK8963_BIT_16,  
+                mode=AK8963_MODE_C100HZ 
+            )
+            self.mpu.configure()
+            self.calculateGyroBias()
+            
+        except Exception as e:
+            print("Problem with mpu creation")
 
     def calculateGyroBias(self):
         biasSum = 0
