@@ -161,7 +161,7 @@ class BMESensor:
 
         try:
             if self.sensor.get_sensor_data():
-                return self.sensor.data.pressure * 100 
+                return self.sensor.data.pressure
         except Exception as e:
             print(f"Error reading pressure: {e}")
             return -666
