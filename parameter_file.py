@@ -3,7 +3,7 @@ class MissionParameters:
     def __init__(self):
         
         #comm.   
-        self.shellIp = '192.168.1.2'
+        self.shellIp = '192.168.137.243'
         self.groundStationIp = '192.168.1.48'
         self.cameraFilterIp = '127.0.0.1'
         
