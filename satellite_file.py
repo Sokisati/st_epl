@@ -274,7 +274,7 @@ class Satellite:
         responseGs = self.groundStationReceiveData();
         
         shellAltitude = responseShell[0];
-        shellPressure = responseShell[1]*100;
+        shellPressure = responseShell[1];
         
         stAltitude = self.sensorPack.sensorDataPack.altitude;
         
