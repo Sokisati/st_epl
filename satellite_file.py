@@ -136,12 +136,12 @@ class Satellite:
             'gpsLat', 'gpsLong', 'gpsAlt', 'pitch', 'roll', 'filterCommandList',
             'iotData', 'teamNumber'
         ]
-    
+        """
         # Replace all -666 values with 'n/a'
         for attr in attributes:
             if getattr(dataPack, attr) == -666:
                 setattr(dataPack, attr, 'n/a')
-            
+        """    
         with open(self.filePath,'a') as file:
             file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
             file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
