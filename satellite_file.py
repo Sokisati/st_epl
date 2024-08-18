@@ -62,7 +62,7 @@ class Satellite:
         self.oled = OLED();
 
         #self.oled.display(self.oled.logoPage);
-        time.sleep(self.oled.logoPage.actionSecond);
+        #time.sleep(self.oled.logoPage.actionSecond);
         
         self.sensorPack = SensorPack(); 
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -103,11 +103,11 @@ class Satellite:
         self.simulation = False
 
         print("Satellite built succesfully");
-        self.oled.display(self.oled.shellAwait);
+        #self.oled.display(self.oled.shellAwait);
         #self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
-        self.oled.display(self.oled.gsAwait);
+        #self.oled.display(self.oled.gsAwait);
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
-        self.oled.display(self.oled.gsSucces);
+        #self.oled.display(self.oled.gsSucces);
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
     
     def splitData(self, parsed_data):
