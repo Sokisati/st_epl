@@ -129,6 +129,7 @@ class Satellite:
             
     def logDataPack(self,dataPack):
         
+        proccesedData = dataPack
         attributes = [
             'packetNumber', 'stStatus', 'errorCodeList', 'transmissionTime',
             'satellitePressure', 'shellPressure', 'satelliteAltitude', 'shellAltitude',
@@ -136,33 +137,33 @@ class Satellite:
             'gpsLat', 'gpsLong', 'gpsAlt', 'pitch', 'roll', 'filterCommandList',
             'iotData', 'teamNumber'
         ]
-        """
+        
         # Replace all -666 values with 'n/a'
         for attr in attributes:
-            if getattr(dataPack, attr) == -666:
-                setattr(dataPack, attr, 'n/a')
-        """    
+            if getattr(proccesedData, attr) == -666:
+                setattr(proccesedData, attr, 'n/a')
+
         with open(self.filePath,'a') as file:
-            file.write(f"PAKET NUMARASI:{dataPack.packetNumber}\n");
-            file.write(f"UYDU STATUSU:{dataPack.stStatus}\n");
-            file.write(f"HATA KODU:{dataPack.errorCodeList}\n");
-            file.write(f"GONDERME SAATI:{dataPack.transmissionTime}\n");
-            file.write(f"BASINC1:{dataPack.satellitePressure}\n");
-            file.write(f"BASINC2:{dataPack.shellPressure}\n");
-            file.write(f"YUKSEKLIK1:{dataPack.satelliteAltitude}\n");
-            file.write(f"YUKSEKLIK2:{dataPack.shellAltitude}\n");
-            file.write(f"IRTIFA FARKI:{dataPack.altitudeDifference}\n");
-            file.write(f"INIS HIZI:{dataPack.descentSpeed}\n");
-            file.write(f"SICAKLIK:{dataPack.temperature}\n");
-            file.write(f"PIL GERILIMI:{dataPack.batteryVoltage}\n");
-            file.write(f"GPS1 LATITUDE:{dataPack.gpsLat}\n");
-            file.write(f"GPS1 LONGITUDE:{dataPack.gpsLong}\n");
-            file.write(f"GPS1 ALTITUDE:{dataPack.gpsAlt}\n");
-            file.write(f"PITCH:{dataPack.pitch}\n");
-            file.write(f"ROLL:{dataPack.roll}\n");
-            file.write(f"RHRH:{dataPack.filterCommandList}\n");
-            file.write(f"IoT DATA>:{dataPack.iotData}\n");
-            file.write(f"TAKIM NO:{dataPack.teamNumber}\n");
+            file.write(f"PAKET NUMARASI:{proccesedData.packetNumber}\n");
+            file.write(f"UYDU STATUSU:{proccesedData.stStatus}\n");
+            file.write(f"HATA KODU:{proccesedData.errorCodeList}\n");
+            file.write(f"GONDERME SAATI:{proccesedData.transmissionTime}\n");
+            file.write(f"BASINC1:{proccesedData.satellitePressure}\n");
+            file.write(f"BASINC2:{proccesedData.shellPressure}\n");
+            file.write(f"YUKSEKLIK1:{proccesedData.satelliteAltitude}\n");
+            file.write(f"YUKSEKLIK2:{proccesedData.shellAltitude}\n");
+            file.write(f"IRTIFA FARKI:{proccesedData.altitudeDifference}\n");
+            file.write(f"INIS HIZI:{proccesedData.descentSpeed}\n");
+            file.write(f"SICAKLIK:{proccesedData.temperature}\n");
+            file.write(f"PIL GERILIMI:{proccesedData.batteryVoltage}\n");
+            file.write(f"GPS1 LATITUDE:{proccesedData.gpsLat}\n");
+            file.write(f"GPS1 LONGITUDE:{proccesedData.gpsLong}\n");
+            file.write(f"GPS1 ALTITUDE:{proccesedData.gpsAlt}\n");
+            file.write(f"PITCH:{proccesedData.pitch}\n");
+            file.write(f"ROLL:{proccesedData.roll}\n");
+            file.write(f"RHRH:{proccesedData.filterCommandList}\n");
+            file.write(f"IoT DATA>:{proccesedData.iotData}\n");
+            file.write(f"TAKIM NO:{proccesedData.teamNumber}\n");
             file.write(f"\n");                
 
     def shellConnectionProcedure(self):
@@ -317,7 +318,7 @@ class Satellite:
             self.mp.teamNumber
         )
        
-        self.logDataPack(dataPack);
+        #self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
     
