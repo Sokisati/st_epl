@@ -3,8 +3,8 @@ class MissionParameters:
     def __init__(self):
         
         #comm.   
-        self.shellIp = '192.168.138.23'
-        self.groundStationIp = '192.168.138.243'
+        self.shellIp = '192.168.1.2'
+        self.groundStationIp = '192.168.1.2'
         self.cameraFilterIp = '127.0.0.1'
         
         self.shellPort = 12345
@@ -41,13 +41,13 @@ class MissionParameters:
         self.lastElementsForLandAssumption=5
         self.minAltitudeForLandAssumption=20
         
-        self.buzzerPin=4
+        self.buzzerPin=27
         self.buzzerWakeFor=1
         self.buzzerSleepFor=1
         
  
         #servo
-        self.servoPWMPin = 13
+        self.servoPWMPin = 12
         self.servoDefaultAngle = 0
         self.servoDetachmentAngle = 65
         
