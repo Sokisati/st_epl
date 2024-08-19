@@ -4,7 +4,7 @@ class MissionParameters:
         
         #comm.   
         self.shellIp = '192.168.137.243'
-        self.groundStationIp = '192.168.1.48'
+        self.groundStationIp = '192.168.1.2'
         self.cameraFilterIp = '127.0.0.1'
         
         self.shellPort = 12345
