@@ -55,6 +55,7 @@ class DataPack:
         print(f"Filter Command List: {self.filterCommandList}")
         print(f"IoT Data: {self.iotData}")
         print(f"Team Number: {self.teamNumber}")
+        print("\n")
 
 class Satellite:
     
