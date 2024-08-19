@@ -21,12 +21,14 @@ class Servo:
         self.failedAttemptCounter=0;
     
     def detach(self):
+        print("Servo detaching")
         try:
             self.servo.angle = self.mp.servoDetachmentAngle
         except Exception as e:
             pass
         
     def lock(self):
+        print("Servo locking")
         try:
             self.servo.angle = self.mp.servoDefaultAngle
         except Exception as e:

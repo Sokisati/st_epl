@@ -292,6 +292,9 @@ class Satellite:
         
         if responseGs[2]==1:
             self.servo.detach();
+        elif responseGs[2]==2:
+            self.servo.lock();
+        
 
     def groundStationConnectionProcedure(self, responseShell):
         
@@ -341,7 +344,6 @@ class Satellite:
             responseGs[0],
             self.mp.teamNumber
         )
-        dataPack.printValues();
         
         self.groundStationSendData(dataPack);
         
