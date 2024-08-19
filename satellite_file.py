@@ -343,9 +343,9 @@ class Satellite:
         )
         dataPack.printValues();
         
-        self.logDataPack(dataPack);
-        
         self.groundStationSendData(dataPack);
+        
+        self.logDataPack(dataPack);
     
         return responseGs
             
