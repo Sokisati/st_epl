@@ -266,11 +266,14 @@ class SensorPack:
         self.sensorDataPack = SensorDataPack()
         
         self.bmeAltOffset = 0
-        self.gpsAltOffset = 0
         
         self.calcOffset();
          
     def calcOffset(self):
+        
+        if self.bme.broken:
+            return
+        
         gpsCalcSum = 0
         bmeCalcSum = 0
         
@@ -280,7 +283,6 @@ class SensorPack:
             time.sleep(0.1)
             
         self.bmeAltOffset = bmeCalcSum / self.mp.offsetSampleSize 
-        self.gpsAltOffset = gpsCalcSum / self.mp.offsetSampleSize
 
     def test(self):
         self.bme.test()
