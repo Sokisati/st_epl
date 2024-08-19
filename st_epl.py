@@ -12,4 +12,5 @@ satellite = Satellite(groundStation,shell,cameraFilter);
 if (len(sys.argv)==2)and(sys.argv[1]=='sim'):
     satellite.simulation = True
 
+
 satellite.startMainLoop();

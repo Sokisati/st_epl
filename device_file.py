@@ -21,17 +21,9 @@ class Servo:
         self.failedAttemptCounter=0;
     
     def detach(self):
-        if (self.failedAttemptCounter != 0) and (self.failedAttemptCounter % self.mp.servoDetachResetPeriod == 0):
-            self.failedAttemptCounter=0;
-            self.servo.angle = self.mp.servoDefaultAngle
-            return
-
         try:
-            self.servo.angle = self.mp.servoDetachmentAngle + (self.failedAttemptCounter * self.mp.servoDetachOperator)
-            self.failedAttemptCounter+=1;
-        except ValueError:
-            self.failedAttemptCounter=0;
-            self.servo.angle = self.mp.servoDefaultAngle
+            self.servo.angle = self.mp.servoDetachmentAngle
+        except Exception as e:
             pass
         
     def lock(self):
