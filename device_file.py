@@ -195,10 +195,6 @@ class OLED:
         self.error = False
         try:
             self.mp = MissionParameters();
-            self.disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_address=0x3C)
-            self.disp.begin()
-            self.disp.clear()
-            self.disp.display()
             self.off = False;        
             self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
             self.shellAwait = BMPPage('logo_shell_await.bmp',1);
@@ -210,8 +206,13 @@ class OLED:
             self.pageList = [self.sensorPage0,self.sensorPage1];
             self.counter = 0
             self.index = 0
+            self.disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_address=0x3C)
+            self.disp.begin()
+            self.disp.clear()
+            self.disp.display()
             
         except Exception as e:
+            print("Problem with OLED creation")
             self.error = True            
     
     def updateDisplayProcedure(self, temperature, pressure, altitude, batteryVoltage, dateAndTime,roll,pitch,yaw,

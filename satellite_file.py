@@ -32,6 +32,29 @@ class DataPack:
         self.filterCommandList = filterCommandList
         self.iotData = iotData
         self.teamNumber = teamNumber
+        
+    def printValues(self):
+        print(f"Packet Number: {self.packetNumber}")
+        print(f"ST Status: {self.stStatus}")
+        print(f"Error Code List: {self.errorCodeList}")
+        print(f"Transmission Time: {self.transmissionTime}")
+        print(f"Satellite Pressure: {self.satellitePressure}")
+        print(f"Shell Pressure: {self.shellPressure}")
+        print(f"Satellite Altitude: {self.satelliteAltitude}")
+        print(f"Shell Altitude: {self.shellAltitude}")
+        print(f"Altitude Difference: {self.altitudeDifference}")
+        print(f"Descent Speed: {self.descentSpeed}")
+        print(f"Temperature: {self.temperature}")
+        print(f"Battery Voltage: {self.batteryVoltage}")
+        print(f"GPS Latitude: {self.gpsLat}")
+        print(f"GPS Longitude: {self.gpsLong}")
+        print(f"GPS Altitude: {self.gpsAlt}")
+        print(f"Pitch: {self.pitch}")
+        print(f"Roll: {self.roll}")
+        print(f"Yaw: {self.yaw}")
+        print(f"Filter Command List: {self.filterCommandList}")
+        print(f"IoT Data: {self.iotData}")
+        print(f"Team Number: {self.teamNumber}")
 
 class Satellite:
     
@@ -55,14 +78,14 @@ class Satellite:
             time.sleep(0.2)
     
     def __init__(self, groundStation, shell, cameraFilter):
-        cameraFilterPath = '/home/glados/camera_filter_epl/camera_filter_epl.py'
+        cameraFilterPath = '/home/tars/camera_filter_epl/camera_filter_epl.py'
         subprocess.Popen(['python3', cameraFilterPath])
         
         self.mp = MissionParameters()
         self.oled = OLED();
 
-        #self.oled.display(self.oled.logoPage);
-        #time.sleep(self.oled.logoPage.actionSecond);
+        self.oled.display(self.oled.logoPage);
+        time.sleep(self.oled.logoPage.actionSecond);
         
         self.sensorPack = SensorPack(); 
         self.shellSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
@@ -103,11 +126,11 @@ class Satellite:
         self.simulation = False
 
         print("Satellite built succesfully");
-        #self.oled.display(self.oled.shellAwait);
+        self.oled.display(self.oled.shellAwait);
         #self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
-        #self.oled.display(self.oled.gsAwait);
+        self.oled.display(self.oled.gsAwait);
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
-        #self.oled.display(self.oled.gsSucces);
+        self.oled.display(self.oled.gsSucces);
         self.initialConnectionWithDevice(self.cameraFilter,self.cameraFilterSocket,"camera socket");
     
     def splitData(self, parsed_data):
@@ -317,7 +340,8 @@ class Satellite:
             responseGs[0],
             self.mp.teamNumber
         )
-       
+        dataPack.printValues();
+        
         self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
