@@ -11,8 +11,8 @@ class MissionParameters:
         self.groundStationPort = 12346
         self.cameraFilterPort = 12347
         
-        self.shellTimeout=4
-        self.groundStationTimeout=6
+        self.shellTimeout=3
+        self.groundStationTimeout=4
         self.cameraFilterTimeout=2
         
         self.shellConnectionAttemptLimit = 12
