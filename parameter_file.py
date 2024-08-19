@@ -47,7 +47,7 @@ class MissionParameters:
         
  
         #servo
-        self.servoPWMPin = 12
+        self.servoPWMPin = 13
         self.servoDefaultAngle = 80
         self.servoDetachmentAngle = 45
         
