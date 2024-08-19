@@ -33,6 +33,10 @@ class Servo:
             self.failedAttemptCounter=0;
             self.servo.angle = self.mp.servoDefaultAngle
             pass
+        
+    def lock(self):
+        try:
+            self.servo.angle = 
            
 class DistantDevice:
     def __init__(self, ipAddress, port, timeoutDuration):
