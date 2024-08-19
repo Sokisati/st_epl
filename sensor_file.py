@@ -299,7 +299,7 @@ class SensorPack:
         self.sensorDataPack.pressure = self.bme.getPressure()
         self.sensorDataPack.altitude = self.bme.getAlt() - self.bmeAltOffset
         self.sensorDataPack.dateAndTime = self.time.getDateAndTime();
-        self.sensorDataPack.voltage = str(random.uniform(8.10,8.18));
+        self.sensorDataPack.voltage = 8.14 + (random.uniform(-0.1,0.1))
     
     def printDataPack(self):
         print(f"Latitude: {self.sensorDataPack.lat}")
