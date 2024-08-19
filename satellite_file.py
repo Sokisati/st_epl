@@ -318,7 +318,7 @@ class Satellite:
             self.mp.teamNumber
         )
        
-        #self.logDataPack(dataPack);
+        self.logDataPack(dataPack);
         
         self.groundStationSendData(dataPack);
     

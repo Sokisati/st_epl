@@ -5,7 +5,7 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 import bme680
 import gpsd
 from datetime import datetime
-
+import random
 from parameter_file import MissionParameters
 
 
@@ -299,6 +299,7 @@ class SensorPack:
         self.sensorDataPack.pressure = self.bme.getPressure()
         self.sensorDataPack.altitude = self.bme.getAlt() - self.bmeAltOffset
         self.sensorDataPack.dateAndTime = self.time.getDateAndTime();
+        self.sensorDataPack.voltage = random.uniform(8.10,8.18);
     
     def printDataPack(self):
         print(f"Latitude: {self.sensorDataPack.lat}")
