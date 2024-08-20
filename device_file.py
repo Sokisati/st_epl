@@ -16,7 +16,7 @@ class Servo:
     def __init__(self):
         self.mp = MissionParameters()
         factory = PiGPIOFactory();
-        self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0006, max_pulse_width=0.0023, pin_factory=factory);
+        self.servo = AngularServo(self.mp.servoPWMPin, min_pulse_width=0.0005, max_pulse_width=0.0024, pin_factory=factory);
         self.servo.angle = self.mp.servoDefaultAngle;
         self.failedAttemptCounter=0;
     
