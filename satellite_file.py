@@ -128,7 +128,7 @@ class Satellite:
 
         print("Satellite built succesfully");
         self.oled.display(self.oled.shellAwait);
-        #self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
+        self.initialConnectionWithDevice(self.shell,self.shellSocket,"Shell"); 
         self.oled.display(self.oled.gsAwait);
         self.initialConnectionWithDevice(self.groundStation,self.gsSocket,"Ground station");
         self.oled.display(self.oled.gsSucces);

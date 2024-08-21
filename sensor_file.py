@@ -274,12 +274,10 @@ class SensorPack:
         if self.bme.broken:
             return
         
-        gpsCalcSum = 0
         bmeCalcSum = 0
         
         for i in range(self.mp.offsetSampleSize):
             bmeCalcSum += self.bme.getAlt();
-            gpsCalcSum += self.gps.getAlt();
             time.sleep(0.1)
             
         self.bmeAltOffset = bmeCalcSum / self.mp.offsetSampleSize 
