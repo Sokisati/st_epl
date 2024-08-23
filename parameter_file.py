@@ -45,6 +45,7 @@ class MissionParameters:
         self.buzzerWakeFor=1
         self.buzzerSleepFor=1
         
+        self.detachmentAltitude = 400
  
         #servo
         self.servoPWMPin = 13

@@ -295,7 +295,6 @@ class Satellite:
         elif responseGs[2]==2:
             self.servo.lock();
         
-
     def groundStationConnectionProcedure(self, responseShell):
         
         responseGs = self.groundStationReceiveData();
