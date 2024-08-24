@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from datetime import date
-from sys import setdlopenflags
 from alarm_file import *
 from parameter_file import *
 
@@ -9,7 +6,6 @@ from gpiozero import AngularServo
 from gpiozero.pins.pigpio import PiGPIOFactory
 import Adafruit_SSD1306
 from PIL import Image, ImageDraw, ImageFont
-import time
 from parameter_file import MissionParameters
 
 class Servo:
