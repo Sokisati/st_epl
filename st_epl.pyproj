@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c55c7783-771c-4871-af6c-d29a5de582e9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>st_epl.py</StartupFile>
+    <StartupFile>src\st_epl.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,13 +21,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="alarm_file.py" />
-    <Compile Include="device_file.py" />
-    <Compile Include="parameter_file.py" />
-    <Compile Include="satellite_file.py" />
-    <Compile Include="satellite_status_file.py" />
-    <Compile Include="sensor_file.py" />
-    <Compile Include="st_epl.py" />
+    <Compile Include="src\alarm_file.py" />
+    <Compile Include="src\device_file.py" />
+    <Compile Include="src\parameter_file.py" />
+    <Compile Include="src\satellite_file.py" />
+    <Compile Include="src\satellite_status_file.py" />
+    <Compile Include="src\sensor_file.py" />
+    <Compile Include="src\st_epl.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
