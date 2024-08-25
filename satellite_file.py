@@ -79,7 +79,10 @@ class Satellite:
             time.sleep(0.2)
     
     def __init__(self, groundStation, shell, cameraFilter):
-        cameraFilterPath = '/home/tars/camera_filter_epl/camera_filter_epl.py'
+        
+        hostname = socket.gethostname()
+    
+        cameraFilterPath = f'/home/{hostname}/camera_filter_epl/camera_filter_epl.py'
         subprocess.Popen(['python3', cameraFilterPath])
         
         self.mp = MissionParameters()
