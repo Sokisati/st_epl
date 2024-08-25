@@ -186,10 +186,10 @@ class OLED:
         try:
             self.mp = MissionParameters();
             self.off = False;        
-            self.logoPage = BMPPage('logo.bmp',self.mp.logoActionSecond)
-            self.shellAwait = BMPPage('logo_shell_await.bmp',1);
-            self.gsAwait = BMPPage('logo_gs_await.bmp',1);
-            self.gsSucces = BMPPage('logo_gs_succes.bmp',1);
+            self.logoPage = BMPPage('bmp/logo.bmp',self.mp.logoActionSecond)
+            self.shellAwait = BMPPage('bmp/logo_shell_await.bmp',1);
+            self.gsAwait = BMPPage('bmp/logo_gs_await.bmp',1);
+            self.gsSucces = BMPPage('bmp/logo_gs_succes.bmp',1);
             self.gsError = ErrorPage(self.mp.errorFontSize,1);
             self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
             self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
