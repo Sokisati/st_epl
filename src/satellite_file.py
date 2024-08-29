@@ -80,10 +80,7 @@ class Satellite:
     
     def __init__(self, groundStation, shell, cameraFilter):
         
-        hostname = socket.gethostname()
-    
-        cameraFilterPath = f'/home/{hostname}/camera_filter_epl/camera_filter_epl.py'
-        subprocess.Popen(['python3', cameraFilterPath])
+        hostname = socket.gethostname() 
         
         self.mp = MissionParameters()
         self.oled = OLED();
