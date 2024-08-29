@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from alarm_file import *
 from parameter_file import *
-import os
+
 from gpiozero import AngularServo
 from gpiozero.pins.pigpio import PiGPIOFactory
 import Adafruit_SSD1306
@@ -186,18 +186,13 @@ class OLED:
         try:
             self.mp = MissionParameters();
             self.off = False;        
-            scriptDir = os.path.dirname(os.path.abspath(__file__))
+            
+            self.logoPage = BMPPage('../bmp/logo.bmp',self.mp.logoActionSecond)
+            self.shellAwait = BMPPage('../bmp/logo_shell_await.bmp',1);
+            self.gsAwait = BMPPage('../bmp/logo_gs_await.bmp',1);
+            self.gsSucces = BMPPage('../bmp/logo_gs_succes.bmp',1);
+            
 
-            logoPath = os.path.join(scriptDir, 'bmp', 'logo.bmp')
-            shellAwaitPath = os.path.join(scriptDir, 'bmp', 'logo_shell_await.bmp')
-            gsAwaitPath = os.path.join(scriptDir, 'bmp', 'logo_gs_await.bmp')
-            gsSuccesPath = os.path.join(scriptDir, 'bmp', 'logo_gs_succes.bmp')
-            
-            self.logoPage = BMPPage(logoPath, self.mp.logoActionSecond)
-            self.shellAwait = BMPPage(shellAwaitPath, 1)
-            self.gsAwait = BMPPage(gsAwaitPath, 1)
-            self.gsSucces = BMPPage(gsSuccesPath, 1)
-            
             self.gsError = ErrorPage(self.mp.errorFontSize,1);
             self.sensorPage0 = SensorPage0(self.mp.fontSize,self.mp.sensorPage0ActionSecond)
             self.sensorPage1 = SensorPage1(self.mp.fontSize,self.mp.sensorPage1ActionSecond);
