@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from alarm_file import *
 from parameter_file import *
+import os
 
 from gpiozero import AngularServo
 from gpiozero.pins.pigpio import PiGPIOFactory
@@ -187,10 +188,17 @@ class OLED:
             self.mp = MissionParameters();
             self.off = False;        
             
-            self.logoPage = BMPPage('../bmp/logo.bmp',self.mp.logoActionSecond)
-            self.shellAwait = BMPPage('../bmp/logo_shell_await.bmp',1);
-            self.gsAwait = BMPPage('../bmp/logo_gs_await.bmp',1);
-            self.gsSucces = BMPPage('../bmp/logo_gs_succes.bmp',1);
+            scriptDir = os.path.dirname(os.path.abspath(__file__))
+
+            logoPath = os.path.join(scriptDir, '../bmp/logo.bmp')
+            shellAwaitPath = os.path.join(scriptDir, '../bmp/logo_shell_await.bmp')
+            gsAwaitPath = os.path.join(scriptDir, '../bmp/logo_gs_await.bmp')
+            gsSuccessPath = os.path.join(scriptDir, '../bmp/logo_gs_succes.bmp')
+
+            self.logoPage = BMPPage(logoPath, self.mp.logoActionSecond)
+            self.shellAwait = BMPPage(shellAwaitPath, 1)
+            self.gsAwait = BMPPage(gsAwaitPath, 1)
+            self.gsSuccess = BMPPage(gsSuccessPath, 1)
             
 
             self.gsError = ErrorPage(self.mp.errorFontSize,1);
