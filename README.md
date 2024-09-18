@@ -26,7 +26,7 @@ And... that's about it for this task.
 
 ## Telemetry data
 Telemetry data is a data packet that consist of many things like transmission time, packet number, satellite status, error code list, temperature, IoT data, battery voltage, team number etc. It's content and transmission frequency is stated in guidebook. 
-It's got 21 elements inside, but we can group them like in the tree below:
+It's got 21 elements inside, but we can group them like in the tree below (this tree doesn't exist in the program, it's just a neat representation):
 
 ![](https://github.com/Sokisati/st_epl/blob/master/images/data_tree.jpg)
 
