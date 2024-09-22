@@ -34,7 +34,7 @@ It's got 21 elements inside, but we can group them like in the tree below (this 
 Hold on, what do you mean non-native data? All of these are supposed to be transmitted to ground station program but we need data from ground station data like IoT and color filter command. Sounds awfully familiar to chicken-egg problem, right?
 Before I transmit the telemetry data packet, I need to get data from shell and ground station (all the other data are already pretransmitted, hence the name "native") but synchronization is the key word here. 
 If I program the shell and ground station to transmit their data at a fixed rate, it will cause numerous problems. What if flight computer is dealing with a problem and needs 3 seconds to handle it? What will happen if ground station or shell data doesn't arrive? 
-That's why our mission payloads flight computer (Raspberry Pi Zero 2W) first attempts to transmit a string command "transmit_DATA" to shells flight computer (ESP32) and if it fails to do so, it doesn't wait for an answer. If it can transmit command successfully, it waits for the incoming respond. Then, same procedure applies to ground station.
+That's why our mission payloads flight computer (Raspberry Pi Zero 2W) first attempts to transmit a string command "SEND_DATA" to shells flight computer (ESP32) and if it fails to do so, it doesn't wait for an answer. If it can transmit command successfully, it waits for the incoming respond. Then, same procedure applies to ground station.
 
 ![](https://github.com/Sokisati/st_epl/blob/master/images/tcp.gif)
 
